@@ -1,0 +1,86 @@
+.center-h {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+}
+
+.container {
+  width: 80%;
+  max-width: 600px;
+  min-width: 260px;
+  min-height: 80%;
+  max-height: 80%;
+}
+
+.container h1 {
+  margin-top: 0;
+}
+
+.input-container{
+  display: flex;
+  gap: 10px;
+  justify-content: space-evenly;
+  margin-bottom: 20px;
+}
+
+.openers-container {
+  display: grid;
+  gap: 10px;
+  padding-left: 12px;
+}
+
+.element-container {
+  width: 100%;
+  display: grid;
+  gap: 5px;
+}
+
+.element {
+  width: 100%;
+  padding: 5px 20px 5px 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.element-text {
+  min-height: 20px;
+  margin: 5px 20px 5px 0px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btns-container {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-field {
+  flex-grow: 1;
+}
+
+.edit-field input {
+  font-size: 16px;
+  text-overflow: ellipsis;
+}
+
+.dialog-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media only screen and (max-width: 600px) {
+  .container {
+    width: 95%;
+    padding: 0px 10px 0px 10px;
+  }
+}
+
+@media only screen and (max-width: 300px) {
+  .container {
+    width: 100%;
+  }
+}
