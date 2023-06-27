@@ -10,16 +10,14 @@ export default function EditBtn({
   setIsEditing,
   inputValue,
   editTask,
+  handleEdit,
 }) {
   const [tasks, setTasks] = useRecoilState(taskState)
 
   if (isEditing) {
     return (
       <ActionIcon
-        onClick={() => {
-          editTask()
-          setIsEditing(false)
-        }}
+        onClick={() => handleEdit()}
         variant='filled'
         color='green'
         radius='lg'>

@@ -72,6 +72,14 @@ export default function Element({ element, done }) {
     setTasks(await fetchData.json())
   }
 
+  function handleEdit() {
+    if (inputValue != element.content && inputValue.length > 0) {
+      editTask()
+    }
+
+    setIsEditing(false)
+  }
+
   // per responsive
   useEffect(() => {
     setIsMounted(true)
@@ -159,15 +167,7 @@ export default function Element({ element, done }) {
                   className='edit-field'
                   value={inputValue}
                   onChange={(event) => setInputValue(event.currentTarget.value)}
-                  onKeyDown={getHotkeyHandler([
-                    [
-                      'Enter',
-                      () => {
-                        editTask()
-                        setIsEditing(false)
-                      },
-                    ],
-                  ])}
+                  onKeyDown={getHotkeyHandler([['Enter', () => handleEdit()]])}
                 />
               ) : (
                 <Text
@@ -189,6 +189,7 @@ export default function Element({ element, done }) {
                     setIsEditing={setIsEditing}
                     inputValue={inputValue}
                     editTask={editTask}
+                    handleEdit={handleEdit}
                   />
                   {!isEditing ? <DeleteBtn element={element} /> : null}
                 </div>

@@ -8,7 +8,13 @@ import { useRecoilState } from 'recoil'
 import { taskState } from '../../recoil_state'
 
 export default function List() {
-  const [listHeight, setListHeight] = useState(window.innerHeight)
+  const [listHeight, setListHeight] = useState()
+
+  useEffect(() => {
+    if (window) {
+      setListHeight(window.innerHeight)
+    }
+  }, [])
 
   const [tasks, setTasks] = useRecoilState(taskState)
 

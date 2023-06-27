@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 
 import { Notifications } from '@mantine/notifications'
-import { MantineProvider, Center, AppShell, Paper } from '@mantine/core'
+import { MantineProvider, Center, AppShell, Paper, Button } from '@mantine/core'
 
 import { useSession, signIn, signOut } from 'next-auth/react'
 
@@ -55,6 +55,7 @@ export default function App() {
               withBorder>
               <Center>
                 <h1>TO DO</h1>
+                <Button onClick={() => signOut()}>Sign out</Button>
               </Center>
               <Input />
               <List />
@@ -66,8 +67,9 @@ export default function App() {
   }
   return (
     <>
-      Not signed in <br />
-      <button onClick={() => signIn()}>Sign in</button>
+      <div>Not signed in</div>
+      <br />
+      <Button onClick={() => signIn()}>Sign in</Button>
     </>
   )
 }

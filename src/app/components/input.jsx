@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-import { Button, TextInput } from '@mantine/core'
+import { Button, TextInput, Flex, Kbd } from '@mantine/core'
 import { getHotkeyHandler } from '@mantine/hooks'
 
 import { useRecoilState } from 'recoil'
@@ -10,6 +10,9 @@ export default function Input() {
   const [taskName, setTaskName] = useState('')
   const [tasks, setTasks] = useRecoilState(taskState)
 
+  const [seeKbd, setSeeKbd] = useState(true)
+
+  // API call
   async function addTask() {
     if (taskName.length > 0) {
       // create task
@@ -33,6 +36,26 @@ export default function Input() {
     }
   }
 
+  // Hotkeys icons
+  const rightSection = (
+    <Flex align='center'>
+      <Kbd mr={5}>Enter</Kbd>
+    </Flex>
+  )
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth
+      setSeeKbd(width >= 800)
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
   return (
     <div className='input-container'>
       <TextInput
@@ -43,6 +66,9 @@ export default function Input() {
         radius='xl'
         size='md'
         value={taskName}
+        rightSection={seeKbd ? rightSection : null}
+        rightSectionWidth={seeKbd ? 80 : null}
+        styles={seeKbd ? { rightSection: { pointerEvents: 'none' } } : null}
         onChange={(event) => setTaskName(event.currentTarget.value)}
         onKeyDown={getHotkeyHandler([['Enter', () => addTask()]])}
       />
