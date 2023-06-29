@@ -20,24 +20,32 @@ export const authOptions = {
     CredentialsProvider({
       type: 'credentials',
       credentials: {},
-      authorize(credentials, req) {
+      async authorize(credentials, req) {
         const { email, password } = credentials
-        // perform you login logic
-        // find out user from db
-
-        // se user esiste
-        // controllo che hash corrispondano bcrypt
-        // se si = sessione
-        // se no = errore "email o password errati"
         
-        // !NON! password errata -> preclude la correttezza della mail
+        const user = await prisma.user.findUnique({
+          where: {
+            email: email,
+          },
+        })
 
-        if (email !== 'test@test.it' || password !== '1234') {
-          throw new Error('invalid credentials')
+        if (user) {
+          const res = await compare(password, user.password)
+          if (res) {
+            return {
+              id: user.id,
+              email: user.email,
+              name: user.name,
+              surname: user.surname,
+              image: user.image,
+            }
+          } else {
+            throw new Error('Invalid credentials')
+          }
+        } else {
+          throw new Error('Invalid credentials')
         }
 
-        // if everything is fine
-        return { id: 2, email: 'test@test.it', name: 'Test' }
       },
     }),
     GithubProvider({

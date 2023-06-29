@@ -7,6 +7,16 @@ import axios from 'axios'
 
 const prisma = new PrismaClient()
 
+const checkDateIntervall = 30 * 60000 // 30 minutes
+
+// Return
+function returnRedirect(res, message, statusCode) {
+  let outMessage = message.replace(/ /g, '%20').toLowerCase()
+  return res.redirect('/api/auth/error?error='+outMessage, statusCode)
+}
+
+// Methods functions
+
 async function getUser(session) {
   // return await prisma.task.findMany({
   //   where: {
@@ -33,10 +43,12 @@ async function checkEmail(email){
     },
   })
 
-  if (users.length > 0) {
+  if (users) {
     // Account already exists
     return false
   }
+
+  return true
 }
 
 async function checkDate(req, reqdate) {
@@ -51,20 +63,23 @@ async function checkDate(req, reqdate) {
     })
 
     const requestDate = new Date(reqdate)
-    // 2 hours before the request date
 
+    let out = true
     const matchingUsersIP = usersByIP.filter((user) => {
       const matchingDate = new Date(user.creationDate)
-      
-      const matchingDatePrec = new Date(user.creationDate)
-      matchingDatePrec.setMinutes(matchingDatePrec.getMinutes() - 30)
-      
-      return matchingDatePrec <= requestDate && matchingDate <= requestDate
+
+      // if for preventing others results
+      if((requestDate.getTime() - matchingDate.getTime())<=checkDateIntervall) {
+        out = false
+      }
     })
+
+    if(!out) {
+      return false
+    }
 
     if (matchingUsersIP.length > 0) {
       // Other accounts are created by the same IP within the 2-hour range
-      console.log('FALSO COME IL PANE')
       return false
     }
   }
@@ -77,26 +92,33 @@ async function checkDate(req, reqdate) {
     })
 
     const requestDate = new Date(reqdate)
-    // 2 hours before the request date
+
+    let out = true
     const matchingUsersMAC = usersByMAC.filter((user) => {
       const matchingDate = new Date(user.creationDate)
 
-      const matchingDatePrec = new Date(user.creationDate)
-      matchingDatePrec.setMinutes(matchingDatePrec.getMinutes() - 30)
-
-      return matchingDatePrec <= requestDate && matchingDate <= requestDate
+      // if for preventing others results
+      if (
+        requestDate.getTime() - matchingDate.getTime() <=
+        checkDateIntervall
+      ) {
+        out = false
+      }
     })
 
+    if (!out) {
+      return false
+    }
+
     if (matchingUsersMAC.length > 0) {
-      console.log('FALSO COME IL MAC')
-      // Other accounts are created by the same MAC within the 2-hour range
+      // Other accounts are created by the same MAC within the 30 minutes range
       return false
     }
   }
 
   // No other accounts found
   // OR
-  // No other accounts found for the same IP or MAC within the 2-hour range
+  // No other accounts found for the same IP or MAC within the 30 minutes range
   return true
 }
 
@@ -140,17 +162,14 @@ async function createUser(session, req, res) {
   const outPassword = await encryptPassword(requestUser.password)
 
   if (!(await checkEmail(requestUser.email))) {
-    return res
-      .redirect('/api/auth/error?error=account%20already%20exists', 403)
-    return res
-      .status(409)
-      .json({ message: 'Conflict - Account already exists' })
+    // 409 Conflict - Account already exists
+    returnRedirect(res, 'Account already exists', 403)
   } else if (!(await checkDate(req, requestUser.creationDate))) {
-    return res
-      .status(429)
-      .json({
-        message: 'Too Many Requests - You have already created an account recently, please try again shortly!',
-      })
+    returnRedirect(
+      res,
+      'Too Many Requests - You have already created an account recently, please try again shortly!',
+      429
+    )
   }
 
   console.log('CREATE')
