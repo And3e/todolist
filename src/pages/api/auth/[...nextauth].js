@@ -17,10 +17,6 @@ export const authOptions = {
   secret: process.env.JWT_SECRET,
   adapter: PrismaAdapter(prisma),
   providers: [
-    GithubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
-    }),
     CredentialsProvider({
       type: 'credentials',
       credentials: {},
@@ -29,6 +25,13 @@ export const authOptions = {
         // perform you login logic
         // find out user from db
 
+        // se user esiste
+        // controllo che hash corrispondano bcrypt
+        // se si = sessione
+        // se no = errore "email o password errati"
+        
+        // !NON! password errata -> preclude la correttezza della mail
+
         if (email !== 'test@test.it' || password !== '1234') {
           throw new Error('invalid credentials')
         }
@@ -36,6 +39,10 @@ export const authOptions = {
         // if everything is fine
         return { id: 2, email: 'test@test.it', name: 'Test' }
       },
+    }),
+    GithubProvider({
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET,
     }),
   ],
 
@@ -58,10 +65,9 @@ export const authOptions = {
   pages: {
     signIn: '/auth/signin',
     signOut: '/auth/signout',
-    error: '/auth/error', // Error code passed in query string as ?error=
+    //error: '/auth/error', // Error code passed in query string as ?error=
     verifyRequest: '/auth/verify-request', // (used for check email message)
     newUser: '/auth/signup', // New users will be directed here on first sign in (leave the property out if not of interest)
-    signUp: '/auth/signup',
   },
 }
 

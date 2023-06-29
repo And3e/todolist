@@ -1,5 +1,12 @@
-import React, { useEffect } from 'react'
+import React from 'react'
+
+import { useRouter } from 'next/navigation'
+
+const os = require('os')
+import axios from 'axios'
+
 import { useForm } from '@mantine/form'
+
 import {
   TextInput,
   PasswordInput,
@@ -10,6 +17,8 @@ import {
 } from '@mantine/core'
 
 function Register() {
+  const { push } = useRouter()
+
   const validateEmail = (value) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(value)) {
@@ -27,8 +36,13 @@ function Register() {
   }
 
   const form = useForm({
-    validateInputOnChange: true,
-    initialValues: { name: '', surname: '', email: '', confirmPassword: '' },
+    initialValues: {
+      name: '',
+      surname: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
 
     validate: {
       name: (value) =>
@@ -36,10 +50,45 @@ function Register() {
       surname: (value) =>
         value.length < 2 ? 'Il cognome deve avere almeno 2 lettere!' : null,
       email: validateEmail,
+      password: undefined,
       confirmPassword: (value, values) =>
         value !== values.password ? 'Le passwords non corrispondono!' : null,
     },
   })
+
+  async function getClientIp() {
+    try {
+      const response = await axios.get(`https://api.ipify.org/?format=json`)
+      const { ip } = response.data
+
+      return ip
+    } catch (error) {
+      console.error('Error retrieving IP: ', error)
+      return null
+    }
+  }
+
+  function getMACAddress() {
+    const networkInterfaces = os.networkInterfaces()
+    const interfaceKeys = Object.keys(networkInterfaces)
+
+    // Iterate through network interfaces to find the MAC address
+    for (const key of interfaceKeys) {
+      const networkInterface = networkInterfaces[key]
+      const matchingInterface = networkInterface.find(
+        (iface) =>
+          iface.mac &&
+          iface.mac !== '00:00:00:00:00:00' &&
+          iface.internal === false
+      )
+
+      if (matchingInterface) {
+        return matchingInterface.mac
+      }
+    }
+
+    return null
+  }
 
   return (
     <Box style={{ marginLeft: '12px' }}>
@@ -48,7 +97,36 @@ function Register() {
         h={450}
         offsetScrollbars
         scrollHideDelay={100}>
-        <form onSubmit={form.onSubmit(console.log)}>
+        <form
+          onSubmit={form.onSubmit(async (fields) => {
+            // create user
+            const ip = await getClientIp()
+
+            let newUser = {
+              name: fields.name,
+              email: fields.email,
+              surname: fields.surname,
+              password: fields.password,
+              creationDate: new Date(),
+              deviceIP: ip,
+              deviceMAC: getMACAddress(),
+            }
+
+            await fetch('/api/user', {
+              method: 'POST',
+              body: JSON.stringify(newUser),
+            })
+              .then((res) => {
+                console.log(res)
+
+                if (res.redirected) {
+                  push(res.url)
+                }
+              })
+              .catch((error) => {
+                console.error('Error during fetch: ', error)
+              })
+          })}>
           <TextInput
             label='Name'
             placeholder='Name'
