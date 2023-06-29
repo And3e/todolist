@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 // poviders
-import Providers from './providers'
+import Providers from './providers.page'
 
 import { signIn } from 'next-auth/react'
 
@@ -13,7 +13,6 @@ import {
   Box,
   ScrollArea,
 } from '@mantine/core'
-import { redirect } from 'next/dist/server/api-utils'
 
 function Login({ providers }) {
   const validateEmail = (value) => {

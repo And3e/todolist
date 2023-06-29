@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 // store
 import { RecoilRoot, useRecoilState } from 'recoil'
@@ -20,8 +20,8 @@ import { MantineProvider, Tabs, Paper, Text } from '@mantine/core'
 import './auth.css'
 
 // components
-import Login from './login.jsx'
-import Register from './register.jsx'
+import Login from './login.page.jsx'
+import Register from './register.page.jsx'
 
 // img
 import logo from './../../app/imgs/long/logo-long.svg'
@@ -46,9 +46,14 @@ function Auth({ providers }) {
 
   const router = useRouter()
 
-  async function login() {
-    //await fetch('/api/auth/signin/:github', { method: 'POST' })
-  }
+  useEffect(() => {
+    // redirect if not a route
+    const tab = router.query.index
+
+    if (tab !== 'signin' && tab !== 'signup') {
+      router.push('/')
+    }
+  }, [])
 
   return (
     <MantineProvider
@@ -77,7 +82,7 @@ function Auth({ providers }) {
           <Tabs
             defaultValue={router.query.index}
             radius='md'
-            value={router.query.activeTab}
+            value={router.query.index}
             onTabChange={(value) => router.push(`/auth/${value}`)}>
             <Tabs.List position='center' grow>
               <Tabs.Tab

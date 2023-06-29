@@ -1,7 +1,8 @@
 import { PrismaClient } from '@prisma/client'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '../auth/[...nextauth]'
-import { genSalt, hash, compare } from 'bcryptjs'
+import { genSalt, hash } from 'bcryptjs'
+
 const os = require('os')
 import axios from 'axios'
 
@@ -10,9 +11,13 @@ const prisma = new PrismaClient()
 const checkDateIntervall = 30 * 60000 // 30 minutes
 
 // Return
-function returnRedirect(res, message, statusCode) {
+function returnRedirectError(res, message, statusCode) {
   let outMessage = message.replace(/ /g, '%20').toLowerCase()
-  return res.redirect('/api/auth/error?error='+outMessage, statusCode)
+  return res.redirect('/api/auth/error?error=' + outMessage, statusCode)
+}
+
+function returnRedirect(res, url, statusCode) {
+  return res.redirect(url, statusCode)
 }
 
 // Methods functions
@@ -36,7 +41,7 @@ async function encryptPassword(password) {
   }
 }
 
-async function checkEmail(email){
+async function checkEmail(email) {
   const users = await prisma.user.findUnique({
     where: {
       email: email,
@@ -69,12 +74,15 @@ async function checkDate(req, reqdate) {
       const matchingDate = new Date(user.creationDate)
 
       // if for preventing others results
-      if((requestDate.getTime() - matchingDate.getTime())<=checkDateIntervall) {
+      if (
+        requestDate.getTime() - matchingDate.getTime() <=
+        checkDateIntervall
+      ) {
         out = false
       }
     })
 
-    if(!out) {
+    if (!out) {
       return false
     }
 
@@ -163,9 +171,9 @@ async function createUser(session, req, res) {
 
   if (!(await checkEmail(requestUser.email))) {
     // 409 Conflict - Account already exists
-    returnRedirect(res, 'Account already exists', 403)
+    returnRedirectError(res, 'Account already exists', 403)
   } else if (!(await checkDate(req, requestUser.creationDate))) {
-    returnRedirect(
+    returnRedirectError(
       res,
       'Too Many Requests - You have already created an account recently, please try again shortly!',
       429
@@ -186,6 +194,8 @@ async function createUser(session, req, res) {
       deviceMAC: requestUser.deviceMAC,
     },
   })
+
+  returnRedirect(res, '/auth/success', 200)
 }
 
 async function editUser(session, req) {
