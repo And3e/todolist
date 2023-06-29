@@ -4,6 +4,12 @@
   justify-content: center;
 }
 
+.header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 5px 5px 0px 0px;
+}
+
 .container {
   width: 80%;
   max-width: 600px;
@@ -19,7 +25,7 @@
 .input-container{
   display: flex;
   gap: 10px;
-  justify-content: space-evenly;
+  justify-content: space-around;
   margin-bottom: 20px;
 }
 

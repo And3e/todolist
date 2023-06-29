@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 
-import { Button, TextInput, Flex, Kbd } from '@mantine/core'
-import { getHotkeyHandler } from '@mantine/hooks'
-
+// store
 import { useRecoilState } from 'recoil'
 import { taskState } from '../../recoil_state'
+
+import { Button, TextInput, Flex, Kbd } from '@mantine/core'
+import { getHotkeyHandler } from '@mantine/hooks'
 
 export default function Input() {
   const [taskName, setTaskName] = useState('')

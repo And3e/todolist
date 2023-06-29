@@ -1,75 +1,103 @@
+'use client'
+
 import React, { useEffect } from 'react'
 
-import { Notifications } from '@mantine/notifications'
-import { MantineProvider, Center, AppShell, Paper, Button } from '@mantine/core'
+// router
+import { useRouter } from 'next/navigation'
 
-import { useSession, signIn, signOut } from 'next-auth/react'
+// auth
+import { useSession } from 'next-auth/react'
 
+// store
 import { useRecoilState } from 'recoil'
-import { themeState, taskState } from '../../recoil_state'
+import { taskState } from '../../recoil_state'
+
+import { Center, AppShell, Header, Paper, Button, Text } from '@mantine/core'
+
 import './home.css'
 
 // components
 import Input from './input'
 import List from './list'
+import UserBtn from './btns/userbtn'
 
-export default function App() {
-  const [theme, setTheme] = useRecoilState(themeState)
+// img
+import logo from './../imgs/long/logo-long.svg'
+
+export default function Home() {
+  const { push } = useRouter()
   const [tasks, setTasks] = useRecoilState(taskState)
 
-  const { data: session } = useSession()
+  const session = useSession()
+
+  async function fetchData() {
+    // pull list from db
+    const response = await fetch('/api/tasks')
+    const data = await response.json()
+    setTasks(data)
+  }
 
   useEffect(() => {
-    async function fetchData() {
-      // pull list from db
-      const response = await fetch('/api/tasks')
-      const data = await response.json()
-      setTasks(data)
+    if (session.status === 'unauthenticated') {
+      push('/auth/signin')
+    } else if (session.status === 'authenticated') {
+      fetchData()
     }
+  }, [session.status])
 
-    fetchData()
-  }, [])
-
-  if (session) {
+  if (session.status === 'authenticated') {
     return (
-      <MantineProvider
-        theme={{ colorScheme: theme, primaryColor: 'orange' }}
-        withGlobalStyles
-        withNormalizeCSS>
-        <Notifications limit={3} />
-        <AppShell
-          styles={(theme) => ({
-            main: {
+      <AppShell
+        styles={(theme) => ({
+          main: {
+            backgroundColor:
+              theme.colorScheme === 'dark'
+                ? theme.colors.dark[8]
+                : theme.colors.gray[0],
+          },
+        })}
+        header={
+          <Header
+            sx={(theme) => ({
               backgroundColor:
                 theme.colorScheme === 'dark'
                   ? theme.colors.dark[8]
                   : theme.colors.gray[0],
-            },
-          })}>
-          <Center className='center-h'>
-            <Paper
-              className='container'
-              shadow='xl'
-              radius='xl'
-              p='md'
-              withBorder>
-              <Center>
-                <h1>TO DO</h1>
-                <Button onClick={() => signOut()}>Sign out</Button>
-              </Center>
-              <Input />
-              <List />
-            </Paper>
-          </Center>
-        </AppShell>
-      </MantineProvider>
+              border: 0,
+            })}
+            className='header'>
+            <UserBtn />
+          </Header>
+        }>
+        <Center className='center-h'>
+          <Paper
+            className='container'
+            shadow='xl'
+            radius='xl'
+            p='md'
+            withBorder>
+            <Center style={{ display: 'grid', gap: '10px' }}>
+              <img
+                src={logo.src}
+                height={70}
+                style={{ margin: '10px 0px 20px 0px' }}
+              />
+            </Center>
+            <Input />
+            <List />
+          </Paper>
+        </Center>
+      </AppShell>
     )
   }
   return (
-    <>
-      <div>Not signed in</div>
-      <br />
-      <Button onClick={() => signIn()}>Sign in</Button>
-    </>
+    <Center h='100vh' style={{ display: 'grid' }}>
+      <div style={{ display: 'grid', gap: '20px' }}>
+        <Text fz='xl'>You're not logged in!</Text>
+        <Button radius='xl' onClick={() => push('/auth/signin')}>
+          <Text fz='md'>Sign In</Text>
+        </Button>
+      </div>
+    </Center>
   )
 }

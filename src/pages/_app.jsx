@@ -1,17 +1,9 @@
-import React from 'react'
-
 import { SessionProvider } from 'next-auth/react'
 
-import { RecoilRoot } from 'recoil'
-
-import Home from '../app/components/home'
-
-export default function App({ pageProps: { session } }) {
+export default function App({ Component, pageProps }) {
   return (
-    <SessionProvider session={session}>
-      <RecoilRoot>
-        <Home />
-      </RecoilRoot>
+    <SessionProvider session={pageProps.session}>
+      <Component {...pageProps} />
     </SessionProvider>
   )
 }

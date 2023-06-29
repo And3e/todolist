@@ -1,0 +1,32 @@
+.account-center {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container {
+  width: 50vw;
+  max-width: 500px;
+  padding: 12px 24px 12px 24px;
+  height: fit-content;
+}
+
+.center-form {
+  display: grid;
+}
+
+.input-margin-top {
+  margin-top: 10px;
+}
+
+.input-center {
+  display: flex;
+  justify-content: center;
+}
+
+.divider {
+  margin: 20px 0px 20px 0px;
+}

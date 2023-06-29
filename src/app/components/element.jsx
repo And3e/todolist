@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Box, Text, TextInput } from '@mantine/core'
-import { getHotkeyHandler } from '@mantine/hooks'
 
+// store
 import { useRecoilState } from 'recoil'
 import { taskState } from '../../recoil_state'
+
+import { Box, Text, TextInput } from '@mantine/core'
+import { getHotkeyHandler } from '@mantine/hooks'
 
 import DeleteBtn from './btns/deletebtn'
 import EditBtn from './btns/editbtn'

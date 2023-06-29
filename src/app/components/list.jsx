@@ -61,13 +61,21 @@ export default function List() {
 
   return (
     <ScrollArea
-      h={(listHeight / 100) * 80 - 180}
+      h={(listHeight / 100) * 80 - 200}
       offsetScrollbars
       scrollHideDelay={100}>
       <Box className='openers-container'>
         <NavLink
           label={
-            <Text span fz='md'>
+            <Text
+              span
+              fz='md'
+              sx={(theme) => ({
+                color:
+                  theme.colorScheme === 'light'
+                    ? '#fd7e14'
+                    : theme.colors.yellow[2],
+              })}>
               In progress
             </Text>
           }
