@@ -2,13 +2,14 @@ import React, { useState, useEffect, useRef } from 'react'
 
 // store
 import { useRecoilState } from 'recoil'
-import { taskState } from '../../recoil_state'
+import { taskState } from '../../../recoil_state'
 
-import { Box, Text, TextInput } from '@mantine/core'
+import { Box, Text, TextInput, useMantineTheme } from '@mantine/core'
 import { getHotkeyHandler } from '@mantine/hooks'
+import { GripVertical } from 'react-bootstrap-icons'
 
-import DeleteBtn from './btns/deletebtn'
-import EditBtn from './btns/editbtn'
+import DeleteBtn from '../btns/deletebtn'
+import EditBtn from '../btns/editbtn'
 
 import { Transition } from 'react-transition-group'
 
@@ -19,7 +20,7 @@ const defaultStyle = {
   opacity: 0,
 }
 
-export default function Element({ element, done }) {
+export default function Element({ element, done, dragStatus }) {
   const [isClicked, setIsClicked] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
@@ -32,20 +33,32 @@ export default function Element({ element, done }) {
   const nodeRef = useRef(null)
 
   const [tasks, setTasks] = useRecoilState(taskState)
+  const theme = useMantineTheme()
 
   // api requests
   async function setDone() {
+    const count = tasks.filter((obj) => obj.done === !done).length
+
     // edit task => set done
     const outElement = {
       id: element.id,
       content: element.content,
       done: !done,
+      dragOrder: count + 1,
       userId: element.userId,
     }
 
     await fetch('/api/tasks', {
       method: 'PATCH',
       body: JSON.stringify(outElement),
+    })
+
+    // update dragorder
+    await fetch('/api/tasks/updatedo', {
+      method: 'PATCH',
+      body: JSON.stringify({
+        done: done,
+      }),
     })
 
     // update list
@@ -61,6 +74,7 @@ export default function Element({ element, done }) {
       content: inputValue,
       done: element.done,
       userId: element.userId,
+      dragOrder: element.dragOrder,
     }
 
     await fetch('/api/tasks', {
@@ -104,9 +118,27 @@ export default function Element({ element, done }) {
 
   // check provenienza click (btns || parent element)
   function handleClick(event) {
-    if (event.target.id != '' && !isEditing) {
+    if (event.target.id != '' && !isEditing && !dragStatus) {
       setDone()
       setIsClicked(true)
+    }
+  }
+
+  // style
+  function getStyle(theme) {
+    return {
+      backgroundColor:
+        theme.colorScheme === 'dark'
+          ? theme.colors.dark[6]
+          : theme.colors.gray[0],
+      borderRadius: theme.radius.xl,
+
+      '&:hover': {
+        backgroundColor:
+          theme.colorScheme === 'dark'
+            ? theme.colors.dark[5]
+            : theme.colors.gray[1],
+      },
     }
   }
 
@@ -144,43 +176,64 @@ export default function Element({ element, done }) {
             <Box
               className='element'
               id='#element#'
-              sx={(theme) => ({
-                backgroundColor:
-                  theme.colorScheme === 'dark'
-                    ? theme.colors.dark[6]
-                    : theme.colors.gray[0],
-                borderRadius: theme.radius.xl,
-
-                '&:hover': {
-                  backgroundColor:
-                    theme.colorScheme === 'dark'
-                      ? theme.colors.dark[5]
-                      : theme.colors.gray[1],
-                },
-              })}
+              sx={(theme) => getStyle(theme)}
               onMouseEnter={() => setHover(true)}
               onMouseLeave={() => setHover(false)}
               onClick={handleClick}>
               {isEditing ? (
-                <TextInput
-                  placeholder={element.content}
-                  variant='unstyled'
-                  radius='md'
-                  className='edit-field'
-                  value={inputValue}
-                  onChange={(event) => setInputValue(event.currentTarget.value)}
-                  onKeyDown={getHotkeyHandler([['Enter', () => handleEdit()]])}
-                />
+                <Box className='icon-element-conainter' id='#text-input#'>
+                  <GripVertical
+                    size={17}
+                    style={
+                      dragStatus
+                        ? {
+                            color:
+                              theme.colorScheme === 'dark'
+                                ? theme.colors.dark[6]
+                                : theme.colors.gray[0],
+                          }
+                        : null
+                    }
+                  />
+                  <TextInput
+                    placeholder={element.content}
+                    variant='unstyled'
+                    radius='md'
+                    className='edit-field'
+                    value={inputValue}
+                    onChange={(event) =>
+                      setInputValue(event.currentTarget.value)
+                    }
+                    onKeyDown={getHotkeyHandler([
+                      ['Enter', () => handleEdit()],
+                    ])}
+                  />
+                </Box>
               ) : (
-                <Text
-                  id='#text#'
-                  span
-                  fz='md'
-                  className='element-text'
-                  c={done ? 'dimmed' : ''}
-                  td={done ? 'line-through' : ''}>
-                  {element.content}
-                </Text>
+                <Box className='icon-element-conainter' id='#text#'>
+                  <GripVertical
+                    size={17}
+                    style={
+                      dragStatus
+                        ? {
+                            color:
+                              theme.colorScheme === 'dark'
+                                ? theme.colors.gray[7]
+                                : theme.colors.gray[4],
+                          }
+                        : null
+                    }
+                  />
+                  <Text
+                    id='#text#'
+                    span
+                    fz='md'
+                    className='element-text'
+                    c={done ? 'dimmed' : ''}
+                    td={done ? 'line-through' : ''}>
+                    {element.content}
+                  </Text>
+                </Box>
               )}
 
               {seeBtns ? (

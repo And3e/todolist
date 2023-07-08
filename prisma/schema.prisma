@@ -56,7 +56,6 @@ model User {
   password      String?
   creationDate  DateTime?
   deviceIP      String?
-  deviceMAC     String?
   image         String?
   accounts      Account[]
   sessions      Session[]
@@ -73,11 +72,12 @@ model VerificationToken {
 }
 
 model Task {
-  id      Int     @id @default(autoincrement())
-  content String
-  done    Boolean
-  userId  String
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        Int     @id @default(autoincrement())
+  content   String
+  done      Boolean
+  dragOrder Int?
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Profile {

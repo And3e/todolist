@@ -4,7 +4,6 @@ import { authOptions } from '../auth/[...nextauth]'
 import { genSalt, hash } from 'bcryptjs'
 
 const os = require('os')
-import axios from 'axios'
 
 const prisma = new PrismaClient()
 
@@ -56,9 +55,19 @@ async function checkEmail(email) {
   return true
 }
 
+function getClientIp(req) {
+  let ip = null
+
+  if (req.headers['x-forwarded-for']) {
+    ip = req.headers['x-forwarded-for'].split(',')[0]
+    ip = ip.split(':')[ip.split(':').length - 1]
+  }
+
+  return ip
+}
+
 async function checkDate(req, reqdate) {
-  const deviceIP = await getClientIp()
-  const deviceMAC = getMACAddress()
+  const deviceIP = getClientIp(req)
 
   if (deviceIP != null) {
     const usersByIP = await prisma.user.findMany({
@@ -92,76 +101,10 @@ async function checkDate(req, reqdate) {
     }
   }
 
-  if (deviceMAC != null) {
-    const usersByMAC = await prisma.user.findMany({
-      where: {
-        deviceMAC: deviceMAC,
-      },
-    })
-
-    const requestDate = new Date(reqdate)
-
-    let out = true
-    const matchingUsersMAC = usersByMAC.filter((user) => {
-      const matchingDate = new Date(user.creationDate)
-
-      // if for preventing others results
-      if (
-        requestDate.getTime() - matchingDate.getTime() <=
-        checkDateIntervall
-      ) {
-        out = false
-      }
-    })
-
-    if (!out) {
-      return false
-    }
-
-    if (matchingUsersMAC.length > 0) {
-      // Other accounts are created by the same MAC within the 30 minutes range
-      return false
-    }
-  }
-
   // No other accounts found
   // OR
-  // No other accounts found for the same IP or MAC within the 30 minutes range
+  // No other accounts found for the same IP within the 30 minutes range
   return true
-}
-
-function getMACAddress() {
-  const networkInterfaces = os.networkInterfaces()
-  const interfaceKeys = Object.keys(networkInterfaces)
-
-  // Iterate through network interfaces to find the MAC address
-  for (const key of interfaceKeys) {
-    const networkInterface = networkInterfaces[key]
-    const matchingInterface = networkInterface.find(
-      (iface) =>
-        iface.mac &&
-        iface.mac !== '00:00:00:00:00:00' &&
-        iface.internal === false
-    )
-
-    if (matchingInterface) {
-      return matchingInterface.mac
-    }
-  }
-
-  return null
-}
-
-async function getClientIp() {
-  try {
-    const response = await axios.get(`https://api.ipify.org/?format=json`)
-    const { ip } = response.data
-
-    return ip
-  } catch (error) {
-    console.error('Error retrieving IP: ', error)
-    return null
-  }
 }
 
 async function createUser(session, req, res) {
@@ -190,8 +133,7 @@ async function createUser(session, req, res) {
       surname: requestUser.surname,
       password: outPassword,
       creationDate: requestUser.creationDate,
-      deviceIP: requestUser.deviceIP,
-      deviceMAC: requestUser.deviceMAC,
+      deviceIP: getClientIp(req),
     },
   })
 

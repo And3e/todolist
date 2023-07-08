@@ -1,3 +1,10 @@
+.login-container {
+  width: 50vw;
+  max-width: 500px;
+  padding: 12px 24px 12px 24px;
+  height: fit-content;
+}
+
 .account-center {
   width: 100vw;
   height: 100vh;
@@ -5,13 +12,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.login-container {
-  width: 50vw;
-  max-width: 500px;
-  padding: 12px 24px 12px 24px;
-  height: fit-content;
 }
 
 .center-form {
@@ -29,4 +29,16 @@
 
 .divider {
   margin: 20px 0px 20px 0px;
+}
+
+@media only screen and (max-width: 1000px) {
+  .login-container {
+    width: 90%;
+  }
+}
+
+@media only screen and (max-width: 300px) {
+  .login-container {
+    width: 100%;
+  }
 }

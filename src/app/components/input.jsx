@@ -16,10 +16,13 @@ export default function Input() {
   // API call
   async function addTask() {
     if (taskName.length > 0) {
+      const count = tasks.filter((obj) => obj.done === false).length
+
       // create task
       let outTask = {
         content: taskName,
         done: false,
+        dragOrder: count + 1,
       }
 
       await fetch('/api/tasks', {

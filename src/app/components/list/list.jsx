@@ -1,13 +1,27 @@
 import { useState, useEffect } from 'react'
 
+// store
+import { useRecoilState } from 'recoil'
+import { taskState } from '../../../recoil_state'
+
 import { ScrollArea, Box, NavLink, Text, Skeleton } from '@mantine/core'
 
-import Element from './element'
-
-import { useRecoilState } from 'recoil'
-import { taskState } from '../../recoil_state'
+import DnD from './dnd'
 
 export default function List() {
+  const [tasksStore, setTasks] = useRecoilState(taskState)
+
+  const [tasksProgress, setTasksProgress] = useState([])
+  const [tasksDone, setTasksDone] = useState([])
+
+  useEffect(() => {
+    console.log('tasksProgress', tasksProgress)
+  }, [tasksProgress])
+
+  useEffect(() => {
+    console.log('tasksDone', tasksDone)
+  }, [tasksDone])
+
   const [listHeight, setListHeight] = useState()
 
   useEffect(() => {
@@ -16,14 +30,23 @@ export default function List() {
     }
   }, [])
 
-  const [tasks, setTasks] = useRecoilState(taskState)
-
-  const [progressList, setProgressList] = useState([
-    <Skeleton height='40px' radius='xl' key={0} />,
-  ])
-  const [doneList, setDoneList] = useState([
-    <Skeleton height='40px' radius='xl' key={0} />,
-  ])
+  useEffect(() => {
+    if (tasksStore && tasksStore.length > 0) {
+      setTasksProgress([])
+      setTasksDone([])
+      tasksStore.forEach((task) => {
+        if (!task.done) {
+          setTasksProgress((prev) => [...prev, task])
+        } else {
+          setTasksDone((prev) => [...prev, task])
+        }
+      })
+    }
+    //  else {
+    //   setTasksProgress([<Skeleton w='100%' h='44.79px' key={0} />])
+    //   setTasksDone([<Skeleton w='100%' h='44.79px' key={0} />])
+    // }
+  }, [tasksStore])
 
   // list height
   useEffect(() => {
@@ -37,27 +60,6 @@ export default function List() {
       window.removeEventListener('resize', handleResize)
     }
   }, [])
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setProgressList(
-        tasks
-          .filter((element) => !element.done)
-          .map((element) => (
-            <Element key={element.id} element={element} done={false} />
-          ))
-      )
-
-      setDoneList(
-        tasks
-          .filter((element) => element.done)
-          .map((element) => (
-            <Element key={element.id} element={element} done={true} />
-          ))
-      )
-    }, 500)
-    return () => clearTimeout(timer)
-  }, [tasks])
 
   return (
     <ScrollArea
@@ -88,7 +90,11 @@ export default function List() {
             borderRadius: theme.radius.xl,
             paddingLeft: '20px',
           })}>
-          <div className='element-container'>{progressList}</div>
+          <DnD
+            done={false}
+            taskList={tasksProgress}
+            setTaskList={setTasksProgress}
+          />
         </NavLink>
         <NavLink
           label={
@@ -105,7 +111,7 @@ export default function List() {
             borderRadius: theme.radius.xl,
             paddingLeft: '20px',
           })}>
-          <div className='element-container'>{doneList}</div>
+          <DnD done={true} taskList={tasksDone} setTaskList={setTasksDone} />
         </NavLink>
       </Box>
     </ScrollArea>

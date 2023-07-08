@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
 // router
 import { useRouter } from 'next/navigation'
@@ -18,7 +18,7 @@ import './home.css'
 
 // components
 import Input from './input'
-import List from './list'
+import List from './list/list'
 import UserBtn from './btns/userbtn'
 
 // img
@@ -85,6 +85,7 @@ export default function Home() {
             </Center>
             <Input />
             <List />
+            {/* <Dnd /> */}
           </Paper>
         </Center>
       </AppShell>

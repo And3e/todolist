@@ -9,6 +9,9 @@ async function getTasks(session) {
     where: {
       userId: session.user.id,
     },
+    orderBy: {
+      dragOrder: 'asc',
+    },
   })
 }
 
@@ -21,6 +24,7 @@ async function pushTask(session, req) {
     data: {
       content: requestTask.content,
       userId: session.user.id,
+      dragOrder: requestTask.dragOrder,
       done: false,
     },
   })
@@ -57,7 +61,7 @@ export default async function handler(req, res) {
   // PATCH => edit
 
   const session = await getServerSession(req, res, authOptions)
-
+prisma
   if (!session) {
     return res.status(403).json({ message: 'User not authenticated' })
   }

@@ -46,14 +46,14 @@ function Auth({ providers }) {
 
   const router = useRouter()
 
-  useEffect(() => {
-    // redirect if not a route
-    const tab = router.query.index
+  // useEffect(() => {
+  //   // redirect if not a route
+  //   const tab = router.query.index
 
-    if (tab !== 'signin' && tab !== 'signup') {
-      router.push('/')
-    }
-  }, [])
+  //   if (tab !== 'signin' && tab !== 'signup') {
+  //     router.push('/')
+  //   }
+  // }, [])
 
   return (
     <MantineProvider

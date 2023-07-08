@@ -3,7 +3,6 @@ import React from 'react'
 import { useRouter } from 'next/navigation'
 
 const os = require('os')
-import axios from 'axios'
 
 import { useForm } from '@mantine/form'
 
@@ -56,40 +55,6 @@ function Register() {
     },
   })
 
-  async function getClientIp() {
-    try {
-      const response = await axios.get(`https://api.ipify.org/?format=json`)
-      const { ip } = response.data
-
-      return ip
-    } catch (error) {
-      console.error('Error retrieving IP: ', error)
-      return null
-    }
-  }
-
-  function getMACAddress() {
-    const networkInterfaces = os.networkInterfaces()
-    const interfaceKeys = Object.keys(networkInterfaces)
-
-    // Iterate through network interfaces to find the MAC address
-    for (const key of interfaceKeys) {
-      const networkInterface = networkInterfaces[key]
-      const matchingInterface = networkInterface.find(
-        (iface) =>
-          iface.mac &&
-          iface.mac !== '00:00:00:00:00:00' &&
-          iface.internal === false
-      )
-
-      if (matchingInterface) {
-        return matchingInterface.mac
-      }
-    }
-
-    return null
-  }
-
   return (
     <Box style={{ marginLeft: '12px' }}>
       <ScrollArea
@@ -100,16 +65,12 @@ function Register() {
         <form
           onSubmit={form.onSubmit(async (fields) => {
             // create user
-            const ip = await getClientIp()
-
             let newUser = {
               name: fields.name,
               email: fields.email,
               surname: fields.surname,
               password: fields.password,
               creationDate: new Date(),
-              deviceIP: ip,
-              deviceMAC: getMACAddress(),
             }
 
             await fetch('/api/user', {
