@@ -12,4 +12,9 @@ const taskState = atom({
   default: [],
 })
 
-export { themeState, taskState }
+const limitTask = atom({
+  key: 'limitTask',
+  default: 50,
+})
+
+export { themeState, taskState, limitTask }

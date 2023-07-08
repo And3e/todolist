@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react'
 
 // store
-import { useRecoilState } from 'recoil'
-import { taskState } from '../../recoil_state'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { taskState, limitTask } from '../../recoil_state'
 
-import { Button, TextInput, Flex, Kbd } from '@mantine/core'
+import { Button, Text, TextInput, Flex, Kbd } from '@mantine/core'
 import { getHotkeyHandler } from '@mantine/hooks'
+import { notifications } from '@mantine/notifications'
 
 export default function Input() {
   const [taskName, setTaskName] = useState('')
   const [tasks, setTasks] = useRecoilState(taskState)
+  const limitTasks = useRecoilValue(limitTask)
 
   const [seeKbd, setSeeKbd] = useState(true)
 
@@ -60,6 +62,29 @@ export default function Input() {
     }
   }, [])
 
+  // click inserimento
+
+  function showNotifica(limitTasks) {
+    notifications.show({
+      autoClose: 4000,
+      color: 'yellow',
+      message: (
+        <Text span fz='md'>
+          Maximum limit of {limitTasks} tasks reached!
+        </Text>
+      ),
+    })
+  }
+
+  function handleClick() {
+    // update list
+    if (tasks.length < limitTasks) {
+      addTask()
+    } else {
+      showNotifica(limitTasks)
+    }
+  }
+
   return (
     <div className='input-container'>
       <TextInput
@@ -80,7 +105,7 @@ export default function Input() {
         radius='xl'
         size='md'
         onClick={() => {
-          addTask()
+          handleClick()
         }}>
         Insert
       </Button>
