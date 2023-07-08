@@ -20,7 +20,7 @@ const defaultStyle = {
   opacity: 0,
 }
 
-export default function Element({ element, done, dragStatus }) {
+export default function Element({ element, done }) {
   const [isClicked, setIsClicked] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
@@ -118,7 +118,7 @@ export default function Element({ element, done, dragStatus }) {
 
   // check provenienza click (btns || parent element)
   function handleClick(event) {
-    if (event.target.id != '' && !isEditing && !dragStatus) {
+    if (event.target.id != '' && !isEditing) {
       setDone()
       setIsClicked(true)
     }
@@ -182,19 +182,7 @@ export default function Element({ element, done, dragStatus }) {
               onClick={handleClick}>
               {isEditing ? (
                 <Box className='icon-element-conainter' id='#text-input#'>
-                  <GripVertical
-                    size={17}
-                    style={
-                      dragStatus
-                        ? {
-                            color:
-                              theme.colorScheme === 'dark'
-                                ? theme.colors.dark[6]
-                                : theme.colors.gray[0],
-                          }
-                        : null
-                    }
-                  />
+                  <GripVertical size={17} />
                   <TextInput
                     placeholder={element.content}
                     variant='unstyled'
@@ -211,19 +199,7 @@ export default function Element({ element, done, dragStatus }) {
                 </Box>
               ) : (
                 <Box className='icon-element-conainter' id='#text#'>
-                  <GripVertical
-                    size={17}
-                    style={
-                      dragStatus
-                        ? {
-                            color:
-                              theme.colorScheme === 'dark'
-                                ? theme.colors.gray[7]
-                                : theme.colors.gray[4],
-                          }
-                        : null
-                    }
-                  />
+                  <GripVertical size={17} />
                   <Text
                     id='#text#'
                     span

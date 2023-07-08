@@ -14,13 +14,13 @@ export default function List() {
   const [tasksProgress, setTasksProgress] = useState([])
   const [tasksDone, setTasksDone] = useState([])
 
-  useEffect(() => {
-    console.log('tasksProgress', tasksProgress)
-  }, [tasksProgress])
+  // useEffect(() => {
+  //   console.log('tasksProgress', tasksProgress)
+  // }, [tasksProgress])
 
-  useEffect(() => {
-    console.log('tasksDone', tasksDone)
-  }, [tasksDone])
+  // useEffect(() => {
+  //   console.log('tasksDone', tasksDone)
+  // }, [tasksDone])
 
   const [listHeight, setListHeight] = useState()
 
