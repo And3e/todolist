@@ -136,33 +136,37 @@ export default function DnD({ done, taskList, setTaskList }) {
     handleDB(result)
   }
 
-  return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId={'droppable'}>
-        {(provided, snapshot) => (
-          <div
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-            className='element-container'>
-            {taskList.map((item, idx) => (
-              <Draggable
-                key={item.id}
-                draggableId={'task-' + item.id}
-                index={idx}>
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}>
-                    <Element key={item.id} element={item} done={done} />
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
-  )
+  if (taskList !== null) {
+    return (
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId={'droppable'}>
+          {(provided, snapshot) => (
+            <div
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              className='element-container'>
+              {taskList.map((item, idx) => (
+                <Draggable
+                  key={item.id}
+                  draggableId={'task-' + item.id}
+                  index={idx}>
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}>
+                      <Element key={item.id} element={item} done={done} />
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    )
+  } else {
+    return <Skeleton h='44.79px' radius='xl' />
+  }
 }

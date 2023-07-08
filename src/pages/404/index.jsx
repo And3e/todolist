@@ -1,6 +1,8 @@
 import { RecoilRoot, useRecoilState } from 'recoil'
 import { themeState } from '@/recoil_state'
 
+import { useRouter } from 'next/navigation'
+
 import {
   MantineProvider,
   createStyles,
@@ -60,6 +62,7 @@ const useStyles = createStyles((theme) => ({
 export function Content404() {
   const { classes } = useStyles()
   const [theme, setTheme] = useRecoilState(themeState)
+  const { push } = useRouter()
 
   return (
     <MantineProvider
@@ -81,7 +84,12 @@ export function Content404() {
               think this is an error contact support.
             </Text>
             <Group position='center'>
-              <Button size='md' radius='xl'>
+              <Button
+                onClick={() => {
+                  push('/')
+                }}
+                size='md'
+                radius='xl'>
                 Take me back to home page
               </Button>
             </Group>

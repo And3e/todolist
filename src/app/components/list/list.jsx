@@ -4,23 +4,15 @@ import { useState, useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import { taskState } from '../../../recoil_state'
 
-import { ScrollArea, Box, NavLink, Text, Skeleton } from '@mantine/core'
+import { ScrollArea, Box, NavLink, Text } from '@mantine/core'
 
 import DnD from './dnd'
 
 export default function List() {
   const [tasksStore, setTasks] = useRecoilState(taskState)
 
-  const [tasksProgress, setTasksProgress] = useState([])
-  const [tasksDone, setTasksDone] = useState([])
-
-  // useEffect(() => {
-  //   console.log('tasksProgress', tasksProgress)
-  // }, [tasksProgress])
-
-  // useEffect(() => {
-  //   console.log('tasksDone', tasksDone)
-  // }, [tasksDone])
+  const [tasksProgress, setTasksProgress] = useState(null)
+  const [tasksDone, setTasksDone] = useState(null)
 
   const [listHeight, setListHeight] = useState()
 
@@ -42,10 +34,6 @@ export default function List() {
         }
       })
     }
-    //  else {
-    //   setTasksProgress([<Skeleton w='100%' h='44.79px' key={0} />])
-    //   setTasksDone([<Skeleton w='100%' h='44.79px' key={0} />])
-    // }
   }, [tasksStore])
 
   // list height
