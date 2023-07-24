@@ -29,6 +29,8 @@ async function getUser(session) {
   // })
 }
 
+// createUser
+
 async function encryptPassword(password) {
   try {
     const salt = await genSalt(10)
@@ -107,6 +109,16 @@ async function checkDate(req, reqdate) {
   return true
 }
 
+function getAvatar(name, surname) {
+  let apiUrl = 'https://ui-avatars.com/api/?name='
+
+  // no check => control in input
+  apiUrl += name.at(0) + surname.at(0)
+  apiUrl += '&background=random&rounded=true&bold=true&format=svg'
+
+  return apiUrl
+}
+
 async function createUser(session, req, res) {
   let requestUser = JSON.parse(req.body)
 
@@ -126,6 +138,9 @@ async function createUser(session, req, res) {
   console.log('CREATE')
   console.log(requestUser)
 
+  let avatar = null
+  avatar = getAvatar(requestUser.name, requestUser.surname)
+
   await prisma.user.create({
     data: {
       name: requestUser.name,
@@ -134,10 +149,11 @@ async function createUser(session, req, res) {
       password: outPassword,
       creationDate: requestUser.creationDate,
       deviceIP: getClientIp(req),
+      image: avatar,
     },
   })
 
-  returnRedirect(res, '/auth/success', 200)
+  return res.status(200).json({ message: 'OK' })
 }
 
 async function editUser(session, req) {

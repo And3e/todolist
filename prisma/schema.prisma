@@ -15,11 +15,6 @@ datasource db {
   // shadowDatabaseUrl = env(“SHADOW_DATABASE_URL”)
 }
 
-enum Role {
-  USER
-  ADMIN
-}
-
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -60,7 +55,6 @@ model User {
   accounts      Account[]
   sessions      Session[]
   Task          Task[]
-  Profile       Profile?
 }
 
 model VerificationToken {
@@ -80,10 +74,3 @@ model Task {
   user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model Profile {
-  id     Int    @id @default(autoincrement())
-  bio    String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String @unique
-  role   Role   @default(USER)
-}

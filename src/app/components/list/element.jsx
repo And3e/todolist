@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useRecoilState } from 'recoil'
 import { taskState } from '../../../recoil_state'
 
-import { Box, Text, TextInput, useMantineTheme } from '@mantine/core'
+import { Box, Text, TextInput } from '@mantine/core'
 import { getHotkeyHandler } from '@mantine/hooks'
 import { GripVertical } from 'react-bootstrap-icons'
 
@@ -33,7 +33,6 @@ export default function Element({ element, done }) {
   const nodeRef = useRef(null)
 
   const [tasks, setTasks] = useRecoilState(taskState)
-  const theme = useMantineTheme()
 
   // api requests
   async function setDone() {

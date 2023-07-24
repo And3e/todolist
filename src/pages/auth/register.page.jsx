@@ -1,8 +1,8 @@
 import React from 'react'
 
+// auth
 import { useRouter } from 'next/navigation'
-
-const os = require('os')
+import { signIn } from 'next-auth/react'
 
 import { useForm } from '@mantine/form'
 
@@ -82,6 +82,13 @@ function Register() {
 
                 if (res.redirected) {
                   push(res.url)
+                } else {
+                  signIn('credentials', {
+                    email: fields.email,
+                    password: fields.password,
+                    redirect: true,
+                    callbackUrl: '/',
+                  })
                 }
               })
               .catch((error) => {
@@ -130,7 +137,7 @@ function Register() {
           />
 
           <div className='input-center input-margin-top'>
-            <Button radius='xl' type='submit' mt='sm' onClick={() => {}}>
+            <Button radius='xl' type='submit' mt='sm'>
               Sign Up
             </Button>
           </div>

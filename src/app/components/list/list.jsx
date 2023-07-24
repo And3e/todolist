@@ -23,9 +23,9 @@ export default function List() {
   }, [])
 
   useEffect(() => {
+    setTasksProgress([])
+    setTasksDone([])
     if (tasksStore && tasksStore.length > 0) {
-      setTasksProgress([])
-      setTasksDone([])
       tasksStore.forEach((task) => {
         if (!task.done) {
           setTasksProgress((prev) => [...prev, task])

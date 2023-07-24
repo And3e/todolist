@@ -1,27 +1,30 @@
 import { useState, useEffect } from 'react'
 
 // auth
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 
 // store
 import { useRecoilState } from 'recoil'
 import { themeState } from './../../../recoil_state'
 
-import { Menu, ActionIcon, Text, Switch, useMantineTheme } from '@mantine/core'
+import { Menu, Avatar, Text, Switch, useMantineTheme } from '@mantine/core'
 
-import {
-  PersonCircle,
-  PersonFill,
-  BoxArrowRight,
-  Palette,
-} from 'react-bootstrap-icons'
+import { PersonCircle, BoxArrowRight, Palette } from 'react-bootstrap-icons'
 import { IconSun, IconMoonStars } from '@tabler/icons-react'
 
 function UserBtn() {
   const [menuOpened, setMenuOpened] = useState(false)
   const [checked, setChecked] = useState(false)
+  const [avatar, setAvatar] = useState('')
   const mantineTheme = useMantineTheme()
   const [theme, setTheme] = useRecoilState(themeState)
+
+  const session = useSession()
+  useEffect(() => {
+    if (session && session.status === 'authenticated') {
+      setAvatar(session.data.user.image)
+    }
+  }, [avatar])
 
   const btnStyle = (theme) => ({
     borderRadius: '20px',
@@ -52,13 +55,14 @@ function UserBtn() {
       opened={menuOpened}
       onChange={setMenuOpened}>
       <Menu.Target>
-        <ActionIcon
-          onClick={() => {}}
-          variant='light'
-          color='orange'
-          radius='lg'>
-          <PersonFill size='1.125rem' />
-        </ActionIcon>
+        <div className='avatar'>
+          {/* FARE FETCH DELLA SRC IMAGE PER FOTO PROFILO */}
+          {/* ALTRIMENTI METTERE INIZIALI NOME */}
+
+          {/* attenzione ai nomi composti */}
+          {/* NC = nome e cognome */}
+          <Avatar src={avatar} size='md' radius='xl' />
+        </div>
       </Menu.Target>
 
       <Menu.Dropdown onClick={(event) => handleClick(event)}>
