@@ -9,22 +9,60 @@ import { themeState } from './../../../recoil_state'
 
 import { Menu, Avatar, Text, Switch, useMantineTheme } from '@mantine/core'
 
-import { PersonCircle, BoxArrowRight, Palette } from 'react-bootstrap-icons'
+import {
+  PersonCircle,
+  PersonFill,
+  BoxArrowRight,
+  Palette,
+} from 'react-bootstrap-icons'
 import { IconSun, IconMoonStars } from '@tabler/icons-react'
 
 function UserBtn() {
   const [menuOpened, setMenuOpened] = useState(false)
   const [checked, setChecked] = useState(false)
-  const [avatar, setAvatar] = useState('')
+  const [avatar, setAvatar] = useState(
+    <Avatar color='orange' size='md' radius='xl'>
+      <PersonFill size='1.3em' />
+    </Avatar>
+  )
   const mantineTheme = useMantineTheme()
   const [theme, setTheme] = useRecoilState(themeState)
 
   const session = useSession()
+
   useEffect(() => {
     if (session && session.status === 'authenticated') {
-      setAvatar(session.data.user.image)
+      let image = session.data.user.image
+
+      if (image.at(0) === '$') {
+        image = image.slice(1)
+
+        let color = image.split('#')[0]
+        let text = image.split('#')[1]
+
+        setAvatar(
+          <Avatar
+            src={null}
+            color={color}
+            alt={text}
+            size='md'
+            radius='xl'
+            variant='filled'
+            style={{ letterSpacing: '0.8px' }}>
+            {text}
+          </Avatar>
+        )
+      } else {
+        setAvatar(<Avatar src={image} size='md' radius='xl' />)
+      }
+    } else {
+      setAvatar(
+        <Avatar color='orange' size='md' radius='xl'>
+          <PersonFill size='1.3em' />
+        </Avatar>
+      )
     }
-  }, [avatar])
+  }, [session])
 
   const btnStyle = (theme) => ({
     borderRadius: '20px',
@@ -61,7 +99,7 @@ function UserBtn() {
 
           {/* attenzione ai nomi composti */}
           {/* NC = nome e cognome */}
-          <Avatar src={avatar} size='md' radius='xl' />
+          {avatar}
         </div>
       </Menu.Target>
 

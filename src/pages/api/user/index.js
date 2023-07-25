@@ -109,14 +109,43 @@ async function checkDate(req, reqdate) {
   return true
 }
 
+// function getAvatar(name, surname) {
+//   let apiUrl = 'https://ui-avatars.com/api/?name='
+
+//   // no check => control in input
+//   apiUrl += name.at(0) + surname.at(0)
+//   apiUrl += '&background=random&rounded=true&bold=true&format=svg'
+
+//   return apiUrl
+// }
+
+function getRandomColor() {
+  const colors = [
+    'red',
+    'pink',
+    'grape',
+    'violet',
+    'indigo',
+    'blue',
+    'cyan',
+    'teal',
+    'green',
+    'lime',
+    'yellow',
+    'orange',
+  ]
+
+  const randomIndex = Math.floor(Math.random() * colors.length)
+  return colors[randomIndex]
+}
+
 function getAvatar(name, surname) {
-  let apiUrl = 'https://ui-avatars.com/api/?name='
+  let avatarInfo = '$' + getRandomColor() + '#'
 
   // no check => control in input
-  apiUrl += name.at(0) + surname.at(0)
-  apiUrl += '&background=random&rounded=true&bold=true&format=svg'
-
-  return apiUrl
+  avatarInfo += name.at(0) + surname.at(0)
+  
+  return avatarInfo
 }
 
 async function createUser(session, req, res) {
