@@ -3,7 +3,7 @@ import { Trash3Fill } from 'react-bootstrap-icons'
 
 import { notifications } from '@mantine/notifications'
 import { useRecoilState } from 'recoil'
-import { taskState } from '../../../recoil_state'
+import { taskState } from '@/recoil_state'
 
 export default function DeleteBtn({ element }) {
   const [tasks, setTasks] = useRecoilState(taskState)

@@ -22,7 +22,7 @@ export const authOptions = {
       credentials: {},
       async authorize(credentials, req) {
         const { email, password } = credentials
-        
+
         const user = await prisma.user.findUnique({
           where: {
             email: email,
@@ -45,7 +45,6 @@ export const authOptions = {
         } else {
           throw new Error('Invalid credentials')
         }
-
       },
     }),
     GithubProvider({
@@ -62,11 +61,32 @@ export const authOptions = {
 
       return token
     },
-    session({ session, token }) {
+    async session({ session, token }) {
       if (session?.user) {
         session.user.id = token.sub
       }
 
+      const user = await prisma.user.findUnique({
+        where: {
+          email: session.user.email,
+        },
+      })
+
+      const provider = await prisma.account.findMany({
+        where: {
+          userId: session.user.id,
+        },
+      })
+
+      session.user.surname = user.surname
+      session.user.emailVerified = user.emailVerified
+      session.user.creationDate = user.creationDate
+      session.user.provider = null
+
+      if(provider.length > 0){
+        session.user.provider = provider[0].provider
+      }
+      
       return session
     },
   },

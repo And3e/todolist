@@ -5,7 +5,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
 // store
 import { useRecoilState } from 'recoil'
-import { taskState } from '../../../recoil_state'
+import { taskState } from '@/recoil_state'
 
 const _ = require('lodash')
 

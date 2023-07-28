@@ -1,19 +1,7 @@
 import { ActionIcon } from '@mantine/core'
 import { PencilSquare, Check } from 'react-bootstrap-icons'
 
-import { useRecoilState } from 'recoil'
-import { taskState } from '../../../recoil_state'
-
-export default function EditBtn({
-  element,
-  isEditing,
-  setIsEditing,
-  inputValue,
-  editTask,
-  handleEdit,
-}) {
-  const [tasks, setTasks] = useRecoilState(taskState)
-
+export default function EditBtn({ isEditing, setIsEditing, handleEdit }) {
   if (isEditing) {
     return (
       <ActionIcon

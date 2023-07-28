@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { RecoilRoot, useRecoilState } from 'recoil'
-import { themeState } from './../recoil_state'
+import { themeState } from '@/recoil_state'
 
 import Home from '../app/components/home'
 

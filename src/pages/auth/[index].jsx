@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 // store
 import { RecoilRoot, useRecoilState } from 'recoil'
-import { themeState } from '../../recoil_state'
+import { themeState } from '@/recoil_state'
 
 // providers
 import { getProviders } from 'next-auth/react'
@@ -128,7 +128,7 @@ import React, { useState } from 'react'
 
 // store
 import { RecoilRoot, useRecoilState } from 'recoil'
-import { themeState } from '../../recoil_state'
+import { themeState } from '@/recoil_state'
 
 // providers
 import { getProviders } from 'next-auth/react'

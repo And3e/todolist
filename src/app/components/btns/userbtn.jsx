@@ -5,7 +5,7 @@ import { signOut, useSession } from 'next-auth/react'
 
 // store
 import { useRecoilState } from 'recoil'
-import { themeState } from './../../../recoil_state'
+import { themeState } from '@/recoil_state'
 
 import { Menu, Avatar, Text, Switch, useMantineTheme } from '@mantine/core'
 
@@ -17,17 +17,20 @@ import {
 } from 'react-bootstrap-icons'
 import { IconSun, IconMoonStars } from '@tabler/icons-react'
 
-function UserBtn() {
+function UserBtn({ open }) {
   const [menuOpened, setMenuOpened] = useState(false)
   const [checked, setChecked] = useState(false)
   const [avatar, setAvatar] = useState(
-    <Avatar color='orange' size='md' radius='xl'>
+    <Avatar color='gray' size='md' radius='xl'>
       <PersonFill size='1.3em' />
     </Avatar>
   )
+
+  // theme
   const mantineTheme = useMantineTheme()
   const [theme, setTheme] = useRecoilState(themeState)
 
+  // session
   const session = useSession()
 
   useEffect(() => {
@@ -81,7 +84,7 @@ function UserBtn() {
   }
 
   useEffect(() => {
-    setChecked(theme === 'dark' ? false : true)
+    setChecked(theme === 'dark' ? true : false)
   }, [theme])
 
   return (
@@ -114,7 +117,10 @@ function UserBtn() {
           onClick={() => signOut()}>
           Sign Out
         </Menu.Item>
-        <Menu.Item icon={<PersonCircle size={14} />} sx={btnStyle}>
+        <Menu.Item
+          icon={<PersonCircle size={14} />}
+          sx={btnStyle}
+          onClick={open}>
           Profile
         </Menu.Item>
 
@@ -132,20 +138,21 @@ function UserBtn() {
               labelPosition='left'
               value='tema'
               size='md'
+              color='gray'
               checked={checked}
               onChange={(event) => setChecked(event.currentTarget.checked)}
               onLabel={
-                <IconSun
-                  size='1rem'
-                  stroke={2.5}
-                  color={mantineTheme.colors.yellow[2]}
-                />
-              }
-              offLabel={
                 <IconMoonStars
                   size='1rem'
                   stroke={2.5}
                   color={mantineTheme.colors.blue[6]}
+                />
+              }
+              offLabel={
+                <IconSun
+                  size='1rem'
+                  stroke={2.5}
+                  color={mantineTheme.colors.yellow[7]}
                 />
               }
             />

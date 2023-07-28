@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 // store
 import { useRecoilState } from 'recoil'
-import { taskState } from '../../../recoil_state'
+import { taskState } from '@/recoil_state'
 
 import { ScrollArea, Box, NavLink, Text } from '@mantine/core'
 
@@ -14,11 +14,11 @@ export default function List() {
   const [tasksProgress, setTasksProgress] = useState(null)
   const [tasksDone, setTasksDone] = useState(null)
 
-  const [listHeight, setListHeight] = useState()
+  const [windowWidth, setWindowWidth] = useState()
 
   useEffect(() => {
     if (window) {
-      setListHeight(window.innerHeight)
+      setWindowWidth(window.innerWidth)
     }
   }, [])
 
@@ -36,10 +36,10 @@ export default function List() {
     }
   }, [tasksStore])
 
-  // list height
+  // window width
   useEffect(() => {
     const handleResize = () => {
-      setListHeight(window.innerHeight)
+      setWindowWidth(window.innerWidth)
     }
 
     window.addEventListener('resize', handleResize)
@@ -51,7 +51,7 @@ export default function List() {
 
   return (
     <ScrollArea
-      h={(listHeight / 100) * 80 - 200}
+      h={windowWidth < 600 ? 'calc(100vh - 260px)' : 'calc(80vh - 200px)'}
       offsetScrollbars
       scrollHideDelay={100}>
       <Box className='openers-container'>

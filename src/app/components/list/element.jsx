@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 
 // store
 import { useRecoilState } from 'recoil'
-import { taskState } from '../../../recoil_state'
+import { taskState } from '@/recoil_state'
 
 import { Box, Text, TextInput } from '@mantine/core'
 import { getHotkeyHandler } from '@mantine/hooks'
@@ -214,11 +214,8 @@ export default function Element({ element, done }) {
               {seeBtns ? (
                 <div className='btns-container'>
                   <EditBtn
-                    element={element}
                     isEditing={isEditing}
                     setIsEditing={setIsEditing}
-                    inputValue={inputValue}
-                    editTask={editTask}
                     handleEdit={handleEdit}
                   />
                   {!isEditing ? <DeleteBtn element={element} /> : null}

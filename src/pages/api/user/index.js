@@ -3,8 +3,6 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '../auth/[...nextauth]'
 import { genSalt, hash } from 'bcryptjs'
 
-const os = require('os')
-
 const prisma = new PrismaClient()
 
 const checkDateIntervall = 30 * 60000 // 30 minutes
@@ -21,12 +19,31 @@ function returnRedirect(res, url, statusCode) {
 
 // Methods functions
 
-async function getUser(session) {
-  // return await prisma.task.findMany({
-  //   where: {
-  //     userId: session.user.id,
-  //   },
-  // })
+async function getUser(session, res) {
+  let out = null
+
+  let user = await prisma.user.findFirst({
+    where: {
+      id: session.user.id,
+    },
+  })
+
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' })
+  }
+
+  out = {
+    creationDate: user.creationDate,
+    email: user.email,
+    emailVerified: user.emailVerified,
+    id: user.id,
+    image: user.image,
+    name: user.name,
+    provider: user.provider,
+    surname: user.surname
+  }
+  
+  return out
 }
 
 // createUser
@@ -148,14 +165,14 @@ function getAvatar(name, surname) {
   return avatarInfo
 }
 
-async function createUser(session, req, res) {
+async function createUser(req, res) {
   let requestUser = JSON.parse(req.body)
 
   const outPassword = await encryptPassword(requestUser.password)
 
   if (!(await checkEmail(requestUser.email))) {
     // 409 Conflict - Account already exists
-    returnRedirectError(res, 'Account already exists', 403)
+    returnRedirectError(res, 'Account already exists', 409)
   } else if (!(await checkDate(req, requestUser.creationDate))) {
     returnRedirectError(
       res,
@@ -185,28 +202,59 @@ async function createUser(session, req, res) {
   return res.status(200).json({ message: 'OK' })
 }
 
-async function editUser(session, req) {
-  let requestTask = JSON.parse(req.body)
+async function editUser(session, req, res) {
+  let requestUser = JSON.parse(req.body)
 
-  let task = await prisma.task.findFirst({
+  let user = await prisma.user.findFirst({
     where: {
-      id: requestTask.id,
+      id: requestUser.id,
     },
   })
 
-  if (!task) {
-    return res.status(404).json({ message: 'Task not found' })
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' })
   }
 
-  if (task.userId != requestTask.userId) {
+  if (session.user.id != user.id) {
     return res.status(401).json({ message: 'Unauthorized' })
   }
 
-  await prisma.task.update({
+  if (requestUser.email && !(await checkEmail(requestUser.email))) {
+    // 409 Conflict - Account already exists
+    return res.status(409).json({ message: 'Account already exists' })
+  }
+  
+
+  await prisma.user.update({
     where: {
-      id: requestTask.id,
+      id: requestUser.id,
     },
-    data: requestTask,
+    data: requestUser,
+  })
+}
+
+async function deleteUser(session, res) {
+  let requestUser = session.user
+
+  let user = await prisma.user.findFirst({
+    where: {
+      id: requestUser.id,
+    },
+  })
+
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' })
+  }
+
+  // prevenzione - "in teoria" mai
+  if (session.user.id != user.id) {
+    return res.status(401).json({ message: 'Unauthorized' })
+  }
+
+  await prisma.user.delete({
+    where: {
+      id: requestUser.id,
+    },
   })
 }
 
@@ -221,12 +269,20 @@ export default async function handler(req, res) {
   }
 
   switch (req.method) {
+    case 'GET': {
+      res.status(200).json(await getUser(session, res))
+      break
+    }
     case 'POST': {
-      res.status(200).json(await createUser(session, req, res))
+      res.status(200).json(await createUser(req, res))
       break
     }
     case 'PATCH': {
-      res.status(200).json(await editUser(session, req))
+      res.status(200).json(await editUser(session, req, res))
+      break
+    }
+    case 'DELETE': {
+      res.status(200).json(await deleteUser(session, res))
       break
     }
   }

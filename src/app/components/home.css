@@ -1,7 +1,12 @@
 .center-h {
   display: flex;
-  height: 100vh;
   justify-content: center;
+  align-items: flex-end;
+}
+
+.logo {
+  height: 70px;
+  margin: 10px 0px 20px 0px;
 }
 
 .header {
@@ -13,9 +18,9 @@
 .container {
   width: 80%;
   max-width: 600px;
-  min-width: 260px;
-  min-height: 80%;
-  max-height: 80%;
+  height: calc(100vh - 70px);
+  margin-top: 50px;
+  max-height: 80vh;
 }
 
 .container h1 {
@@ -27,6 +32,10 @@
   gap: 10px;
   justify-content: space-around;
   margin-bottom: 20px;
+}
+
+.mantine-NavLink-children {
+  padding-left: 20px;
 }
 
 .openers-container {
@@ -75,15 +84,176 @@
   flex-grow: 1;
 }
 
+.edit-field.error {
+  color: #e03131;
+}
+
+.edit-field.error input {
+  color: #e03131;
+}
+
 .edit-field input {
   font-size: 16px;
   text-overflow: ellipsis;
+  padding: 0px;
 }
 
 .dialog-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.mantine-Modal-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.mantine-CloseButton-root {
+  margin-left: 0px;
+  justify-self: end;
+  border-radius: 50%;
+}
+
+.mantine-Modal-title {
+  justify-self: center;
+  grid-column-start: 2;
+}
+
+.modal-container {
+  display: grid;
+  gap: 10px;
+}
+
+.mantine-Modal-body {
+  padding-bottom: 0px;
+}
+
+/* Account */
+.account-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.account-header h4 {
+  margin-top: 5px;
+  margin-left: 10px;
+}
+
+.account-space-up {
+  margin-top: 10px;
+}
+
+.modal-avatar-conatiner {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.modal-avatar-conatiner h2 {
+  margin: 0px;
+}
+
+.modal-label {
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  word-break: break-word;
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Danger Zone */
+
+.email-alert {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  margin-top: 5px;
+
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.email-alert.visible {
+  height: 25px;
+  opacity: 1;
+  animation: slideDownEmail 0.1s linear both;
+}
+.email-alert.hidden {
+  height: 0;
+  opacity: 0;
+  animation: slideUpEmail 0.1s linear both;
+}
+
+@keyframes slideDownEmail {
+  0% {
+    height: 0;
+    opacity: 0;
+  }
+  100% {
+    height: 25px;
+    opacity: 1;
+  }
+}
+
+@keyframes slideUpEmail {
+  0% {
+    height: 25px;
+    opacity: 1;
+  }
+  100% {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+.confirm-delete {
+  margin-top: 15px;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.confirm-delete.visible {
+  height: 100px;
+  opacity: 1;
+  animation: slideDownDelete 0.2s linear both;
+}
+.confirm-delete.hidden {
+  height: 0;
+  opacity: 0;
+  animation: slideUpDelete 0.2s linear both;
+}
+
+@keyframes slideDownDelete {
+  0% {
+    height: 0;
+    opacity: 0;
+  }
+  100% {
+    height: 100px;
+    opacity: 1;
+  }
+}
+
+@keyframes slideUpDelete {
+  0% {
+    height: 100px;
+    opacity: 1;
+  }
+  100% {
+    height: 0;
+    opacity: 0;
+  }
 }
 
 .avatar {
@@ -93,12 +263,30 @@
 @media only screen and (max-width: 600px) {
   .container {
     width: 95%;
+    max-height: 100vh;
     padding: 0px 10px 0px 10px;
+    margin-top: 60px;
+    margin-bottom: 11px;
+  }
+
+  .logo {
+    height: 13vw;
+    min-height: 50px;
+    margin: 15px 0px 20px 0px;
+  }
+
+  .mantine-NavLink-children {
+    padding-left: 10px;
   }
 }
 
 @media only screen and (max-width: 300px) {
   .container {
-    width: 100%;
+    width: 98%;
+    padding: 0px 5px 0px 5px;
+  }
+
+  .mantine-NavLink-children {
+    padding-left: 2px;
   }
 }

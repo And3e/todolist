@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 // store
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { taskState, limitTask } from '../../recoil_state'
+import { taskState, limitTask } from '@/recoil_state'
 
 import { Button, Text, TextInput, Flex, Kbd } from '@mantine/core'
 import { getHotkeyHandler } from '@mantine/hooks'

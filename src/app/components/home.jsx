@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 
 // router
 import { useRouter } from 'next/navigation'
@@ -10,8 +10,9 @@ import { useSession } from 'next-auth/react'
 
 // store
 import { useRecoilState } from 'recoil'
-import { taskState } from '../../recoil_state'
+import { taskState } from '@/recoil_state'
 
+import { useDisclosure } from '@mantine/hooks'
 import { Center, AppShell, Header, Paper, Button, Text } from '@mantine/core'
 
 import './home.css'
@@ -20,6 +21,7 @@ import './home.css'
 import Input from './input'
 import List from './list/list'
 import UserBtn from './btns/userbtn'
+import Profile from './profile/profile'
 
 // img
 import logo from './../imgs/long/logo-long.svg'
@@ -29,6 +31,9 @@ export default function Home() {
   const [tasks, setTasks] = useRecoilState(taskState)
 
   const session = useSession()
+
+  // profile modal
+  const [opened, { open, close }] = useDisclosure(false)
 
   async function fetchData() {
     // pull list from db
@@ -54,6 +59,8 @@ export default function Home() {
               theme.colorScheme === 'dark'
                 ? theme.colors.dark[8]
                 : theme.colors.gray[0],
+
+            padding: '0px',
           },
         })}
         header={
@@ -66,9 +73,10 @@ export default function Home() {
               border: 0,
             })}
             className='header'>
-            <UserBtn />
+            <UserBtn opened={opened} open={open} close={close} />
           </Header>
         }>
+        <Profile opened={opened} close={close} />
         <Center className='center-h'>
           <Paper
             className='container'
@@ -77,15 +85,12 @@ export default function Home() {
             p='md'
             withBorder>
             <Center style={{ display: 'grid', gap: '10px' }}>
-              <img
-                src={logo.src}
-                height={70}
-                style={{ margin: '10px 0px 20px 0px' }}
-              />
+              <a href='/'>
+                <img src={logo.src} className='logo' />
+              </a>
             </Center>
             <Input />
             <List />
-            {/* <Dnd /> */}
           </Paper>
         </Center>
       </AppShell>
