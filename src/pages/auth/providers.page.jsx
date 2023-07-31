@@ -15,6 +15,14 @@ function Providers({ providers }) {
         }
         break
       }
+      case 'Google': {
+        if (color) {
+          out = 'blue'
+        } else {
+          out = 'https://authjs.dev/img/providers/google.svg'
+        }
+        break
+      }
     }
 
     return out
@@ -22,7 +30,7 @@ function Providers({ providers }) {
 
   if (providers) {
     return (
-      <div>
+      <div className='providers-container'>
         <Divider
           className='divider'
           my='xs'

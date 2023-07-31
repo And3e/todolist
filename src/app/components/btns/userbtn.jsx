@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 
 // auth
-import { signOut, useSession } from 'next-auth/react'
+import { signOut } from 'next-auth/react'
 
 // store
 import { useRecoilState } from 'recoil'
-import { themeState } from '@/recoil_state'
+import { themeState, userState } from '@/recoil_state'
 
 import { Menu, Avatar, Text, Switch, useMantineTheme } from '@mantine/core'
 
@@ -29,13 +29,12 @@ function UserBtn({ open }) {
   // theme
   const mantineTheme = useMantineTheme()
   const [theme, setTheme] = useRecoilState(themeState)
+  const [user, setUser] = useRecoilState(userState)
 
   // session
-  const session = useSession()
-
   useEffect(() => {
-    if (session && session.status === 'authenticated') {
-      let image = session.data.user.image
+    if (user) {
+      let image = user.image
 
       if (image.at(0) === '$') {
         image = image.slice(1)
@@ -65,7 +64,7 @@ function UserBtn({ open }) {
         </Avatar>
       )
     }
-  }, [session])
+  }, [user])
 
   const btnStyle = (theme) => ({
     borderRadius: '20px',

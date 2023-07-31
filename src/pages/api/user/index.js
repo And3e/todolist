@@ -38,6 +38,7 @@ async function getUser(session, res) {
     emailVerified: user.emailVerified,
     id: user.id,
     image: user.image,
+    colorScheme: user.colorScheme ? user.colorScheme : 'dark',
     name: user.name,
     provider: user.provider,
     surname: user.surname
@@ -196,6 +197,7 @@ async function createUser(req, res) {
       creationDate: requestUser.creationDate,
       deviceIP: getClientIp(req),
       image: avatar,
+      colorScheme: 'dark',
     },
   })
 
@@ -259,8 +261,10 @@ async function deleteUser(session, res) {
 }
 
 export default async function handler(req, res) {
-  // POST => create
-  // PATCH => edit
+  // GET => get info
+  // POST => create user
+  // PATCH => edit info
+  // DELETE => delete account
 
   const session = await getServerSession(req, res, authOptions)
 

@@ -52,6 +52,7 @@ model User {
   creationDate  DateTime?
   deviceIP      String?
   image         String?
+  colorScheme   String?
   accounts      Account[]
   sessions      Session[]
   Task          Task[]

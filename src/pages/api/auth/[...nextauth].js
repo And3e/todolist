@@ -4,8 +4,9 @@ import { PrismaAdapter } from '@auth/prisma-adapter'
 import { compare } from 'bcryptjs'
 
 // providers
-import GithubProvider from 'next-auth/providers/github'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import GithubProvider from 'next-auth/providers/github'
+import GoogleProvider from 'next-auth/providers/google'
 
 const prisma = new PrismaClient()
 
@@ -51,6 +52,17 @@ export const authOptions = {
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      authorization: {
+        params: {
+          prompt: 'consent',
+          access_type: 'offline',
+          response_type: 'code',
+        },
+      },
+    }),
   ],
 
   callbacks: {
@@ -81,12 +93,13 @@ export const authOptions = {
       session.user.surname = user.surname
       session.user.emailVerified = user.emailVerified
       session.user.creationDate = user.creationDate
+      session.user.colorScheme = user.colorScheme ? user.colorScheme : 'dark'
       session.user.provider = null
 
-      if(provider.length > 0){
+      if (provider.length > 0) {
         session.user.provider = provider[0].provider
       }
-      
+
       return session
     },
   },

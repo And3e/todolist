@@ -125,12 +125,14 @@ function Register() {
             placeholder='Password'
             radius='xl'
             className='input-margin-top'
+            toggleTabIndex={0}
             {...form.getInputProps('password')}
           />
           <PasswordInput
             mt='sm'
             label='Confirm password'
             placeholder='Confirm password'
+            toggleTabIndex={0}
             radius='xl'
             className='input-margin-top'
             {...form.getInputProps('confirmPassword')}

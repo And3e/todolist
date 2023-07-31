@@ -68,6 +68,7 @@ function Login({ providers }) {
             radius='xl'
             placeholder='Password'
             className='input-margin-top'
+            toggleTabIndex={0}
             {...form.getInputProps('password')}
           />
 

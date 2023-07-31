@@ -4,25 +4,24 @@ import { useState, useEffect, useRef } from 'react'
 import { useRecoilState } from 'recoil'
 import { userState } from '@/recoil_state'
 
-import {
-  Modal,
-  ScrollArea,
-  Text,
-  useMantineTheme,
-  Divider,
-  Tabs,
-} from '@mantine/core'
+import { Modal, ScrollArea, Text, Divider, Tabs } from '@mantine/core'
 
-import { PersonFill, GearFill, LockFill } from 'react-bootstrap-icons'
+import { PersonFill, PaletteFill, LockFill } from 'react-bootstrap-icons'
 
+// account
 import Account from './account'
 import DangerZone from './dangerzone'
+
+// security
+import Security from './security'
+
+// settings
+import Appearence from './appearence'
 
 function Profile({ opened, close }) {
   const [user, setUser] = useRecoilState(userState)
   const viewport = useRef(null)
 
-  const theme = useMantineTheme()
   const [width, setWidth] = useState(window.innerWidth)
 
   const scrollAreaHeight = '80vh'
@@ -86,8 +85,8 @@ function Profile({ opened, close }) {
           <Tabs.Tab value='security' icon={<LockFill size='0.8rem' />}>
             Security
           </Tabs.Tab>
-          <Tabs.Tab value='settings' icon={<GearFill size='0.8rem' />}>
-            Settings
+          <Tabs.Tab value='appearence' icon={<PaletteFill size='0.8rem' />}>
+            Appearence
           </Tabs.Tab>
         </Tabs.List>
 
@@ -123,12 +122,12 @@ function Profile({ opened, close }) {
             <div
               className='modal-container'
               style={(modalStyle, modalBodyStyle)}>
-              Change Password
+              <Security />
             </div>
           </ScrollArea>
         </Tabs.Panel>
 
-        <Tabs.Panel value='settings' pl='xs' style={modalStyle}>
+        <Tabs.Panel value='appearence' pl='xs' style={modalStyle}>
           <ScrollArea
             className='center-form'
             h={scrollAreaHeight}
@@ -137,9 +136,7 @@ function Profile({ opened, close }) {
             <div
               className='modal-container'
               style={(modalStyle, modalBodyStyle)}>
-              Settingss
-              <p> - Preferred Theme = RECOIL STATE</p>
-              <p> - Cambia colore immagine O upload link</p>
+              <Appearence />
             </div>
           </ScrollArea>
         </Tabs.Panel>

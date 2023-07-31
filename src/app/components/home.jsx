@@ -10,7 +10,7 @@ import { useSession } from 'next-auth/react'
 
 // store
 import { useRecoilState } from 'recoil'
-import { taskState } from '@/recoil_state'
+import { taskState, themeState, userState } from '@/recoil_state'
 
 import { useDisclosure } from '@mantine/hooks'
 import { Center, AppShell, Header, Paper, Button, Text } from '@mantine/core'
@@ -29,6 +29,8 @@ import logo from './../imgs/long/logo-long.svg'
 export default function Home() {
   const { push } = useRouter()
   const [tasks, setTasks] = useRecoilState(taskState)
+  const [user, setUser] = useRecoilState(userState)
+  const [theme, setTheme] = useRecoilState(themeState)
 
   const session = useSession()
 
@@ -49,6 +51,12 @@ export default function Home() {
       fetchData()
     }
   }, [session.status])
+
+  useEffect(() => {
+    if (user && user.colorScheme !== theme) {
+      setTheme(user.colorScheme)
+    }
+  }, [user])
 
   if (session.status === 'authenticated') {
     return (

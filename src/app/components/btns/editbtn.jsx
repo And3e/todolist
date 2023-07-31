@@ -1,5 +1,6 @@
 import { ActionIcon } from '@mantine/core'
-import { PencilSquare, Check } from 'react-bootstrap-icons'
+import { Check } from 'react-bootstrap-icons'
+import { IconPencil } from '@tabler/icons-react'
 
 export default function EditBtn({ isEditing, setIsEditing, handleEdit }) {
   if (isEditing) {
@@ -22,7 +23,7 @@ export default function EditBtn({ isEditing, setIsEditing, handleEdit }) {
         color='blue'
         radius='md'
         size={26}>
-        <PencilSquare size='1rem' />
+        <IconPencil size='1rem' />
       </ActionIcon>
     )
   }
