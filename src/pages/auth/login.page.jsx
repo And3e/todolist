@@ -1,8 +1,5 @@
 import React from 'react'
 
-// poviders
-import Providers from './providers.page'
-
 import { signIn } from 'next-auth/react'
 
 import { useForm } from '@mantine/form'
