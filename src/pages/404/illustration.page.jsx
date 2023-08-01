@@ -1,6 +1,6 @@
 import { useMantineTheme } from '@mantine/core'
 
-export function Illustration(props) {
+export default function Illustration(props) {
   const theme = useMantineTheme()
 
   return (
