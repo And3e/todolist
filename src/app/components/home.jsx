@@ -12,6 +12,9 @@ import { useSession } from 'next-auth/react'
 import { useRecoilState } from 'recoil'
 import { taskState, themeState, userState } from '@/recoil_state'
 
+// tab's info
+import Head from 'next/head'
+
 import { useDisclosure } from '@mantine/hooks'
 import { Center, AppShell, Header, Paper, Button, Text } from '@mantine/core'
 
@@ -84,6 +87,9 @@ export default function Home() {
             <UserBtn opened={opened} open={open} close={close} />
           </Header>
         }>
+        <Head>
+          <title>TO DO{user ? ' - ' + user.name : ''}</title>
+        </Head>
         <Profile opened={opened} close={close} />
         <Center className='center-h'>
           <Paper

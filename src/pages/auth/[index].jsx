@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 // store
 import { RecoilRoot, useRecoilState } from 'recoil'
@@ -13,7 +13,7 @@ import { authOptions } from '../api/auth/[...nextauth]'
 import { useRouter } from 'next/router'
 
 // tab info's
-import { Helmet } from 'react-helmet'
+import Head from 'next/head'
 
 import { MantineProvider, Tabs, Paper, Text } from '@mantine/core'
 
@@ -61,9 +61,9 @@ function Auth({ providers }) {
       withGlobalStyles
       withNormalizeCSS>
       <div className='account-center'>
-        <Helmet>
+        <Head>
           <title>TO DO - {titoloAccount}</title>
-        </Helmet>
+        </Head>
         <Paper
           shadow='md'
           radius='xl'

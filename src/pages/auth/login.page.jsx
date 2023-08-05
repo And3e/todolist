@@ -110,7 +110,7 @@ export function Login({ providers }) {
     <Box style={{ marginLeft: '12px' }}>
       <ScrollArea
         className='center-form'
-        h={providers ? 450 : 220}
+        h={providers ? 390 : 220}
         offsetScrollbars
         scrollHideDelay={100}>
         <form
