@@ -14,8 +14,7 @@ async function updateTask(task) {
   })
 }
 
-async function updateDO(updateInfo, user) {
-  updateInfo = JSON.parse(updateInfo)
+async function updateDO(user) {
 
   let tasks = await prisma.task.findMany({
     orderBy: {
@@ -23,13 +22,24 @@ async function updateDO(updateInfo, user) {
     },
     where: {
       userId: user.id,
-      done: updateInfo.done,
     },
   })
 
+  let doneList = tasks.filter((task) => task.done === true)
+  let notDoneList = tasks.filter((task) => task.done === false)
+
   let doN = 0
 
-  for (let task of tasks) {
+  for (let task of doneList) {
+    doN++
+    task.dragOrder = doN
+
+    updateTask(task)
+  }
+ 
+  doN = 0
+
+  for (let task of notDoneList) {
     doN++
     task.dragOrder = doN
 
@@ -44,9 +54,5 @@ export default async function handler(req, res) {
     return res.status(403).json({ message: 'User not authenticated' })
   }
 
-  if (!JSON.parse(req.body)) {
-    return res.status(400).json({ message: 'Bad request' })
-  }
-
-  res.status(200).json(await updateDO(req.body, session.user))
+  res.status(200).json(await updateDO(session.user))
 }

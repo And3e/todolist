@@ -59,9 +59,6 @@ export default function Element({ element, done }) {
     // update dragorder
     await fetch('/api/tasks/updatedo', {
       method: 'PATCH',
-      body: JSON.stringify({
-        done: done,
-      }),
     })
 
     // update list
