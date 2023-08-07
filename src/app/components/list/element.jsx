@@ -128,7 +128,7 @@ export default function Element({ element, done }) {
       if (seeBtns) {
         calculatedWidth -= 200
       } else {
-        calculatedWidth -= 130
+        calculatedWidth -= 140
       }
 
       if (width < 600) {
