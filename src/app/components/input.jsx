@@ -43,11 +43,12 @@ export default function Input() {
   }
 
   // Hotkeys icons
-  const rightSection = (
-    <Flex align='center'>
-      <Kbd mr={5}>Enter</Kbd>
-    </Flex>
-  )
+  const rightSection =
+    window.innerWidth > 600 ? (
+      <Flex align='center'>
+        <Kbd mr={5}>Enter</Kbd>
+      </Flex>
+    ) : null
 
   useEffect(() => {
     const handleResize = () => {

@@ -5,6 +5,7 @@ import { useRecoilState } from 'recoil'
 import { userState } from '@/recoil_state'
 
 import { Modal, ScrollArea, Text, Divider, Tabs } from '@mantine/core'
+import { useMediaQuery } from '@mantine/hooks'
 
 import { PersonFill, PaletteFill, LockFill } from 'react-bootstrap-icons'
 
@@ -21,6 +22,7 @@ import Appearence from './appearence'
 function Profile({ opened, close }) {
   const [user, setUser] = useRecoilState(userState)
   const viewport = useRef(null)
+  const isMobile = useMediaQuery('(max-width: 600px)')
 
   const [width, setWidth] = useState(window.innerWidth)
 
@@ -57,6 +59,14 @@ function Profile({ opened, close }) {
     }
   }, [])
 
+  useEffect(() => {
+    if (typeof isMobile !== 'undefined') {
+      let slideEmail = isMobile ? 50 : 25
+
+      document.documentElement.style.setProperty('--slem', `${slideEmail}px`)
+    }
+  }, [isMobile])
+
   return (
     <Modal
       opened={opened}
@@ -69,7 +79,7 @@ function Profile({ opened, close }) {
       radius='lg'
       size='90%'
       h='fit-content'
-      fullScreen={width < responsiveBorder ? true : false}
+      fullScreen={isMobile}
       centered>
       <Tabs
         radius='md'

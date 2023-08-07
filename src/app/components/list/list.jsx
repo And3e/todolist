@@ -15,6 +15,9 @@ export default function List() {
   const [tasksDone, setTasksDone] = useState(null)
 
   const [windowWidth, setWindowWidth] = useState()
+  const initialHeight =
+    typeof window !== 'undefined' ? window.innerHeight : 'calc(100vh - 70px)'
+  const [windowHeight, setWindowHeight] = useState(initialHeight)
 
   useEffect(() => {
     if (window) {
@@ -49,9 +52,27 @@ export default function List() {
     }
   }, [])
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const handleResize = () => {
+        setWindowHeight(window.innerHeight)
+      }
+
+      window.addEventListener('resize', handleResize)
+
+      return () => {
+        window.removeEventListener('resize', handleResize)
+      }
+    }
+  }, [])
+
   return (
     <ScrollArea
-      h={windowWidth < 600 ? 'calc(100vh - 260px)' : 'calc(80vh - 200px)'}
+      h={
+        windowWidth < 600
+          ? `calc(${windowHeight}px - 260px)`
+          : 'calc(80vh - 200px)'
+      }
       offsetScrollbars
       scrollHideDelay={100}>
       <Box className='openers-container'>

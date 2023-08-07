@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 // router
 import { useRouter } from 'next/navigation'
@@ -10,7 +10,7 @@ import { useSession } from 'next-auth/react'
 
 // store
 import { useRecoilState } from 'recoil'
-import { taskState, themeState, userState } from '@/recoil_state'
+import { taskState, themeState, userState, paperState } from '@/recoil_state'
 
 // tab's info
 import Head from 'next/head'
@@ -34,6 +34,13 @@ export default function Home() {
   const [tasks, setTasks] = useRecoilState(taskState)
   const [user, setUser] = useRecoilState(userState)
   const [theme, setTheme] = useRecoilState(themeState)
+  const [paperWidth, setPaperWidth] = useRecoilState(paperState)
+
+  const containerRef = useRef(null)
+
+  const initialHeight =
+    typeof window !== 'undefined' ? window.innerHeight : 'calc(100vh - 70px)'
+  const [windowHeight, setWindowHeight] = useState(initialHeight)
 
   const session = useSession()
 
@@ -60,6 +67,36 @@ export default function Home() {
       setTheme(user.colorScheme)
     }
   }, [user])
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const handleResize = () => {
+        setWindowHeight(window.innerHeight)
+      }
+
+      window.addEventListener('resize', handleResize)
+
+      return () => {
+        window.removeEventListener('resize', handleResize)
+      }
+    }
+  }, [])
+
+  function handleResize() {
+    if (containerRef.current) {
+      setPaperWidth(containerRef.current.clientWidth)
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
+  useEffect(handleResize, [containerRef.current])
 
   if (session.status === 'authenticated') {
     return (
@@ -94,6 +131,8 @@ export default function Home() {
         <Center className='center-h'>
           <Paper
             className='container'
+            style={{ height: `calc(${windowHeight}px - 70px)` }}
+            ref={containerRef}
             shadow='xl'
             radius='xl'
             p='md'

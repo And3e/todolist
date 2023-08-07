@@ -18,9 +18,9 @@
 .container {
   width: 80%;
   max-width: 600px;
-  height: calc(100vh - 70px);
   margin-top: 50px;
   max-height: 80vh;
+  transition: all 0.25s ease-out;
 }
 
 .container h1 {
@@ -179,7 +179,7 @@
 }
 
 .email-alert.visible {
-  height: 25px;
+  height: var(--slem);
   opacity: 1;
   animation: slideDownEmail 0.1s linear both;
 }
@@ -189,44 +189,20 @@
   animation: slideUpEmail 0.1s linear both;
 }
 
-/* Security */
-
-.security-container {
-  display: grid;
-  gap: 10px;
-  justify-items: center;
-}
-
-.security-alert {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.security-input {
-  width: 100%;
-}
-
-.security-btn {
-  width: fit-content;
-  margin-top: 20px;
-}
-
 @keyframes slideDownEmail {
   0% {
     height: 0;
     opacity: 0;
   }
   100% {
-    height: 25px;
+    height: var(--slem);
     opacity: 1;
   }
 }
 
 @keyframes slideUpEmail {
   0% {
-    height: 25px;
+    height: var(--slem);
     opacity: 1;
   }
   100% {
@@ -297,6 +273,31 @@
   cursor: pointer;
 }
 
+/* Security */
+
+.security-container {
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+}
+
+.security-alert {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+
+.security-input {
+  width: 100%;
+}
+
+.security-btn {
+  width: fit-content;
+  margin-top: 20px;
+}
+
 @media only screen and (max-width: 600px) {
   .container {
     width: 95%;
@@ -314,6 +315,10 @@
 
   .mantine-NavLink-children {
     padding-left: 10px;
+  }
+
+  .mantine-Modal-inner {
+    margin-top: calc(100lvh - 100dvh);
   }
 }
 

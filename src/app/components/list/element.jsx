@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 
 // store
 import { useRecoilState } from 'recoil'
-import { taskState } from '@/recoil_state'
+import { taskState, paperState } from '@/recoil_state'
 
 import { Box, Text, TextInput } from '@mantine/core'
 import { getHotkeyHandler } from '@mantine/hooks'
@@ -25,14 +25,18 @@ export default function Element({ element, done }) {
   const [isMounted, setIsMounted] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
 
-  const [inputValue, setInputValue] = useState(element.content)
-
   const [hover, setHover] = useState(false)
   const [seeBtns, setSeeBtns] = useState(false)
 
   const nodeRef = useRef(null)
 
   const [tasks, setTasks] = useRecoilState(taskState)
+  const [paperWidth, setPaperWidth] = useRecoilState(paperState)
+
+  const [inputValue, setInputValue] = useState(element.content)
+  const [elementWidth, setElementWidth] = useState(
+    paperWidth ? paperWidth - 191 : null
+  )
 
   // api requests
   async function setDone() {
@@ -115,6 +119,30 @@ export default function Element({ element, done }) {
 
   useEffect(handleResize, [hover])
 
+  useEffect(() => {
+    if (paperWidth && window) {
+      const width = window.innerWidth
+
+      let calculatedWidth = paperWidth
+
+      if (seeBtns) {
+        calculatedWidth -= 200
+      } else {
+        calculatedWidth -= 130
+      }
+
+      if (width < 600) {
+        calculatedWidth += 15
+      }
+
+      if (width < 300) {
+        calculatedWidth += 20
+      }
+
+      setElementWidth(calculatedWidth)
+    }
+  }, [paperWidth, seeBtns])
+
   // check provenienza click (btns || parent element)
   function handleClick(event) {
     if (event.target.id != '' && !isEditing) {
@@ -181,13 +209,16 @@ export default function Element({ element, done }) {
               onClick={handleClick}>
               {isEditing ? (
                 <Box className='icon-element-conainter' id='#text-input#'>
-                  <GripVertical size={17} />
+                  <GripVertical size={17} width={20} />
                   <TextInput
                     placeholder={element.content}
                     variant='unstyled'
                     radius='md'
                     className='edit-field'
                     value={inputValue}
+                    style={{
+                      width: elementWidth + 16,
+                    }}
                     onChange={(event) =>
                       setInputValue(event.currentTarget.value)
                     }
@@ -198,7 +229,7 @@ export default function Element({ element, done }) {
                 </Box>
               ) : (
                 <Box className='icon-element-conainter' id='#text#'>
-                  <GripVertical size={17} />
+                  <GripVertical size={17} width={20} />
                   <Text
                     id='#text#'
                     span
@@ -206,7 +237,14 @@ export default function Element({ element, done }) {
                     className='element-text'
                     c={done ? 'dimmed' : ''}
                     td={done ? 'line-through' : ''}>
-                    {element.content}
+                    <div
+                      id='#text#'
+                      style={{
+                        width: elementWidth,
+                        overflowWrap: 'break-word',
+                      }}>
+                      {element.content}
+                    </div>
                   </Text>
                 </Box>
               )}

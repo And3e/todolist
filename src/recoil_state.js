@@ -22,4 +22,9 @@ const limitTask = atom({
   default: 50,
 })
 
-export { themeState, taskState, userState, limitTask }
+const paperState = atom({
+  key: 'paperWidth',
+  default: null,
+})
+
+export { themeState, taskState, userState, limitTask, paperState }
