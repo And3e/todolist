@@ -42,7 +42,7 @@ export async function getServerSideProps(context) {
 
 function Auth({ providers }) {
   const [theme, setTheme] = useRecoilState(themeState)
-  const [titoloAccount, setTitoloAccount] = useState('Sign In')
+  const [titoloAccount, setTitoloAccount] = useState('TO DO - Sign In')
 
   const router = useRouter()
 
@@ -62,7 +62,7 @@ function Auth({ providers }) {
       withNormalizeCSS>
       <div className='account-center'>
         <Head>
-          <title>TO DO - {titoloAccount}</title>
+          <title>{titoloAccount}</title>
         </Head>
         <Paper
           shadow='md'
@@ -87,14 +87,14 @@ function Auth({ providers }) {
             <Tabs.List position='center' grow>
               <Tabs.Tab
                 value='signin'
-                onClick={() => setTitoloAccount('Sign In')}>
+                onClick={() => setTitoloAccount('TO DO - Sign In')}>
                 <Text span fz='sm'>
                   Sign In
                 </Text>
               </Tabs.Tab>
               <Tabs.Tab
                 value='signup'
-                onClick={() => setTitoloAccount('Sign Up')}>
+                onClick={() => setTitoloAccount('TO DO - Sign Up')}>
                 <Text span fz='sm'>
                   Sign Up
                 </Text>

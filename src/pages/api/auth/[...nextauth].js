@@ -78,23 +78,70 @@ export const authOptions = {
         session.user.id = token.sub
       }
 
+      // CSP - Content Security Policy
+      session.permissionsPolicy = 'geolocation=(), microphone=()'
+
       const user = await prisma.user.findUnique({
         where: {
           email: session.user.email,
         },
       })
-
       const provider = await prisma.account.findMany({
         where: {
           userId: session.user.id,
         },
       })
 
-      session.user.surname = user.surname
+      // surname
+      if (typeof user.surname === 'undefined') {
+        let name = 'Undefined'
+        let surname = 'Undefined'
+
+        const names = user.name.split(' ')
+
+        if (names.length === 1) {
+          name = user.name
+        } else if (names.length === 2) {
+          name = names[0]
+          surname = names[1]
+        } else {
+          name = names[0]
+
+          for (let i = 1; i < names.length; i++) {
+            surname += '' + names[i] + ' '
+          }
+
+          surname = surname.trim()
+        }
+
+        prisma.user.update({
+          where: {
+            email: session.user.email,
+          },
+          data: {
+            name: name,
+            surname: surname,
+          },
+        })
+      }
+
+      session.user.surname = user.surname ? user.surname : null
       session.user.emailVerified = user.emailVerified
       session.user.creationDate = user.creationDate
+
+      // colorScheme
+      if (typeof user.colorScheme === 'undefined') {
+        prisma.user.update({
+          where: {
+            email: session.user.email,
+          },
+          data: {
+            colorScheme: 'dark',
+          },
+        })
+      }
       session.user.colorScheme = user.colorScheme ? user.colorScheme : 'dark'
-      session.user.provider = null
+      session.user.provider = 'undefined'
 
       if (provider.length > 0) {
         session.user.provider = provider[0].provider

@@ -27,20 +27,49 @@ const classes = {
 function Illustration({ code }) {
   const [theme, setTheme] = useRecoilState(themeState)
 
+  function handleStyleCode() {
+    let out = null
+
+    switch (code) {
+      case 200: {
+        out = 'min(80vh, 40vw)'
+        break
+      }
+      default: {
+        out = 'min(90vh, 50vw)'
+      }
+    }
+
+    return out
+  }
+
+  function handleTextCode() {
+    let out = null
+
+    switch (code) {
+      case 200:
+      case null: {
+        out = 'Error'
+        break
+      }
+      default: {
+        out = code
+      }
+    }
+
+    return out
+  }
+
   return (
     <div className={classes.imageContainer}>
       <h1
         className={classes.image}
         style={{
-          fontSize: code
-            ? code === 200
-              ? 'min(80vh, 40vw)'
-              : 'min(90vh, 50vw)'
-            : 'min(90vh, 50vw)',
+          fontSize: handleStyleCode(),
           color: theme === 'dark' ? 'rgb(193, 194, 197)' : 'black',
           opacity: theme === 'dark' ? 0.03 : 0.1,
         }}>
-        {code ? (code === 200 ? 'Error' : code) : 'Error'}
+        {handleTextCode()}
       </h1>
     </div>
   )
@@ -49,6 +78,50 @@ function Illustration({ code }) {
 export function Error({ statusCode }) {
   const [theme, setTheme] = useRecoilState(themeState)
   const { push } = useRouter()
+
+  function handleCode() {
+    let out = null
+
+    switch (statusCode) {
+      case null: {
+        out = 'Client Error'
+        break
+      }
+      case 200: {
+        out = 'Server Error'
+        break
+      }
+      default: {
+        out = 'Error ' + statusCode
+      }
+    }
+
+    return out
+  }
+
+  function handleTitle() {
+    let out = null
+
+    switch (statusCode) {
+      case null: {
+        out = 'An error occurred on client'
+        break
+      }
+      case 200: {
+        out = 'An error occurred on server'
+        break
+      }
+      case 503: {
+        out = 'All of our servers are busy'
+        break
+      }
+      default: {
+        out = 'An error ' + statusCode + ' occurred on server'
+      }
+    }
+
+    return out
+  }
 
   return (
     <MantineProvider
@@ -70,16 +143,10 @@ export function Error({ statusCode }) {
               style={{
                 color: theme === 'dark' ? '#fff' : 'black',
               }}>
-              {statusCode ? (statusCode === 200 ? 'Server ' : '') : 'Client '}
-              Error
-              {statusCode ? (statusCode === 200 ? '' : ` ${statusCode}`) : ''}
+              {handleCode()}
             </Text>
             <Title className={classes.title} order={2}>
-              {statusCode
-                ? statusCode === 200
-                  ? 'An error occurred on server'
-                  : `An error ${statusCode} occurred on server`
-                : 'An error occurred on client'}
+              {handleTitle()}
             </Title>
 
             {statusCode !== 200 && (

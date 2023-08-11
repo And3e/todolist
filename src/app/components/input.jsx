@@ -22,7 +22,7 @@ export default function Input() {
 
       // create task
       let outTask = {
-        content: taskName,
+        content: taskName.trim(),
         done: false,
         dragOrder: count + 1,
       }
