@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { signIn } from 'next-auth/react'
+
+// router
+import { useRouter } from 'next/router'
 
 import { useForm } from '@mantine/form'
 import {
@@ -82,6 +85,8 @@ export function Providers({ providers }) {
 }
 
 export function Login({ providers }) {
+  const router = useRouter()
+
   const validateEmail = (value) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(value)) {
@@ -100,17 +105,94 @@ export function Login({ providers }) {
 
   const form = useForm({
     initialValues: { email: '', password: '' },
+    clearInputErrorOnChange: false,
 
     validate: {
       email: validateEmail,
     },
   })
 
+  useEffect(() => {
+    if (form.isTouched('email') || form.isTouched('password')) {
+      const elementsWithClass = document.querySelectorAll(
+        '.mantine-InputWrapper-error'
+      )
+
+      elementsWithClass.forEach((element) => {
+        element.classList.add('unmounted')
+      })
+
+      setTimeout(() => {
+        form.clearErrors()
+      }, 200)
+    }
+  }, [form.isTouched('email'), form.isTouched('password')])
+
+  function getMessage(error) {
+    let out = 'Login error, try again!'
+
+    let receivedError = error.split('@')[0]
+    let provider = error.split('@')[1]
+      ? error.split('@')[1]
+      : 'Google or GitHub'
+
+    switch (receivedError) {
+      case 'invalid-credentials': {
+        out = 'Invalid credentials, wrong mail or password'
+        break
+      }
+      case 'invalid-provider': {
+        out =
+          'Invalid provider, try with the ' +
+          provider.at(0).toUpperCase() +
+          provider.slice(1) +
+          ' button'
+
+        break
+      }
+    }
+
+    return out
+  }
+
+  useEffect(() => {
+    if (router.query.error) {
+      form.setErrors({
+        email: getMessage(router.query.error),
+        password: getMessage(router.query.error),
+      })
+    }
+  }, [])
+
+  function countNonEmptyValues(obj) {
+    let count = 0
+
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key) && obj[key] !== '') {
+        count++
+      }
+    }
+
+    return count
+  }
+
+  function loginHeight() {
+    let height = 390
+
+    if (providers) {
+      height += 18 * countNonEmptyValues(form.errors)
+    } else {
+      height = 220 + 18 * countNonEmptyValues(form.errors)
+    }
+
+    return height
+  }
+
   return (
     <Box style={{ marginLeft: '12px' }}>
       <ScrollArea
         className='center-form'
-        h={providers ? 390 : 220}
+        h={loginHeight()}
         offsetScrollbars
         scrollHideDelay={100}>
         <form

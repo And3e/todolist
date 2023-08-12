@@ -21,7 +21,7 @@ export const authOptions = {
     CredentialsProvider({
       type: 'credentials',
       credentials: {},
-      async authorize(credentials, req) {
+      async authorize(credentials, req, res) {
         const { email, password } = credentials
 
         const user = await prisma.user.findUnique({
@@ -31,20 +31,33 @@ export const authOptions = {
         })
 
         if (user) {
-          const res = await compare(password, user.password)
-          if (res) {
-            return {
-              id: user.id,
-              email: user.email,
-              name: user.name,
-              surname: user.surname,
-              image: user.image,
+          if(user.password) {
+
+            const isUser = await compare(password, user.password)
+            if (isUser) {
+              return {
+                id: user.id,
+                email: user.email,
+                name: user.name,
+                surname: user.surname,
+                image: user.image,
+              }
+            } else {
+              throw new Error('invalid-credentials')
             }
           } else {
-            throw new Error('Invalid credentials')
+            const account = await prisma.account.findFirst({
+              where: {
+                userId: user.id,
+              },
+            })
+
+            let provider = account && account.provider ? '@' + account.provider : ''
+
+            throw new Error('invalid-provider' + provider)
           }
         } else {
-          throw new Error('Invalid credentials')
+          throw new Error('invalid-credentials')
         }
       },
     }),
@@ -77,9 +90,6 @@ export const authOptions = {
       if (session?.user) {
         session.user.id = token.sub
       }
-
-      // CSP - Content Security Policy
-      session.permissionsPolicy = 'geolocation=(), microphone=()'
 
       const user = await prisma.user.findUnique({
         where: {
@@ -153,9 +163,8 @@ export const authOptions = {
   pages: {
     signIn: '/auth/signin',
     signOut: '/auth/signout',
-    error: '/auth/error', // Error code passed in query string as ?error=
-    verifyRequest: '/auth/verify-request', // (used for check email message)
-    newUser: '/auth/signup', // New users will be directed here on first sign in (leave the property out if not of interest)
+    error: '/auth/signin',
+    newUser: '/auth/signup',
   },
 }
 

@@ -10,11 +10,10 @@ const checkDateIntervall = 30 * 60000 // 30 minutes
 // Return
 function returnRedirectError(res, message, statusCode) {
   let outMessage = message.replace(/ /g, '%20').toLowerCase()
-  return res.redirect('/api/auth/error?error=' + outMessage, statusCode)
-}
 
-function returnRedirect(res, url, statusCode) {
-  return res.redirect(url, statusCode)
+  res.status(statusCode);
+  res.json({ message: message })
+  return res.redirect(statusCode, '/auth/signup?error=' + outMessage);
 }
 
 // Methods functions

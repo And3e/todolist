@@ -36,70 +36,34 @@
   gap: 10px;
 }
 
-/* Error page */
-.error-image-container {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: -1;
-  text-align: center;
-  width: 100vw;
+.mantine-InputWrapper-error {
+  animation: slideDown 0.3s linear both;
 }
 
-.error-image {
-  font-family: 'Greycliff CF', sanserif;
-  margin: 0;
-  padding: 0;
-  line-height: 1;
-  font-size: min(90vh, 50vw);
-  text-align: center;
+.mantine-InputWrapper-error.unmounted {
+  animation: slideUp 0.3s linear both;
 }
 
-.error-overlay {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
-  text-align: center;
-  width: 100vw;
+@keyframes slideUp {
+  0% {
+    height: 18px;
+    opacity: 1;
+  }
+  100% {
+    height: 0;
+    opacity: 0;
+  }
 }
 
-.error-content {
-  display: grid;
-  justify-content: center;
-  align-items: center;
-  justify-items: center;
-  gap: 20px;
-}
-
-.error-title {
-  font-family: 'Greycliff CF', sanserif;
-  text-align: center;
-  display: block;
-}
-
-.error-code {
-  font-family: 'Greycliff CF', sanserif;
-  text-align: center;
-  display: block;
-  font-size: 30px;
-  font-weight: 900;
-  margin: 0;
-}
-
-.error-description {
-  max-width: max(60vw, 500px);
-  margin-right: 10px;
-  margin-left: 10px;
-}
-
-.error-link {
-  display: flex;
-  gap: 5px;
-  justify-content: center;
-  align-items: center;
+@keyframes slideDown {
+  0% {
+    height: 0;
+    opacity: 0;
+  }
+  100% {
+    height: 18px;
+    opacity: 1;
+  }
 }
 
 @media only screen and (max-width: 1000px) {

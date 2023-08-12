@@ -9,6 +9,7 @@
     "lint": "next lint",
     "next": "next dev",
     "dev": "gnome-terminal --tab -x bash -c \"npm run studio; exec bash\";next dev",
+    "devnp": "gnome-terminal --tab -x bash -c \"npx prisma db push; exec bash\";next dev",
     "studio": "npx prisma db push;npx prisma studio"
   },
   "dependencies": {
@@ -23,13 +24,13 @@
     "@mantine/notifications": "^6.0.14",
     "@prisma/client": "^5.1.1",
     "@tabler/icons-react": "^2.23.0",
+    "axios": "^1.4.0",
     "bcryptjs": "^2.4.3",
     "dayjs": "^1.11.8",
     "express": "^4.18.2",
     "lodash": "^4.17.21",
     "next": "13.4.7",
     "next-auth": "^4.22.1",
-    "randombytes": "^2.1.0",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-bootstrap-icons": "^1.10.3",

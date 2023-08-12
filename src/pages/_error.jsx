@@ -10,7 +10,7 @@ import { MantineProvider, Title, Text, Button, Group } from '@mantine/core'
 
 import { BoxArrowUpRight } from 'react-bootstrap-icons'
 
-import './auth.css'
+import './error.css'
 
 const classes = {
   imageContainer: 'error-image-container',
@@ -189,6 +189,7 @@ export function Error({ statusCode }) {
 function Index({ statusCode }) {
   return (
     <RecoilRoot>
+      <h1>{statusCode}</h1>
       <Error statusCode={statusCode} />
     </RecoilRoot>
   )

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 // store
 import { RecoilRoot, useRecoilState } from 'recoil'
@@ -51,7 +51,7 @@ function Auth({ providers }) {
   //   const tab = router.query.index
 
   //   if (tab !== 'signin' && tab !== 'signup') {
-  //     router.push('/')
+  //     router.push('/404')
   //   }
   // }, [])
 
@@ -83,7 +83,9 @@ function Auth({ providers }) {
             defaultValue={router.query.index}
             radius='md'
             value={router.query.index}
-            onTabChange={(value) => router.push(`/auth/${value}`)}>
+            onTabChange={(route) => {
+              router.push(`/auth/${route}`)
+            }}>
             <Tabs.List position='center' grow>
               <Tabs.Tab
                 value='signin'

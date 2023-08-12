@@ -77,12 +77,13 @@ function Register() {
               method: 'POST',
               body: JSON.stringify(newUser),
             })
-              .then((res) => {
+              .then(async (res) => {
                 console.log(res)
+                console.log(await res.json())
 
                 if (res.redirected) {
                   push(res.url)
-                } else {
+                } else if (res.status === 200) {
                   signIn('credentials', {
                     email: fields.email,
                     password: fields.password,

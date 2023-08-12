@@ -7,7 +7,7 @@ import Head from 'next/head'
 
 import { MantineProvider, Title, Text, Button, Group } from '@mantine/core'
 
-import './../auth/auth.css'
+import './../error.css'
 
 const classes = {
   imageContainer: 'error-image-container',
