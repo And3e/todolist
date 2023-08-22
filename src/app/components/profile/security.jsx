@@ -1,5 +1,8 @@
 import { signOut } from 'next-auth/react'
 
+// api calls
+import axios from 'axios'
+
 import { PasswordInput, Text, Button } from '@mantine/core'
 import { useForm } from '@mantine/form'
 
@@ -31,12 +34,13 @@ function Security() {
         onSubmit={form.onSubmit(async (values) => {
           form.setFieldError('currentPassword', '')
 
-          await fetch('/api/user/password', {
-            method: 'PATCH',
-            body: JSON.stringify({
+          await axios({
+            url: '/api/user/password',
+            method: 'patch',
+            data: {
               oldPswd: values.currentPassword,
               newPswd: values.newPassword,
-            }),
+            },
           })
             .then((res) => {
               if (res.status === 200) {
@@ -49,7 +53,7 @@ function Security() {
               }
             })
             .catch((error) => {
-              console.error('Error: ', error)
+              console.log(error)
             })
         })}>
         <PasswordInput

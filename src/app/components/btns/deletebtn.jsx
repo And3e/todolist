@@ -1,6 +1,9 @@
 import { ActionIcon, Button, Text } from '@mantine/core'
 import { Trash3Fill } from 'react-bootstrap-icons'
 
+// api calls
+import axios from 'axios'
+
 import { notifications } from '@mantine/notifications'
 import { useRecoilState } from 'recoil'
 import { taskState } from '@/recoil_state'
@@ -10,15 +13,20 @@ export default function DeleteBtn({ element }) {
 
   async function handleAnnulla() {
     // cancel operation => recreate task
-    await fetch('/api/tasks', {
-      method: 'POST',
-      body: JSON.stringify(element),
+    await axios({
+      url: '/api/tasks',
+      method: 'post',
+      data: element,
+    }).catch((error) => {
+      console.error(error)
     })
 
-    const fetchData = await fetch('/api/tasks')
+    const fetchData = await axios('/api/tasks').catch((error) => {
+      console.error(error)
+    })
 
     // update list
-    setTasks(await fetchData.json())
+    setTasks(await fetchData.data)
 
     notifications.hide(element.id)
   }
@@ -27,14 +35,19 @@ export default function DeleteBtn({ element }) {
     // delete
     let outURL = element.id + '/' + element.userId
 
-    await fetch('/api/tasks/' + outURL, {
-      method: 'DELETE',
+    await axios({
+      url: '/api/tasks/' + outURL,
+      method: 'delete',
+    }).catch((error) => {
+      console.error(error)
     })
 
     // update list
-    const fetchData = await fetch('/api/tasks')
+    const fetchData = await axios('/api/tasks').catch((error) => {
+      console.error(error)
+    })
 
-    setTasks(await fetchData.json())
+    setTasks(await fetchData.data)
   }
 
   function showNotifica() {

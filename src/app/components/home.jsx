@@ -5,6 +5,9 @@ import React, { useState, useEffect, useRef } from 'react'
 // router
 import { useRouter } from 'next/navigation'
 
+// api calls
+import axios from 'axios'
+
 // auth
 import { useSession } from 'next-auth/react'
 
@@ -49,8 +52,10 @@ export default function Home() {
 
   async function fetchData() {
     // pull list from db
-    const response = await fetch('/api/tasks')
-    const data = await response.json()
+    const response = await axios('/api/tasks').catch((error) => {
+      console.error(error)
+    })
+    const data = await response.data
     setTasks(data)
   }
 

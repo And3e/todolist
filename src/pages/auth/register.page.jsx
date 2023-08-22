@@ -1,8 +1,13 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 // auth
-import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
+
+// router
+import { useRouter } from 'next/router'
+
+// api calls
+import axios from 'axios'
 
 import { useForm } from '@mantine/form'
 
@@ -16,20 +21,20 @@ import {
 } from '@mantine/core'
 
 function Register() {
-  const { push } = useRouter()
+  const router = useRouter()
 
   const validateEmail = (value) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(value)) {
-      return 'Mail non valida!'
+      return 'Invalid mail!'
     }
     const parts = value.split('@')
     if (parts.length !== 2) {
-      return 'Mail non valida!'
+      return 'Invalid mail!'
     }
     const domain = parts[1]
     if (domain.includes('.') && domain.split('.').length < 2) {
-      return 'Dominio mail non valido!'
+      return 'Invalid mail domain!'
     }
     return undefined
   }
@@ -42,18 +47,148 @@ function Register() {
       password: '',
       confirmPassword: '',
     },
+    clearInputErrorOnChange: false,
 
     validate: {
       name: (value) =>
-        value.length < 2 ? 'Il nome deve avere almeno 2 lettere!' : null,
+        value.length < 2 ? 'The name must have at least 2 letters!' : null,
       surname: (value) =>
-        value.length < 2 ? 'Il cognome deve avere almeno 2 lettere!' : null,
+        value.length < 2 ? 'The surname must have at least 2 letters!' : null,
       email: validateEmail,
       password: undefined,
       confirmPassword: (value, values) =>
-        value !== values.password ? 'Le passwords non corrispondono!' : null,
+        value !== values.password ? 'Passwords do not match!' : null,
     },
   })
+
+  // clear error
+  useEffect(() => {
+    if (form.isTouched('name')) {
+      form.resetTouched()
+      const elementsWithClass = document.querySelectorAll(
+        '.mantine-InputWrapper-error'
+      )
+
+      if (elementsWithClass) {
+        const elementForm = Array.from(elementsWithClass).find((element) => {
+          return element.innerText === 'The name must have at least 2 letters!'
+        })
+
+        if (elementForm) {
+          elementForm.classList.add('unmounted')
+
+          setTimeout(() => {
+            form.clearFieldError('name')
+          }, 200)
+        }
+      }
+    }
+  }, [form.isTouched('name')])
+
+  useEffect(() => {
+    if (form.isTouched('surname')) {
+      form.resetTouched()
+      const elementsWithClass = document.querySelectorAll(
+        '.mantine-InputWrapper-error'
+      )
+
+      if (elementsWithClass) {
+        const elementForm = Array.from(elementsWithClass).find((element) => {
+          return (
+            element.innerText === 'The surname must have at least 2 letters!'
+          )
+        })
+
+        if (elementForm) {
+          elementForm.classList.add('unmounted')
+
+          setTimeout(() => {
+            form.clearFieldError('surname')
+          }, 200)
+        }
+      }
+    }
+  }, [form.isTouched('surname')])
+
+  useEffect(() => {
+    if (form.isTouched('email')) {
+      form.resetTouched()
+      const elementsWithClass = document.querySelectorAll(
+        '.mantine-InputWrapper-error'
+      )
+
+      if (elementsWithClass) {
+        const elementForm = Array.from(elementsWithClass).find((element) => {
+          let error = element.innerText
+
+          return (
+            error === 'Invalid mail!' ||
+            error === 'Invalid mail domain!' ||
+            error === 'An account with this e-mail has already been created!' ||
+            error ===
+              'Recently you have already created an account, wait a while before creating another one'
+          )
+        })
+
+        if (elementForm) {
+          elementForm.classList.add('unmounted')
+
+          setTimeout(() => {
+            form.clearFieldError('email')
+          }, 200)
+        }
+      }
+    }
+  }, [form.isTouched('email')])
+
+  useEffect(() => {
+    if (form.isTouched('confirmPassword')) {
+      form.resetTouched()
+      const elementsWithClass = document.querySelectorAll(
+        '.mantine-InputWrapper-error'
+      )
+
+      if (elementsWithClass) {
+        const elementForm = Array.from(elementsWithClass).find((element) => {
+          return element.innerText === 'Passwords do not match!'
+        })
+
+        if (elementForm) {
+          elementForm.classList.add('unmounted')
+
+          setTimeout(() => {
+            form.clearFieldError('confirmPassword')
+          }, 200)
+        }
+      }
+    }
+  }, [form.isTouched('confirmPassword')])
+
+  function getMessage(error) {
+    let out = 'Login error, try again!'
+
+    switch (error) {
+      case 'account-already-exists': {
+        out = 'An account with this e-mail has already been created!'
+        break
+      }
+      case 'too-many-requests': {
+        out =
+          'Recently you have already created an account, wait a while before creating another one'
+        break
+      }
+    }
+
+    return out
+  }
+
+  useEffect(() => {
+    if (router.query.error) {
+      form.setErrors({
+        email: getMessage(router.query.error),
+      })
+    }
+  }, [])
 
   return (
     <Box style={{ marginLeft: '12px' }}>
@@ -73,17 +208,13 @@ function Register() {
               creationDate: new Date(),
             }
 
-            await fetch('/api/user', {
-              method: 'POST',
-              body: JSON.stringify(newUser),
+            await axios({
+              url: '/api/user',
+              method: 'post',
+              data: newUser,
             })
               .then(async (res) => {
-                console.log(res)
-                console.log(await res.json())
-
-                if (res.redirected) {
-                  push(res.url)
-                } else if (res.status === 200) {
+                if (res.status === 200) {
                   signIn('credentials', {
                     email: fields.email,
                     password: fields.password,
@@ -93,7 +224,16 @@ function Register() {
                 }
               })
               .catch((error) => {
-                console.error('Error during fetch: ', error)
+                if (error.response.data.redirect) {
+                  router.push(error.response.data.redirect)
+
+                  if (router.query.error) {
+                    form.setErrors({
+                      email: getMessage(router.query.error),
+                    })
+                  }
+                }
+                console.error('Error during API call:', error.message)
               })
           })}>
           <TextInput

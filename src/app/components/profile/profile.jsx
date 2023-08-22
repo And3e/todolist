@@ -4,6 +4,9 @@ import { useState, useEffect, useRef } from 'react'
 import { useRecoilState } from 'recoil'
 import { userState } from '@/recoil_state'
 
+// api calls
+import axios from 'axios'
+
 import { Modal, ScrollArea, Text, Divider, Tabs } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
 
@@ -36,10 +39,12 @@ function Profile({ opened, close }) {
   }
 
   async function assignUser() {
-    const fetchData = await fetch('/api/user')
+    const fetchData = await axios('/api/user').catch((error) => {
+      console.error(error)
+    })
 
     if (fetchData) {
-      setUser(await fetchData.json())
+      setUser(await fetchData.data)
     }
   }
 

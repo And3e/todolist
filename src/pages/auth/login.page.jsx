@@ -90,15 +90,15 @@ export function Login({ providers }) {
   const validateEmail = (value) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(value)) {
-      return 'Mail non valida!'
+      return 'Invalid mail!'
     }
     const parts = value.split('@')
     if (parts.length !== 2) {
-      return 'Mail non valida!'
+      return 'Invalid mail!'
     }
     const domain = parts[1]
     if (domain.includes('.') && domain.split('.').length < 2) {
-      return 'Dominio mail non valido!'
+      return 'Invalid mail domain!'
     }
     return undefined
   }

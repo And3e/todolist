@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 async function testPatch(body) {
-  body = JSON.parse(body)
+  body = body
   console.log(body)
 
   const user = await prisma.verificationToken.update({

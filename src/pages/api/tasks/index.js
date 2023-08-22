@@ -16,7 +16,7 @@ async function getTasks(session) {
 }
 
 async function pushTask(session, req) {
-  let requestTask = JSON.parse(req.body)
+  let requestTask = req.body
 
   requestTask.userId = session.user.id
 
@@ -31,7 +31,7 @@ async function pushTask(session, req) {
 }
 
 async function editTask(session, req) {
-  let requestTask = JSON.parse(req.body)
+  let requestTask = req.body
 
   let task = await prisma.task.findFirst({
     where: {
@@ -66,7 +66,7 @@ prisma
     return res.status(403).json({ message: 'User not authenticated' })
   }
 
-  switch (req.method) {
+  switch (req.method.toUpperCase()) {
     case 'GET': {
       res.status(200).json(await getTasks(session))
       break

@@ -4,6 +4,9 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useRecoilState } from 'recoil'
 import { taskState, paperState } from '@/recoil_state'
 
+// api calls
+import axios from 'axios'
+
 import { Box, Text, TextInput } from '@mantine/core'
 import { getHotkeyHandler } from '@mantine/hooks'
 import { GripVertical } from 'react-bootstrap-icons'
@@ -51,20 +54,28 @@ export default function Element({ element, done }) {
       userId: element.userId,
     }
 
-    await fetch('/api/tasks', {
-      method: 'PATCH',
-      body: JSON.stringify(outElement),
+    await axios({
+      url: '/api/tasks',
+      method: 'patch',
+      data: outElement,
+    }).catch((error) => {
+      console.error(error)
     })
 
     // update dragorder
-    await fetch('/api/tasks/updatedo', {
-      method: 'PATCH',
+    await axios({
+      url: '/api/tasks/updatedo',
+      method: 'patch',
+    }).catch((error) => {
+      console.error(error)
     })
 
     // update list
-    const fetchData = await fetch('/api/tasks')
+    const fetchData = await axios('/api/tasks').catch((error) => {
+      console.error(error)
+    })
 
-    setTasks(await fetchData.json())
+    setTasks(fetchData.data)
   }
 
   async function editTask() {
@@ -77,15 +88,20 @@ export default function Element({ element, done }) {
       dragOrder: element.dragOrder,
     }
 
-    await fetch('/api/tasks', {
-      method: 'PATCH',
-      body: JSON.stringify(outElement),
+    await axios({
+      url: '/api/tasks',
+      method: 'patch',
+      data: outElement,
+    }).catch((error) => {
+      console.error(error)
     })
 
     // update list
-    const fetchData = await fetch('/api/tasks')
+    const fetchData = await axios('/api/tasks').catch((error) => {
+      console.error(error)
+    })
 
-    setTasks(await fetchData.json())
+    setTasks(fetchData.data)
   }
 
   function handleEdit() {

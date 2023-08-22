@@ -1,7 +1,11 @@
 import { useState, useEffect, forwardRef } from 'react'
 
+// store
 import { useRecoilState } from 'recoil'
 import { themeState, userState } from '@/recoil_state'
+
+// api calls
+import axios from 'axios'
 
 import {
   Divider,
@@ -72,16 +76,21 @@ function Appearence() {
     if (user) {
       outElement.id = user.id
 
-      await fetch('/api/user', {
-        method: 'PATCH',
-        body: JSON.stringify(outElement),
+      await axios({
+        url: '/api/user',
+        method: 'patch',
+        data: outElement,
+      }).catch((error) => {
+        console.log(error)
       })
 
       // update user
-      const fetchData = await fetch('/api/user')
+      const fetchData = await axios('/api/user').catch((error) => {
+        console.log(error)
+      })
 
       if (fetchData) {
-        setUser(await fetchData.json())
+        setUser(await fetchData.data)
       }
     }
   }
@@ -110,19 +119,24 @@ function Appearence() {
   ))
 
   async function updateImage(image) {
-    await fetch('/api/user', {
-      method: 'PATCH',
-      body: JSON.stringify({
+    await axios({
+      url: '/api/user',
+      method: 'patch',
+      data: {
         image: image,
         id: user.id,
-      }),
+      },
+    }).catch((error) => {
+      console.error(error)
     })
 
     // update user
-    const fetchData = await fetch('/api/user')
+    const fetchData = await axios('/api/user').catch((error) => {
+      console.error(error)
+    })
 
     if (fetchData) {
-      setUser(await fetchData.json())
+      setUser(await fetchData.data)
     }
   }
 

@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
 
+// api calls
+import axios from 'axios'
+
 // store
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { taskState, limitTask } from '@/recoil_state'
@@ -27,15 +30,20 @@ export default function Input() {
         dragOrder: count + 1,
       }
 
-      await fetch('/api/tasks', {
-        method: 'POST',
-        body: JSON.stringify(outTask),
+      await axios({
+        url: '/api/tasks',
+        method: 'post',
+        data: outTask,
+      }).catch((error) => {
+        console.log(error)
       })
 
       // update list
-      const fetchData = await fetch('/api/tasks')
+      const fetchData = await axios('/api/tasks').catch((error) => {
+        console.log(error)
+      })
 
-      setTasks(await fetchData.json())
+      setTasks(fetchData.data)
 
       // update input field
       setTaskName('')

@@ -8,12 +8,10 @@ const prisma = new PrismaClient()
 const checkDateIntervall = 30 * 60000 // 30 minutes
 
 // Return
-function returnRedirectError(res, message, statusCode) {
-  let outMessage = message.replace(/ /g, '%20').toLowerCase()
-
-  res.status(statusCode);
-  res.json({ message: message })
-  return res.redirect(statusCode, '/auth/signup?error=' + outMessage);
+function returnRedirectError(res, message, urlMessage, statusCode) {
+  res.status(statusCode)
+  res.json({ message: message, redirect: '/auth/signup?error=' + urlMessage })
+  return res.redirect('/auth/signup?error=' + urlMessage, statusCode)
 }
 
 // Methods functions
@@ -40,9 +38,9 @@ async function getUser(session, res) {
     colorScheme: user.colorScheme ? user.colorScheme : 'dark',
     name: user.name,
     provider: user.provider,
-    surname: user.surname
+    surname: user.surname,
   }
-  
+
   return out
 }
 
@@ -161,22 +159,29 @@ function getAvatar(name, surname) {
 
   // no check => control in input
   avatarInfo += name.at(0) + surname.at(0)
-  
+
   return avatarInfo
 }
 
 async function createUser(req, res) {
-  let requestUser = JSON.parse(req.body)
+  console.log(await req.body)
+  let requestUser = await req.body
 
   const outPassword = await encryptPassword(requestUser.password)
 
   if (!(await checkEmail(requestUser.email))) {
     // 409 Conflict - Account already exists
-    returnRedirectError(res, 'Account already exists', 409)
+    returnRedirectError(
+      res,
+      'Account already exists',
+      'account-already-exists',
+      409
+    )
   } else if (!(await checkDate(req, requestUser.creationDate))) {
     returnRedirectError(
       res,
       'Too Many Requests - You have already created an account recently, please try again shortly!',
+      'too-many-requests',
       429
     )
   }
@@ -204,7 +209,7 @@ async function createUser(req, res) {
 }
 
 async function editUser(session, req, res) {
-  let requestUser = JSON.parse(req.body)
+  let requestUser = req.body
 
   let user = await prisma.user.findFirst({
     where: {
@@ -224,7 +229,6 @@ async function editUser(session, req, res) {
     // 409 Conflict - Account already exists
     return res.status(409).json({ message: 'Account already exists' })
   }
-  
 
   await prisma.user.update({
     where: {
@@ -267,11 +271,11 @@ export default async function handler(req, res) {
 
   const session = await getServerSession(req, res, authOptions)
 
-  if (!session && req.method !== 'POST') {
+  if (!session && req.method.toUpperCase() !== 'POST') {
     return res.status(403).json({ message: 'User not authenticated' })
   }
 
-  switch (req.method) {
+  switch (req.method.toUpperCase()) {
     case 'GET': {
       res.status(200).json(await getUser(session, res))
       break

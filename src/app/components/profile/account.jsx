@@ -6,6 +6,9 @@ import { signOut } from 'next-auth/react'
 import { useRecoilState } from 'recoil'
 import { userState } from '@/recoil_state'
 
+// api calls
+import axios from 'axios'
+
 import {
   Avatar,
   Indicator,
@@ -111,22 +114,29 @@ function Field({ content, element }) {
 
       // console.log('outElement', outElement)
 
-      await fetch('/api/user', {
+      await axios({
+        url: '/api/user',
         method: 'PATCH',
-        body: JSON.stringify(outElement),
-      }).then((res) => {
-        if (res.status === 409) {
-          setError('Account already exists')
-        } else if (content === 'email') {
-          signOut()
-        }
+        data: outElement,
       })
+        .then((res) => {
+          if (res.status === 409) {
+            setError('Account already exists')
+          } else if (content === 'email') {
+            signOut()
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
 
       // update user
-      const fetchData = await fetch('/api/user')
+      const fetchData = await axios('/api/user').catch((error) => {
+        console.log(error)
+      })
 
       if (fetchData) {
-        setUser(await fetchData.json())
+        setUser(await fetchData.data)
       }
     }
   }

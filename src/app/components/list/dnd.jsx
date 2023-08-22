@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-// d&d
+// drag & drop
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
 // store
 import { useRecoilState } from 'recoil'
 import { taskState } from '@/recoil_state'
+
+// api calls
+import axios from 'axios'
 
 const _ = require('lodash')
 
@@ -42,7 +45,7 @@ export default function DnD({ done, taskList, setTaskList }) {
       // update list
       const fetchData = await fetch('/api/tasks')
 
-      setTasks(await fetchData.json())
+      setTasks(await fetchData.data)
     })
   }
   */
@@ -50,15 +53,20 @@ export default function DnD({ done, taskList, setTaskList }) {
   // update DB
   async function updateDB(list) {
     // edit task => edit dragOrder
-    await fetch('/api/tasks/move', {
-      method: 'PATCH',
-      body: JSON.stringify(list),
-    }).then(async () => {
-      // update list
-      const fetchData = await fetch('/api/tasks')
-
-      setTasks(await fetchData.json())
+    await axios({
+      url: '/api/tasks/move',
+      method: 'patch',
+      data: list,
     })
+      .then(async () => {
+        // update list
+        const fetchData = await axios('/api/tasks')
+
+        setTasks(await fetchData.data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 
   // setLocal

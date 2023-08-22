@@ -38,7 +38,7 @@ export default async function handler(req, res) {
     return res.status(403).json({ message: 'User not authenticated' })
   }
 
-  if (req.method == 'DELETE') {
+  if (req.method.toUpperCase() == 'DELETE') {
     res.status(200).json(await deleteTask(session, req, res))
   }
 }

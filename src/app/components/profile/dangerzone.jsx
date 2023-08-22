@@ -2,6 +2,9 @@ import { useState } from 'react'
 
 import { signOut } from 'next-auth/react'
 
+// api calls
+import axios from 'axios'
+
 import { Box, Button, Text } from '@mantine/core'
 
 function DangerZone({ viewport }) {
@@ -91,8 +94,11 @@ function DangerZone({ viewport }) {
           </Text>
           <Button
             onClick={async () => {
-              await fetch('/api/user/', {
-                method: 'DELETE',
+              await axios({
+                url: '/api/user/',
+                method: 'delete',
+              }).catch((error) => {
+                console.log(error)
               })
 
               await signOut()

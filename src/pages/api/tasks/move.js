@@ -135,8 +135,6 @@ async function getList(top, bottom, list, tasksDB) {
 }
 
 async function moveTasks(list, user) {
-  list = JSON.parse(list)
-
   let tasks = await prisma.task.findMany({
     orderBy: {
       dragOrder: 'asc',

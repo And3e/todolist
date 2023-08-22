@@ -17,7 +17,7 @@ async function encryptPassword(password) {
 }
 
 async function changePassword(session, req, res) {
-  let requestData = JSON.parse(req.body)
+  let requestData = req.body
 
   let user = await prisma.user.findFirst({
     where: {
@@ -48,11 +48,11 @@ async function changePassword(session, req, res) {
 export default async function handler(req, res) {
   const session = await getServerSession(req, res, authOptions)
 
-  if (!session && req.method !== 'POST') {
+  if (!session && req.method.toUpperCase() !== 'POST') {
     return res.status(403).json({ message: 'User not authenticated' })
   }
 
-  switch (req.method) {
+  switch (req.method.toUpperCase()) {
     case 'PATCH': {
       res.status(200).json(await changePassword(session, req, res))
       break
