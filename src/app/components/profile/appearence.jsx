@@ -146,7 +146,7 @@ function Appearence() {
   }
 
   useEffect(() => {
-    if (link === '' && color !== '') {
+    if (color !== '') {
       let image = '$' + color + '#'
 
       if (user) {
@@ -161,10 +161,14 @@ function Appearence() {
           updateImage(image)
         }
       }
-    } else if (link !== '' && link !== user.image) {
+    }
+  }, [color, character])
+
+  useEffect(() => {
+    if (link !== '' && link !== user.image) {
       updateImage(link)
     }
-  }, [color, link, user, character])
+  }, [link])
 
   return (
     <div>
