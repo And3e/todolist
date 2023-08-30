@@ -27,7 +27,7 @@
   margin-top: 0;
 }
 
-.input-container{
+.input-container {
   display: flex;
   gap: 10px;
   justify-content: space-around;
@@ -123,6 +123,7 @@
 .modal-container {
   display: grid;
   gap: 10px;
+  margin-bottom: 30px;
 }
 
 .mantine-Modal-body {
@@ -234,6 +235,14 @@
   animation: slideUpDelete 0.2s linear both;
 }
 
+.profile-title {
+  margin-bottom: 0;
+}
+
+.profile-title > h2 {
+  margin-bottom: 0;
+}
+
 .pref-theme-container {
   display: flex;
   justify-content: space-between;
@@ -241,10 +250,40 @@
   margin-top: 20px;
 }
 
+.personalised-choise-container {
+  display: grid;
+  gap: 20px;
+}
+
+.user-icon-container {
+  display: grid;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+.user-icon-choise {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.background-input {
+  width: 50%;
+}
+
 .pref-theme-label {
   display: flex;
   gap: 10px;
   align-items: center;
+}
+
+.letters-input {
+  display: initial;
+}
+
+.avatar-container {
+  display: flex;
+  justify-content: center;
 }
 
 @keyframes slideDownDelete {
@@ -288,7 +327,6 @@
   margin-bottom: 20px;
 }
 
-
 .security-input {
   width: 100%;
 }
@@ -320,12 +358,43 @@
   .mantine-Modal-inner {
     margin-top: calc(100lvh - 100dvh);
   }
+
+  .profile-title {
+    text-align: center;
+    display: grid;
+    justify-items: center;
+  }
+
+  .user-icon-choise {
+    display: grid;
+    gap: 10px;
+  }
+
+  .background-input {
+    width: 100%;
+  }
+
+  .background-chooser {
+    margin: 40px 20px 0 20px;
+  }
+
+  .letters-input {
+    display: grid;
+    justify-items: center;
+  }
 }
 
 @media only screen and (max-width: 300px) {
   .container {
     width: 98%;
     padding: 0px 5px 0px 5px;
+  }
+
+  .pref-theme-container {
+    display: grid;
+    gap: 15px;
+    justify-items: center;
+    justify-content: center;
   }
 
   .mantine-NavLink-children {

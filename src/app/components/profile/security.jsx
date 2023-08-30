@@ -24,10 +24,12 @@ function Security() {
 
   return (
     <div>
-      <h3 style={{ marginBottom: 0 }}>Change Password</h3>
-      <div className='security-alert'>
-        <ExclamationTriangleFill color='#ff8c00' />
-        <Text fz='sm'>This change involves logging out of the session!</Text>
+      <div className='profile-title'>
+        <h2>Change Password</h2>
+        <div className='security-alert'>
+          <ExclamationTriangleFill color='#ff8c00' />
+          <Text fz='sm'>This change involves logging out of the session!</Text>
+        </div>
       </div>
       <form
         className='security-container'

@@ -18,6 +18,7 @@ import {
   Group,
   Select,
   Box,
+  PinInput,
 } from '@mantine/core'
 
 import { IconSun, IconMoonStars } from '@tabler/icons-react'
@@ -28,6 +29,10 @@ function Appearence() {
   const mantineTheme = useMantineTheme()
   const [theme, setTheme] = useRecoilState(themeState)
   const [user, setUser] = useRecoilState(userState)
+
+  const [character, setCharacter] = useState(
+    user && user.image.at(0) === '$' ? user.image.slice(1).split('#')[1] : ''
+  )
 
   const [avatar, setAvatar] = useState(<Avatar radius='xl' size='lg' />)
   const [color, setColor] = useState(
@@ -145,8 +150,12 @@ function Appearence() {
       let image = '$' + color + '#'
 
       if (user) {
-        image += user.name.toUpperCase().charAt(0)
-        image += user.surname.toUpperCase().charAt(0)
+        if (character.length > 0) {
+          image += character
+        } else {
+          image += user.name.toUpperCase().charAt(0)
+          image += user.surname.toUpperCase().charAt(0)
+        }
 
         if (image !== user.image) {
           updateImage(image)
@@ -155,11 +164,11 @@ function Appearence() {
     } else if (link !== '' && link !== user.image) {
       updateImage(link)
     }
-  }, [color, link, user])
+  }, [color, link, user, character])
 
   return (
     <div>
-      <h3 style={{ marginBottom: 0 }}>Appearence</h3>
+      <h2 className='profile-title'>Appearence</h2>
       <Divider
         style={{ margin: '30px 0px 30px 0px' }}
         my='xs'
@@ -225,35 +234,62 @@ function Appearence() {
         label='User Icon'
         labelPosition='center'
       />
-      <div className='pref-theme-container'>
-        {avatar}
-        <div style={{ width: 'calc(95% - 84px)' }}>
-          <Select
-            label='Choose a color'
-            placeholder='Pick one'
-            itemComponent={SelectItem}
-            data={colors}
-            searchable
-            maxDropdownHeight='30vh'
-            radius='xl'
-            nothingFound='No color found!'
-            filter={(value, item) =>
-              item.value.includes(value.toLocaleLowerCase().trim())
-            }
-            value={color}
-            onChange={setColor}
-          />
+
+      <div className='avatar-container'>{avatar}</div>
+
+      <div className='user-icon-container'>
+        <div className='user-icon-choise'>
+          <div className='personalised-choise-container background-input'>
+            <div className='letters-input'>
+              <label
+                className='mantine-InputWrapper-label mantine-Select-label modal-label'
+                style={{
+                  color: theme === 'dark' ? '#C1C2C5' : '#212529',
+                }}>
+                Letters
+              </label>
+              <PinInput
+                length={2}
+                radius='md'
+                value={character}
+                inputType='text'
+                type={/^[A-Za-zÀ-ÿ]+$/}
+                onChange={(char) => setCharacter(char.toUpperCase())}
+              />
+            </div>
+
+            <Select
+              label='Choose a color'
+              placeholder='Pick one'
+              itemComponent={SelectItem}
+              data={colors}
+              searchable
+              maxDropdownHeight='30vh'
+              radius='xl'
+              nothingFound='No color found!'
+              filter={(value, item) =>
+                item.value.includes(value.toLocaleLowerCase().trim())
+              }
+              value={color}
+              onChange={setColor}
+            />
+          </div>
+
           <Divider
-            style={{ margin: '10px 0px 10px 0px' }}
+            style={{ margin: 0 }}
             my='xs'
             label='or'
             labelPosition='center'
+            orientation={
+              window && window.innerWidth < 600 ? 'horizontal' : 'vertical'
+            }
           />
           <TextInput
             placeholder='https://link-to-my-image.com'
             label='Image Link'
             radius='xl'
             value={link}
+            className='background-input'
             onChange={(event) => setLink(event.target.value)}
           />
         </div>
