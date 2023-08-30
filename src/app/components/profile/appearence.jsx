@@ -145,7 +145,7 @@ function Appearence() {
     }
   }
 
-  useEffect(() => {
+  function customImage() {
     if (color !== '') {
       let image = '$' + color + '#'
 
@@ -162,11 +162,15 @@ function Appearence() {
         }
       }
     }
-  }, [color, character])
+  }
+
+  useEffect(() => customImage(), [color, character])
 
   useEffect(() => {
     if (link !== '' && link !== user.image) {
       updateImage(link)
+    } else if (link === '') {
+      customImage()
     }
   }, [link])
 
