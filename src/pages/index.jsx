@@ -11,7 +11,7 @@ import { Notifications } from '@mantine/notifications'
 import { MantineProvider } from '@mantine/core'
 
 function App() {
-  const [theme, setTheme] = useRecoilState(themeState)
+  const [theme] = useRecoilState(themeState)
 
   return (
     <MantineProvider

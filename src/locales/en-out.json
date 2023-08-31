@@ -1,0 +1,85 @@
+{
+  "home": {
+    "not_logged_in": "You're not logged in!",
+
+    "title_signin": "TO DO - Sign In",
+    "title_signup": "TO DO - Sign Up"
+  },
+
+  "login": {
+    "signin": "Sign In",
+    "signin_with": "Sign in with ",
+    "or": "Or",
+
+    "errors": {
+      "login_error": "Login error, try again!",
+      "invalid_credentials": "Invalid credentials, wrong mail or password",
+      "invalid_provider": "Invalid provider, try with the ",
+      "button": " button",
+      
+      "google_or_github": "Google or GitHub"
+    }
+  },
+  
+  "register": {
+    "signup": "Sign Up",
+    
+    "name": "Name",
+    "surname": "Surname",
+    "confirm_password": "Confirm password",
+    
+    "errors": {
+      "invalid_mail": "Invalid mail!",
+      "invalid_mail_domain": "Invalid mail domain!",
+      
+      "name_must_have": "Name must have at least 2 letters!",
+      "surname_must_have": "Surname must have at least 2 letters!",
+      "passwords_do_not_match": "Passwords do not match!",
+      
+      "registration_error": "Registration error, try again!",
+      
+      "account_already_exists": "An account with this e-mail has already been created!",
+      "too_many_requests": "Recently you have already created an account, wait a while before creating another one"
+    }
+  },
+
+  
+  "_error": {
+    "to_do_error": "TO DO - Error!",
+    "error": " error",
+    "learn_more": "Learn more about ",
+    "back_home": "Take me back to home page",
+
+
+    "codes": {
+      "client": "Client Error",
+      "server": "Server Error",
+      "error": "Error "
+    },
+
+    "titles": {
+      "client": "An error occurred on client",
+      "server": "An error occurred on server",
+      "busy_servers": "All of our servers are busy",
+
+      "an_error": "An error ",
+      "occurred": " occurred on server"
+    }
+  },
+
+  "error_404": {
+    "code_404": "404",
+
+    "error_404": "Error 404",
+    "nothing_to_see_here": "Nothing to see here",
+    "page_do_not_exists": "Page you are trying to open does not exist. You may have mistyped the address, or the page has been moved to another URL. If you think this is an error contact support."
+  },
+
+  "error_500": {
+    "code_500": "500",
+
+    "error_500": "Error 500",
+    "something_bad": "Something bad just happened...",
+    "servers_could_not_handle": "Our servers could not handle your request. Don't worry, our development team was already notified. Try refreshing the page."
+  }
+}

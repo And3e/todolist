@@ -1,6 +1,6 @@
 // store
 import { RecoilRoot, useRecoilState } from 'recoil'
-import { themeState } from '@/recoil_state'
+import { themeState, languagesOutSelector } from '@/recoil_state'
 
 import { useRouter } from 'next/navigation'
 
@@ -25,7 +25,9 @@ const classes = {
 }
 
 function Illustration({ code }) {
-  const [theme, setTheme] = useRecoilState(themeState)
+  const [theme] = useRecoilState(themeState)
+
+  const [language] = useRecoilState(languagesOutSelector)
 
   function handleStyleCode() {
     let out = null
@@ -49,7 +51,7 @@ function Illustration({ code }) {
     switch (code) {
       case 200:
       case null: {
-        out = 'Error'
+        out = language._error.codes.error
         break
       }
       default: {
@@ -76,23 +78,25 @@ function Illustration({ code }) {
 }
 
 export function Error({ statusCode }) {
-  const [theme, setTheme] = useRecoilState(themeState)
+  const [theme] = useRecoilState(themeState)
   const { push } = useRouter()
+
+  const [language] = useRecoilState(languagesOutSelector)
 
   function handleCode() {
     let out = null
 
     switch (statusCode) {
       case null: {
-        out = 'Client Error'
+        out = language._error.codes.client
         break
       }
       case 200: {
-        out = 'Server Error'
+        out = language._error.codes.server
         break
       }
       default: {
-        out = 'Error ' + statusCode
+        out = language._error.codes.error + statusCode
       }
     }
 
@@ -104,19 +108,22 @@ export function Error({ statusCode }) {
 
     switch (statusCode) {
       case null: {
-        out = 'An error occurred on client'
+        out = language._error.titles.client
         break
       }
       case 200: {
-        out = 'An error occurred on server'
+        out = language._error.titles.client
         break
       }
       case 503: {
-        out = 'All of our servers are busy'
+        out = language._error.titles.busy_servers
         break
       }
       default: {
-        out = 'An error ' + statusCode + ' occurred on server'
+        out =
+          language._error.titles.an_error +
+          statusCode +
+          language._error.titles.occurred
       }
     }
 
@@ -129,7 +136,7 @@ export function Error({ statusCode }) {
       withGlobalStyles
       withNormalizeCSS>
       <Head>
-        <title>TO DO - Error!</title>
+        <title>{language._error.to_do_error}</title>
       </Head>
       <Illustration code={statusCode} />
       <div className={classes.overlay}>
@@ -164,7 +171,9 @@ export function Error({ statusCode }) {
                     margin: 0,
                     color: theme === 'dark' ? '#fff' : 'black',
                   }}>
-                  Learn more about {statusCode} error
+                  {language._error.learn_more +
+                    statusCode +
+                    language._error.error}
                   <BoxArrowUpRight />
                 </Text>
               </a>
@@ -177,7 +186,7 @@ export function Error({ statusCode }) {
               }}
               size='md'
               radius='xl'>
-              Take me back to home page
+              {language._error.back_home}
             </Button>
           </Group>
         </div>

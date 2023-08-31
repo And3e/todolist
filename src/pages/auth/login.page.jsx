@@ -2,6 +2,10 @@ import React, { useEffect } from 'react'
 
 import { signIn } from 'next-auth/react'
 
+// store
+import { useRecoilState } from 'recoil'
+import { languagesOutSelector } from '@/recoil_state'
+
 // router
 import { useRouter } from 'next/router'
 
@@ -17,6 +21,8 @@ import {
 } from '@mantine/core'
 
 export function Providers({ providers }) {
+  const [language] = useRecoilState(languagesOutSelector)
+
   function getProviderProps(name, color) {
     let out = null
 
@@ -50,7 +56,7 @@ export function Providers({ providers }) {
           my='xs'
           variant='dashed'
           labelPosition='center'
-          label={<Text fz='sm'>Or</Text>}
+          label={<Text fz='sm'>{language.login.or}</Text>}
         />
         {Object.values(providers).map((provider) => {
           if (provider.id === 'credentials') {
@@ -73,7 +79,7 @@ export function Providers({ providers }) {
                     src={getProviderProps(provider.name, false)}
                     height={25}
                   />
-                  Sign in with {provider.name}
+                  {language.login.signin_with + provider.name}
                 </div>
               </Button>
             </div>
@@ -85,20 +91,22 @@ export function Providers({ providers }) {
 }
 
 export function Login({ providers }) {
+  const [language] = useRecoilState(languagesOutSelector)
+
   const router = useRouter()
 
   const validateEmail = (value) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(value)) {
-      return 'Invalid mail!'
+      return language.register.errors.invalid_mail
     }
     const parts = value.split('@')
     if (parts.length !== 2) {
-      return 'Invalid mail!'
+      return language.register.errors.invalid_mail
     }
     const domain = parts[1]
     if (domain.includes('.') && domain.split('.').length < 2) {
-      return 'Invalid mail domain!'
+      return language.register.errors.invalid_mail_domain
     }
     return undefined
   }
@@ -129,25 +137,24 @@ export function Login({ providers }) {
   }, [form.isTouched('email'), form.isTouched('password')])
 
   function getMessage(error) {
-    let out = 'Login error, try again!'
+    let out = language.login.errors.login_error
 
     let receivedError = error.split('@')[0]
     let provider = error.split('@')[1]
       ? error.split('@')[1]
-      : 'Google or GitHub'
+      : language.login.errors.google_or_github
 
     switch (receivedError) {
       case 'invalid-credentials': {
-        out = 'Invalid credentials, wrong mail or password'
+        out = language.login.errors.invalid_credentials
         break
       }
       case 'invalid-provider': {
         out =
-          'Invalid provider, try with the ' +
+          language.login.errors.invalid_provider +
           provider.at(0).toUpperCase() +
           provider.slice(1) +
-          ' button'
-
+          language.login.errors.button
         break
       }
     }
@@ -223,7 +230,7 @@ export function Login({ providers }) {
 
           <div className='input-center input-margin-top'>
             <Button radius='xl' type='submit' mt='sm'>
-              Sign In
+              {language.login.signin}
             </Button>
           </div>
         </form>

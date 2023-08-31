@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 // store
 import { RecoilRoot, useRecoilState } from 'recoil'
-import { themeState } from '@/recoil_state'
+import { themeState, languagesOutSelector } from '@/recoil_state'
 
 // providers
 import { getProviders } from 'next-auth/react'
@@ -24,7 +24,7 @@ import Login from './login.page.jsx'
 import Register from './register.page.jsx'
 
 // img
-import logo from './../../app/imgs/long/logo-long.svg'
+import logo from '@/app/imgs/long/logo-long.svg'
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions)
@@ -42,18 +42,23 @@ export async function getServerSideProps(context) {
 
 function Auth({ providers }) {
   const [theme, setTheme] = useRecoilState(themeState)
-  const [titoloAccount, setTitoloAccount] = useState('TO DO - Sign In')
+  const [language] = useRecoilState(languagesOutSelector)
 
+  const [accountTitle, setAccountTitle] = useState(language.home.title_signin)
   const router = useRouter()
 
-  // useEffect(() => {
-  //   // redirect if not a route
-  //   const tab = router.query.index
+  useEffect(() => {
+    // redirect if not a route
+    const tab = router.query.index
 
-  //   if (tab !== 'signin' && tab !== 'signup') {
-  //     router.push('/404')
-  //   }
-  // }, [])
+    if (tab !== 'signin' && tab !== 'signup') {
+      router.push('/404')
+    }
+
+    if (tab === 'signup') {
+      setAccountTitle(language.home.title_signup)
+    }
+  }, [])
 
   return (
     <MantineProvider
@@ -62,7 +67,7 @@ function Auth({ providers }) {
       withNormalizeCSS>
       <div className='account-center'>
         <Head>
-          <title>{titoloAccount}</title>
+          <title>{accountTitle}</title>
         </Head>
         <Paper
           shadow='md'
@@ -89,16 +94,16 @@ function Auth({ providers }) {
             <Tabs.List position='center' grow>
               <Tabs.Tab
                 value='signin'
-                onClick={() => setTitoloAccount('TO DO - Sign In')}>
+                onClick={() => setAccountTitle(language.home.title_signin)}>
                 <Text span fz='sm'>
-                  Sign In
+                  {language.login.signin}
                 </Text>
               </Tabs.Tab>
               <Tabs.Tab
                 value='signup'
-                onClick={() => setTitoloAccount('TO DO - Sign Up')}>
+                onClick={() => setAccountTitle(language.home.title_signup)}>
                 <Text span fz='sm'>
-                  Sign Up
+                  {language.register.signup}
                 </Text>
               </Tabs.Tab>
             </Tabs.List>

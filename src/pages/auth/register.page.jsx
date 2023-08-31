@@ -6,6 +6,10 @@ import { signIn } from 'next-auth/react'
 // router
 import { useRouter } from 'next/router'
 
+// store
+import { useRecoilState } from 'recoil'
+import { languagesOutSelector } from '@/recoil_state'
+
 // api calls
 import axios from 'axios'
 
@@ -21,20 +25,22 @@ import {
 } from '@mantine/core'
 
 function Register() {
+  const [language] = useRecoilState(languagesOutSelector)
+
   const router = useRouter()
 
   const validateEmail = (value) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(value)) {
-      return 'Invalid mail!'
+      return language.register.errors.invalid_mail
     }
     const parts = value.split('@')
     if (parts.length !== 2) {
-      return 'Invalid mail!'
+      return language.register.errors.invalid_mail
     }
     const domain = parts[1]
     if (domain.includes('.') && domain.split('.').length < 2) {
-      return 'Invalid mail domain!'
+      return language.register.errors.invalid_mail_domain
     }
     return undefined
   }
@@ -51,13 +57,15 @@ function Register() {
 
     validate: {
       name: (value) =>
-        value.length < 2 ? 'The name must have at least 2 letters!' : null,
+        value.length < 2 ? language.register.errors.name_must_have : null,
       surname: (value) =>
-        value.length < 2 ? 'The surname must have at least 2 letters!' : null,
+        value.length < 2 ? language.register.errors.surname_must_have : null,
       email: validateEmail,
       password: undefined,
       confirmPassword: (value, values) =>
-        value !== values.password ? 'Passwords do not match!' : null,
+        value !== values.password
+          ? language.register.errors.passwords_do_not_match
+          : null,
     },
   })
 
@@ -165,16 +173,15 @@ function Register() {
   }, [form.isTouched('confirmPassword')])
 
   function getMessage(error) {
-    let out = 'Login error, try again!'
+    let out = language.register.errors.registration_error
 
     switch (error) {
       case 'account-already-exists': {
-        out = 'An account with this e-mail has already been created!'
+        out = language.register.errors.account_already_exists
         break
       }
       case 'too-many-requests': {
-        out =
-          'Recently you have already created an account, wait a while before creating another one'
+        out = language.register.errors.too_many_requests
         break
       }
     }
@@ -237,15 +244,15 @@ function Register() {
               })
           })}>
           <TextInput
-            label='Name'
-            placeholder='Name'
+            label={language.register.name}
+            placeholder={language.register.name}
             radius='xl'
             className='input-margin-top'
             {...form.getInputProps('name')}
           />
           <TextInput
-            label='Surname'
-            placeholder='Surname'
+            label={language.register.surname}
+            placeholder={language.register.surname}
             radius='xl'
             className='input-margin-top'
             {...form.getInputProps('surname')}
@@ -271,8 +278,8 @@ function Register() {
           />
           <PasswordInput
             mt='sm'
-            label='Confirm password'
-            placeholder='Confirm password'
+            label={language.register.confirm_password}
+            placeholder={language.register.confirm_password}
             toggleTabIndex={0}
             radius='xl'
             className='input-margin-top'
@@ -281,7 +288,7 @@ function Register() {
 
           <div className='input-center input-margin-top'>
             <Button radius='xl' type='submit' mt='sm'>
-              Sign Up
+              {language.register.signup}
             </Button>
           </div>
         </form>

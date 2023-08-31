@@ -1,5 +1,6 @@
+// store
 import { RecoilRoot, useRecoilState } from 'recoil'
-import { themeState } from '@/recoil_state'
+import { themeState, languagesOutSelector } from '@/recoil_state'
 
 import { useRouter } from 'next/navigation'
 
@@ -21,7 +22,7 @@ const classes = {
 }
 
 function Illustration() {
-  const [theme, setTheme] = useRecoilState(themeState)
+  const [theme] = useRecoilState(themeState)
 
   return (
     <div className={classes.imageContainer}>
@@ -38,8 +39,10 @@ function Illustration() {
 }
 
 export function Content404() {
-  const [theme, setTheme] = useRecoilState(themeState)
+  const [theme] = useRecoilState(themeState)
   const { push } = useRouter()
+
+  const [language] = useRecoilState(languagesOutSelector)
 
   return (
     <MantineProvider
@@ -47,7 +50,7 @@ export function Content404() {
       withGlobalStyles
       withNormalizeCSS>
       <Head>
-        <title>TO DO - Error!</title>
+        <title>{language._error.to_do_error}</title>
       </Head>
       <Illustration />
       <div className={classes.overlay}>
@@ -61,9 +64,11 @@ export function Content404() {
               style={{
                 color: theme === 'dark' ? '#fff' : 'black',
               }}>
-              Error 404
+              {language.error_404.error_404}
             </Text>
-            <Title className={classes.title}>Nothing to see here</Title>
+            <Title className={classes.title}>
+              {language.error_404.nothing_to_see_here}
+            </Title>
           </div>
           <Text
             color='dimmed'
@@ -73,11 +78,7 @@ export function Content404() {
             style={{
               color: theme === 'dark' ? '#fff' : 'black',
             }}>
-            <span>
-              Page you are trying to open does not exist. You may have mistyped
-              the address, or the page has been moved to another URL. If you
-              think this is an error contact support.
-            </span>
+            <span>{language.error_404.page_do_not_exists}</span>
           </Text>
           <Group position='center'>
             <Button
@@ -86,7 +87,7 @@ export function Content404() {
               }}
               size='md'
               radius='xl'>
-              Take me back to home page
+              {language._error.back_home}
             </Button>
           </Group>
         </div>

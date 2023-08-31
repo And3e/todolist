@@ -1,0 +1,112 @@
+{
+  "input": {
+    "add-field": "Add field...",
+
+    "enter": "Enter",
+    "insert": "Insert"
+  },
+
+  "list": {
+    "in-progress": "In progress",
+    "done": "Done",
+
+    "errors": {
+      "task": "Task ",
+      "eliminated": " eliminated",
+
+      "cancel": "Cancel"
+    }
+  },
+
+  "drop-down-menu": {
+    "sign-out": "Sign Out",
+    "profile": "Profile",
+
+    "look-and-feel": "Look & Feel",
+    "theme": "Theme"
+  },
+
+  "account": {
+    "account": "Account",
+
+    "hi": "Hi ",
+    "name": "Name",
+    "surname": "Surname",
+
+    "danger-zone": {
+      "danger-zone": "Danger Zone",
+
+      "delete-account": "Delete account",
+      "are-you-sure": "Are you sure you want to delete your account?",
+      "operation-not-reversible": "Operation is not reversible",
+
+      "delete": "Delete"
+    },
+
+    "warnings": {
+      "change-involves-logging-out": "This change involves logging out of the session!"
+    }
+  },
+
+  "security": {
+    "security": "Security",
+
+    "change-password": "Change Password",
+
+    "current-password": "Current Password",
+    "new-password": "New Password",
+    "confirm-password": "Confirm Password",
+
+    "confirm": "Confirm",
+
+    "errors": {
+      "passwords-do-not-match": "",
+      "old-passwords-do-not-match": ""
+    },
+    "warnings": {
+      "change-involves-logging-out": "This change involves logging out of the session!"
+    }
+  },
+
+  "appearence": {
+    "appearence": "Appearence",
+
+    "website-theme": {
+      "website-theme": "Website theme",
+
+      "preferred-theme": "Preferred Theme",
+
+      "dark": "DARK",
+      "light": "LIGHT"
+    },
+
+    "user-icon": {
+      "user-icon": "User Icon",
+
+      "custom": {
+        "letters": "Letters",
+        "choosen-color": "Choosen color",
+
+        "colors": {
+          "red": "Red",
+          "pink": "Pink",
+          "grape": "Grape",
+          "violet": "Violet",
+          "indigo": "Indigo",
+          "blue": "Blue",
+          "cyan": "Cyan",
+          "teal": "Teal",
+          "green": "Green",
+          "lime": "Lime",
+          "yellow": "Yellow",
+          "orange": "Orange"
+        }
+      },
+
+      "image": {
+        "image-link": "Image Link",
+        "link-to-my-image": "https://link-to-my-image.com"
+      }
+    }
+  }
+}

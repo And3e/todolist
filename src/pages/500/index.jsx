@@ -1,5 +1,6 @@
+// store
 import { RecoilRoot, useRecoilState } from 'recoil'
-import { themeState } from '@/recoil_state'
+import { themeState, languagesOutSelector } from '@/recoil_state'
 
 import { useRouter } from 'next/navigation'
 
@@ -21,7 +22,7 @@ const classes = {
 }
 
 function Illustration() {
-  const [theme, setTheme] = useRecoilState(themeState)
+  const [theme] = useRecoilState(themeState)
 
   return (
     <div className={classes.imageContainer}>
@@ -38,8 +39,10 @@ function Illustration() {
 }
 
 export function Content404() {
-  const [theme, setTheme] = useRecoilState(themeState)
+  const [theme] = useRecoilState(themeState)
   const { push } = useRouter()
+
+  const [language] = useRecoilState(languagesOutSelector)
 
   return (
     <MantineProvider
@@ -47,7 +50,7 @@ export function Content404() {
       withGlobalStyles
       withNormalizeCSS>
       <Head>
-        <title>TO DO - Error!</title>
+        <title>{language._error.to_do_error}</title>
       </Head>
       <Illustration />
       <div className={classes.overlay}>
@@ -61,10 +64,10 @@ export function Content404() {
               style={{
                 color: theme === 'dark' ? '#fff' : 'black',
               }}>
-              Error 500
+              {language.error_500.error_500}
             </Text>
             <Title className={classes.title}>
-              Something bad just happened...
+              {language.error_500.something_bad}
             </Title>
           </div>
           <Text
@@ -75,10 +78,7 @@ export function Content404() {
             style={{
               color: theme === 'dark' ? '#fff' : 'black',
             }}>
-            <span>
-              Our servers could not handle your request. Don't worry, our
-              development team was already notified. Try refreshing the page.
-            </span>
+            <span>{language.error_500.servers_could_not_handle}</span>
           </Text>
           <Group position='center'>
             <Button
@@ -87,7 +87,7 @@ export function Content404() {
               }}
               size='md'
               radius='xl'>
-              Take me back to home page
+              {language._error.back_home}
             </Button>
           </Group>
         </div>

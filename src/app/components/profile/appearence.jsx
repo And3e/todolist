@@ -304,7 +304,7 @@ function Appearence() {
             </div>
 
             <Select
-              label='Choose a color'
+              label='Choosen color'
               placeholder='Pick one'
               itemComponent={SelectItem}
               data={colors}
