@@ -1,4 +1,7 @@
 {
+  "lang": "en",
+  "auth": "out",
+
   "home": {
     "not_logged_in": "You're not logged in!",
 

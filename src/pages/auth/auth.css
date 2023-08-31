@@ -27,6 +27,13 @@
   justify-content: center;
 }
 
+.input-btn {
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+}
+
 .divider {
   margin: 20px 0px 20px 0px;
 }

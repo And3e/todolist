@@ -5,7 +5,7 @@ import axios from 'axios'
 
 // store
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { taskState, limitTask } from '@/recoil_state'
+import { taskState, limitTask, languagesInSelector } from '@/recoil_state'
 
 import { Button, Text, TextInput, Flex, Kbd, Loader } from '@mantine/core'
 import { getHotkeyHandler } from '@mantine/hooks'
@@ -18,6 +18,8 @@ export default function Input() {
 
   const [seeKbd, setSeeKbd] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
+
+  const [language] = useRecoilState(languagesInSelector)
 
   // API call
   async function addTask() {
@@ -98,6 +100,19 @@ export default function Input() {
     }
   }
 
+  function getButtonWidth() {
+    let out = 50
+
+    switch (language.lang) {
+      case 'en': {
+        out = 50
+        break
+      }
+    }
+
+    return out
+  }
+
   return (
     <div className='input-container'>
       <TextInput
@@ -121,8 +136,12 @@ export default function Input() {
         onClick={() => {
           handleClick()
         }}>
-        <div className='input-btn'>
-          {isLoading ? <Loader color='blue' size={20} /> : 'Insert'}
+        <div className='input-btn' style={{ width: getButtonWidth() }}>
+          {isLoading ? (
+            <Loader color='blue' size={20} />
+          ) : (
+            language.input.insert
+          )}
         </div>
       </Button>
     </div>

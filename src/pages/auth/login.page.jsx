@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { signIn } from 'next-auth/react'
 
@@ -18,6 +18,7 @@ import {
   ScrollArea,
   Divider,
   Text,
+  Loader,
 } from '@mantine/core'
 
 export function Providers({ providers }) {
@@ -92,6 +93,8 @@ export function Providers({ providers }) {
 
 export function Login({ providers }) {
   const [language] = useRecoilState(languagesOutSelector)
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const router = useRouter()
 
@@ -195,6 +198,19 @@ export function Login({ providers }) {
     return height
   }
 
+  function getButtonWidth() {
+    let out = 50
+
+    switch (language.lang) {
+      case 'en': {
+        out = 50
+        break
+      }
+    }
+
+    return out
+  }
+
   return (
     <Box style={{ marginLeft: '12px' }}>
       <ScrollArea
@@ -204,6 +220,8 @@ export function Login({ providers }) {
         scrollHideDelay={100}>
         <form
           onSubmit={form.onSubmit(async (fields) => {
+            setIsLoading(true)
+
             await signIn('credentials', {
               email: fields.email,
               password: fields.password,
@@ -229,8 +247,14 @@ export function Login({ providers }) {
           />
 
           <div className='input-center input-margin-top'>
-            <Button radius='xl' type='submit' mt='sm'>
-              {language.login.signin}
+            <Button radius='xl' type='submit' mt='sm' disabled={isLoading}>
+              <div className='input-btn' style={{ width: getButtonWidth() }}>
+                {isLoading ? (
+                  <Loader size='1rem' color='white' />
+                ) : (
+                  language.login.signin
+                )}
+              </div>
             </Button>
           </div>
         </form>

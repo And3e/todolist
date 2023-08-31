@@ -1,14 +1,24 @@
+import React, { useState } from 'react'
+
 import { signOut } from 'next-auth/react'
 
 // api calls
 import axios from 'axios'
 
-import { PasswordInput, Text, Button } from '@mantine/core'
+// store
+import { useRecoilState } from 'recoil'
+import { languagesInSelector } from '@/recoil_state'
+
+import { PasswordInput, Text, Button, Loader } from '@mantine/core'
 import { useForm } from '@mantine/form'
 
 import { ExclamationTriangleFill } from 'react-bootstrap-icons'
 
 function Security() {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const [language] = useRecoilState(languagesInSelector)
+
   const form = useForm({
     initialValues: {
       currentPassword: '',
@@ -21,6 +31,19 @@ function Security() {
         value !== values.newPassword ? 'Le passwords non corrispondono!' : null,
     },
   })
+
+  function getButtonWidth() {
+    let out = 60
+
+    switch (language.lang) {
+      case 'en': {
+        out = 60
+        break
+      }
+    }
+
+    return out
+  }
 
   return (
     <div>
@@ -35,6 +58,8 @@ function Security() {
         className='security-container'
         onSubmit={form.onSubmit(async (values) => {
           form.setFieldError('currentPassword', '')
+
+          setIsLoading(true)
 
           await axios({
             url: '/api/user/password',
@@ -83,8 +108,15 @@ function Security() {
           className='security-btn'
           variant='filled'
           radius='xl'
-          type='submit'>
-          Confirm
+          type='submit'
+          disabled={isLoading}>
+          <div className='input-btn' style={{ width: getButtonWidth() }}>
+            {isLoading ? (
+              <Loader color='blue' size={20} />
+            ) : (
+              language.security.confirm
+            )}
+          </div>
         </Button>
       </form>
     </div>

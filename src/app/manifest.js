@@ -14,13 +14,13 @@ export default function manifest() {
         type: 'image/x-icon',
       },
     ],
-    screenshots: [
-      {
-        src: '/src/app/imgs/',
-        type: 'image/png',
-        sizes: '540x720',
-        form_factor: 'narrow',
-      },
-    ],
+    // screenshots: [
+    //   {
+    //     src: '/src/app/imgs/',
+    //     type: 'image/png',
+    //     sizes: '540x720',
+    //     form_factor: 'narrow',
+    //   },
+    // ],
   }
 }

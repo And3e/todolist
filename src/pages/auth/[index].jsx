@@ -90,7 +90,8 @@ function Auth({ providers }) {
             value={router.query.index}
             onTabChange={(route) => {
               router.push(`/auth/${route}`)
-            }}>
+            }}
+            keepMounted={false}>
             <Tabs.List position='center' grow>
               <Tabs.Tab
                 value='signin'

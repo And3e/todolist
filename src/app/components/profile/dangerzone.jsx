@@ -1,14 +1,22 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 import { signOut } from 'next-auth/react'
+
+// store
+import { useRecoilState } from 'recoil'
+import { languagesInSelector } from '@/recoil_state'
 
 // api calls
 import axios from 'axios'
 
-import { Box, Button, Text } from '@mantine/core'
+import { Box, Button, Text, Loader } from '@mantine/core'
 
 function DangerZone({ viewport }) {
   const [opened, setOpened] = useState(false)
+
+  const [isLoading, setIsLoading] = useState(false)
+
+  const [language] = useRecoilState(languagesInSelector)
 
   function hexToRgbA(hex, alpha = 1) {
     // Check if the hex value starts with '#', and remove it if present
@@ -31,6 +39,19 @@ function DangerZone({ viewport }) {
 
     // Return the RGBA string
     return `rgba(${red}, ${green}, ${blue}, ${validAlpha})`
+  }
+
+  function getButtonWidth() {
+    let out = 50
+
+    switch (language.lang) {
+      case 'en': {
+        out = 50
+        break
+      }
+    }
+
+    return out
   }
 
   return (
@@ -94,6 +115,8 @@ function DangerZone({ viewport }) {
           </Text>
           <Button
             onClick={async () => {
+              setIsLoading(true)
+
               await axios({
                 url: '/api/user/',
                 method: 'delete',
@@ -107,6 +130,7 @@ function DangerZone({ viewport }) {
             radius='xl'
             style={{ marginTop: '10px' }}
             w='fit-content'
+            disabled={isLoading}
             sx={(theme) => ({
               backgroundColor: 'red',
 
@@ -117,7 +141,13 @@ function DangerZone({ viewport }) {
                     : 'rgba(255, 0, 0, 0.6)',
               },
             })}>
-            Delete
+            <div className='input-btn' style={{ width: getButtonWidth() }}>
+              {isLoading ? (
+                <Loader color='white' size={20} />
+              ) : (
+                language.account.danger_zone.delete
+              )}
+            </div>
           </Button>
         </div>
       </Box>

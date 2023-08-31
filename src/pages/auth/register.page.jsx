@@ -22,12 +22,15 @@ import {
   Box,
   Divider,
   ScrollArea,
+  Loader,
 } from '@mantine/core'
 
 function Register() {
   const [language] = useRecoilState(languagesOutSelector)
 
   const router = useRouter()
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const validateEmail = (value) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -190,12 +193,27 @@ function Register() {
   }
 
   useEffect(() => {
+    form.clearErrors()
+
     if (router.query.error) {
       form.setErrors({
         email: getMessage(router.query.error),
       })
     }
   }, [])
+
+  function getButtonWidth() {
+    let out = 55
+
+    switch (language.lang) {
+      case 'en': {
+        out = 55
+        break
+      }
+    }
+
+    return out
+  }
 
   return (
     <Box style={{ marginLeft: '12px' }}>
@@ -206,6 +224,8 @@ function Register() {
         scrollHideDelay={100}>
         <form
           onSubmit={form.onSubmit(async (fields) => {
+            setIsLoading(true)
+
             // create user
             let newUser = {
               name: fields.name,
@@ -287,8 +307,14 @@ function Register() {
           />
 
           <div className='input-center input-margin-top'>
-            <Button radius='xl' type='submit' mt='sm'>
-              {language.register.signup}
+            <Button radius='xl' type='submit' mt='sm' disabled={isLoading}>
+              <div className='input-btn' style={{ width: getButtonWidth() }}>
+                {isLoading ? (
+                  <Loader size='1rem' color='white' />
+                ) : (
+                  language.register.signup
+                )}
+              </div>
             </Button>
           </div>
         </form>
