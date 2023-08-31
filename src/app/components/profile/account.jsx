@@ -33,6 +33,8 @@ function Field({ content, element }) {
   const [fieldValue, setFieldValue] = useState(element ? element : '')
   const [error, setError] = useState('')
 
+  const [isLoading, setIsLoading] = useState(false)
+
   useEffect(() => {
     setFieldValue(element ? element : '')
   }, [element])
@@ -112,6 +114,8 @@ function Field({ content, element }) {
     if (user) {
       outElement.id = user.id
 
+      setIsLoading(true)
+
       // console.log('outElement', outElement)
 
       await axios({
@@ -138,6 +142,8 @@ function Field({ content, element }) {
       if (fetchData) {
         setUser(await fetchData.data)
       }
+
+      setIsLoading(false)
     }
   }
 
@@ -215,6 +221,7 @@ function Field({ content, element }) {
             isEditing={isEditing}
             setIsEditing={setIsEditing}
             handleEdit={handleEdit}
+            isLoading={isLoading}
           />
         </div>
       </Box>

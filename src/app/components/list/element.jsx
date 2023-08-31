@@ -41,6 +41,9 @@ export default function Element({ element, done }) {
     paperWidth ? paperWidth - 191 : null
   )
 
+  const [isLoadingEdit, setIsLoadingEdit] = useState(false)
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false)
+
   // api requests
   async function setDone() {
     const count = tasks.filter((obj) => obj.done === !done).length
@@ -80,6 +83,8 @@ export default function Element({ element, done }) {
 
   async function editTask() {
     // edit task => edit content
+    setIsLoadingEdit(true)
+
     const outElement = {
       id: element.id,
       content: inputValue,
@@ -102,6 +107,8 @@ export default function Element({ element, done }) {
     })
 
     setTasks(fetchData.data)
+
+    setIsLoadingEdit(false)
   }
 
   function handleEdit() {
@@ -141,7 +148,15 @@ export default function Element({ element, done }) {
       if (seeBtns) {
         calculatedWidth -= 200
       } else {
-        calculatedWidth -= 140
+        calculatedWidth -= 150
+      }
+
+      if (isLoadingEdit && isLoadingDelete) {
+        calculatedWidth -= 62
+      } else if (isLoadingEdit) {
+        calculatedWidth -= 10
+      } else if (isLoadingDelete) {
+        calculatedWidth -= 10
       }
 
       if (width < 600) {
@@ -154,7 +169,7 @@ export default function Element({ element, done }) {
 
       setElementWidth(calculatedWidth)
     }
-  }, [paperWidth, seeBtns])
+  }, [paperWidth, seeBtns, isLoadingEdit, isLoadingDelete])
 
   // check provenienza click (btns || parent element)
   function handleClick(event) {
@@ -256,22 +271,30 @@ export default function Element({ element, done }) {
                         width: elementWidth,
                         overflowWrap: 'break-word',
                       }}>
-                      {element.content}
+                      {isLoadingEdit ? inputValue : element.content}
                     </div>
                   </Text>
                 </Box>
               )}
 
-              {seeBtns ? (
-                <div className='btns-container'>
+              <div className='btns-container'>
+                {seeBtns || isLoadingEdit ? (
                   <EditBtn
                     isEditing={isEditing}
                     setIsEditing={setIsEditing}
                     handleEdit={handleEdit}
+                    isLoading={isLoadingEdit}
                   />
-                  {!isEditing ? <DeleteBtn element={element} /> : null}
-                </div>
-              ) : null}
+                ) : null}
+
+                {(seeBtns && !isEditing) || isLoadingDelete ? (
+                  <DeleteBtn
+                    element={element}
+                    isLoading={isLoadingDelete}
+                    setIsLoading={setIsLoadingDelete}
+                  />
+                ) : null}
+              </div>
             </Box>
           </div>
         )

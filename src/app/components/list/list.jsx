@@ -6,7 +6,7 @@ import { taskState } from '@/recoil_state'
 
 import { ScrollArea, Box, NavLink, Text } from '@mantine/core'
 
-import DnD from './dnd'
+import DnD from './dragndrop'
 
 export default function List() {
   const [tasksStore, setTasks] = useRecoilState(taskState)

@@ -1,8 +1,13 @@
-import { ActionIcon } from '@mantine/core'
+import { ActionIcon, Loader } from '@mantine/core'
 import { Check } from 'react-bootstrap-icons'
 import { IconPencil } from '@tabler/icons-react'
 
-export default function EditBtn({ isEditing, setIsEditing, handleEdit }) {
+export default function EditBtn({
+  isEditing,
+  setIsEditing,
+  handleEdit,
+  isLoading,
+}) {
   if (isEditing) {
     return (
       <ActionIcon
@@ -20,10 +25,15 @@ export default function EditBtn({ isEditing, setIsEditing, handleEdit }) {
           setIsEditing(true)
         }}
         variant='filled'
+        disabled={isLoading}
         color='blue'
         radius='md'
         size={26}>
-        <IconPencil size='1rem' />
+        {isLoading ? (
+          <Loader size='1rem' color='white' />
+        ) : (
+          <IconPencil size='1rem' />
+        )}
       </ActionIcon>
     )
   }

@@ -34,6 +34,14 @@
   margin-bottom: 20px;
 }
 
+.input-btn {
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+}
+
 .mantine-NavLink-children {
   padding-left: 20px;
 }

@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Text } from '@mantine/core'
+import { ActionIcon, Button, Text, Loader } from '@mantine/core'
 import { Trash3Fill } from 'react-bootstrap-icons'
 
 // api calls
@@ -8,7 +8,7 @@ import { notifications } from '@mantine/notifications'
 import { useRecoilState } from 'recoil'
 import { taskState } from '@/recoil_state'
 
-export default function DeleteBtn({ element }) {
+export default function DeleteBtn({ element, isLoading, setIsLoading }) {
   const [tasks, setTasks] = useRecoilState(taskState)
 
   async function handleAnnulla() {
@@ -26,13 +26,17 @@ export default function DeleteBtn({ element }) {
     })
 
     // update list
-    setTasks(await fetchData.data)
+    if (fetchData) {
+      setTasks(await fetchData.data)
+    }
 
     notifications.hide(element.id)
   }
 
   async function deleteTask() {
     // delete
+    setIsLoading(true)
+
     let outURL = element.id + '/' + element.userId
 
     await axios({
@@ -47,7 +51,11 @@ export default function DeleteBtn({ element }) {
       console.error(error)
     })
 
-    setTasks(await fetchData.data)
+    setIsLoading(false)
+
+    if (fetchData) {
+      setTasks(await fetchData.data)
+    }
   }
 
   function showNotifica() {
@@ -88,11 +96,16 @@ export default function DeleteBtn({ element }) {
         showNotifica()
         deleteTask()
       }}
+      disabled={isLoading}
       variant='filled'
       color='red'
       radius='md'
       size={26}>
-      <Trash3Fill size='1rem' />
+      {isLoading ? (
+        <Loader size='1rem' color='white' />
+      ) : (
+        <Trash3Fill size='1rem' />
+      )}
     </ActionIcon>
   )
 }

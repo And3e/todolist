@@ -7,7 +7,7 @@ import axios from 'axios'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { taskState, limitTask } from '@/recoil_state'
 
-import { Button, Text, TextInput, Flex, Kbd } from '@mantine/core'
+import { Button, Text, TextInput, Flex, Kbd, Loader } from '@mantine/core'
 import { getHotkeyHandler } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
 
@@ -17,10 +17,13 @@ export default function Input() {
   const limitTasks = useRecoilValue(limitTask)
 
   const [seeKbd, setSeeKbd] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
 
   // API call
   async function addTask() {
     if (taskName.length > 0) {
+      setIsLoading(true)
+
       const count = tasks.filter((obj) => obj.done === false).length
 
       // create task
@@ -47,6 +50,7 @@ export default function Input() {
 
       // update input field
       setTaskName('')
+      setIsLoading(false)
     }
   }
 
@@ -113,10 +117,13 @@ export default function Input() {
       <Button
         radius='xl'
         size='md'
+        disabled={isLoading}
         onClick={() => {
           handleClick()
         }}>
-        Insert
+        <div className='input-btn'>
+          {isLoading ? <Loader color='blue' size={20} /> : 'Insert'}
+        </div>
       </Button>
     </div>
   )

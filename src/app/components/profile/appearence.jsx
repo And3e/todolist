@@ -19,6 +19,7 @@ import {
   Select,
   Box,
   PinInput,
+  Loader,
 } from '@mantine/core'
 
 import { IconSun, IconMoonStars } from '@tabler/icons-react'
@@ -42,6 +43,8 @@ function Appearence() {
     user && user.image.at(0) !== '$' ? user.image : ''
   )
 
+  const [isLoading, setIsLoading] = useState(false)
+
   useEffect(() => {
     if (user) {
       let image = user.image
@@ -55,22 +58,52 @@ function Appearence() {
         setAvatar(
           <Avatar
             src={null}
-            color={color}
+            color={isLoading ? 'orange' : color}
             alt={text}
             radius='xl'
             size='xl'
             variant='filled'
             style={{ letterSpacing: '0.8px' }}>
-            {text}
+            {isLoading ? <Loader size='3rem' color='white' /> : text}
           </Avatar>
         )
       } else {
-        setAvatar(<Avatar src={image} radius='xl' size='xl' />)
+        if (isLoading) {
+          setAvatar(
+            <Avatar
+              src={null}
+              color='orange'
+              alt='Loading Icon'
+              radius='xl'
+              size='xl'
+              variant='filled'
+              style={{ letterSpacing: '0.8px' }}>
+              <Loader size='3rem' color='white' />
+            </Avatar>
+          )
+        } else {
+          if (isLoading) {
+            setAvatar(
+              <Avatar
+                src={null}
+                color='orange'
+                alt='Loading Icon'
+                radius='xl'
+                size='xl'
+                variant='filled'
+                style={{ letterSpacing: '0.8px' }}>
+                <Loader size='3rem' color='white' />
+              </Avatar>
+            )
+          } else {
+            setAvatar(<Avatar src={image} radius='xl' size='xl' />)
+          }
+        }
       }
     } else {
       setAvatar(<Avatar radius='xl' size='xl' />)
     }
-  }, [user])
+  }, [user, isLoading])
 
   // colorScheme
   async function syncTheme(colorScheme) {
@@ -124,6 +157,8 @@ function Appearence() {
   ))
 
   async function updateImage(image) {
+    setIsLoading(true)
+
     await axios({
       url: '/api/user',
       method: 'patch',
@@ -143,6 +178,8 @@ function Appearence() {
     if (fetchData) {
       setUser(await fetchData.data)
     }
+
+    setIsLoading(false)
   }
 
   function customImage() {
@@ -164,7 +201,7 @@ function Appearence() {
     }
   }
 
-  useEffect(() => customImage(), [color, character])
+  useEffect(customImage, [color, character])
 
   useEffect(() => {
     if (link !== '' && link !== user.image) {

@@ -45,7 +45,9 @@ export default function DnD({ done, taskList, setTaskList }) {
       // update list
       const fetchData = await fetch('/api/tasks')
 
+      if(fetchData) {      
       setTasks(await fetchData.data)
+    }
     })
   }
   */
@@ -62,7 +64,9 @@ export default function DnD({ done, taskList, setTaskList }) {
         // update list
         const fetchData = await axios('/api/tasks')
 
-        setTasks(await fetchData.data)
+        if (fetchData) {
+          setTasks(await fetchData.data)
+        }
       })
       .catch((error) => {
         console.log(error)
