@@ -4,7 +4,7 @@ import { signOut } from 'next-auth/react'
 
 // store
 import { useRecoilState } from 'recoil'
-import { userState } from '@/recoil_state'
+import { userState, languagesInSelector } from '@/recoil_state'
 
 // api calls
 import axios from 'axios'
@@ -24,10 +24,12 @@ import { ExclamationTriangleFill } from 'react-bootstrap-icons'
 import EditBtn from '../btns/editbtn'
 
 // globals
-const duration = 400
+const animationDuration = 400
 
 function Field({ content, element }) {
   const [user, setUser] = useRecoilState(userState)
+
+  const [language] = useRecoilState(languagesInSelector)
 
   const [isEditing, setIsEditing] = useState(false)
   const [fieldValue, setFieldValue] = useState(element ? element : '')
@@ -39,9 +41,8 @@ function Field({ content, element }) {
     setFieldValue(element ? element : '')
   }, [element])
 
-  const fields = ['Name', 'Surname', 'Email']
-
   function getElement() {
+    const fields = ['Name', 'Surname', 'Email']
     let out = {}
 
     const uppercaseContent = content.charAt(0).toUpperCase() + content.slice(1)
@@ -56,12 +57,19 @@ function Field({ content, element }) {
   function getLabel() {
     let out = 'Unknown'
 
-    const index = fields.indexOf(
-      content.charAt(0).toUpperCase() + content.slice(1)
-    )
-
-    if (index !== -1) {
-      out = fields[index]
+    switch (content) {
+      case 'name': {
+        out = language.account.name
+        break
+      }
+      case 'surname': {
+        out = language.account.surname
+        break
+      }
+      case 'email': {
+        out = 'Email'
+        break
+      }
     }
 
     return out
@@ -178,7 +186,7 @@ function Field({ content, element }) {
   return (
     <div
       style={{
-        transition: `all ${duration}ms ease-in-out`,
+        transition: `all ${animationDuration}ms ease-in-out`,
       }}>
       <label
         className='mantine-InputWrapper-label mantine-Select-label modal-label'
@@ -228,7 +236,9 @@ function Field({ content, element }) {
       {content === 'email' && error === '' ? (
         <div className={`email-alert ${isEditing ? 'visible' : 'hidden'}`}>
           <ExclamationTriangleFill color='#ff8c00' />
-          <Text fz='sm'>This change involves logging out of the session!</Text>
+          <Text fz='sm'>
+            {language.account.warnings.change_involves_logging_out}
+          </Text>
         </div>
       ) : (
         <Text fz='sm' color='red' style={{ marginLeft: '10px' }}>
@@ -240,7 +250,7 @@ function Field({ content, element }) {
 }
 
 function Account() {
-  const [user, setUser] = useRecoilState(userState)
+  const [user] = useRecoilState(userState)
   const [avatar, setAvatar] = useState(<Avatar radius='xl' size='lg' />)
 
   // avatar

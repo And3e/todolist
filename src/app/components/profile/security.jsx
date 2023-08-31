@@ -28,7 +28,9 @@ function Security() {
 
     validate: {
       confirmPassword: (value, values) =>
-        value !== values.newPassword ? 'Le passwords non corrispondono!' : null,
+        value !== values.newPassword
+          ? language.security.errors.passwords_do_not_match
+          : null,
     },
   })
 
@@ -48,10 +50,12 @@ function Security() {
   return (
     <div>
       <div className='profile-title'>
-        <h2>Change Password</h2>
+        <h2>{language.security.change_password}</h2>
         <div className='security-alert'>
           <ExclamationTriangleFill color='#ff8c00' />
-          <Text fz='sm'>This change involves logging out of the session!</Text>
+          <Text fz='sm'>
+            {language.account.warnings.change_involves_logging_out}
+          </Text>
         </div>
       </div>
       <form
@@ -75,7 +79,7 @@ function Security() {
               } else if (res.status === 403) {
                 form.setFieldError(
                   'currentPassword',
-                  'Old passwords do not match'
+                  language.security.errors.old_passwords_do_not_match
                 )
               }
             })

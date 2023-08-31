@@ -102,16 +102,16 @@ function DangerZone({ viewport }) {
                   backgroundColor: 'red',
                 },
               })}>
-              Delete account
+              {language.account.danger_zone.delete_account}
             </Button>
           </div>
         </Box>
         <div className={`confirm-delete ${opened ? 'visible' : 'hidden'}`}>
           <Text fs='md' fw={700} c='white' ta='center'>
-            Are you sure you want to delete your account?
+            {language.account.danger_zone.are_you_sure}
           </Text>
           <Text c='white' ta='center'>
-            The operation is not reversible
+            {language.account.danger_zone.operation_not_reversible}
           </Text>
           <Button
             onClick={async () => {

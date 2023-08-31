@@ -60,7 +60,7 @@ export default function Input() {
   const rightSection =
     window.innerWidth > 600 ? (
       <Flex align='center'>
-        <Kbd mr={5}>Enter</Kbd>
+        <Kbd mr={5}>{language.input.enter}</Kbd>
       </Flex>
     ) : null
 
@@ -85,7 +85,9 @@ export default function Input() {
       color: 'yellow',
       message: (
         <Text span fz='md'>
-          Maximum limit of {limitTasks} tasks reached!
+          {language.input.errors.max_limit +
+            limitTasks +
+            language.input.errors.reached}
         </Text>
       ),
     })

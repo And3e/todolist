@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 
 // store
 import { useRecoilState } from 'recoil'
-import { userState } from '@/recoil_state'
+import { userState, languagesInSelector } from '@/recoil_state'
 
 // api calls
 import axios from 'axios'
@@ -24,6 +24,9 @@ import Appearence from './appearence'
 
 function Profile({ opened, close }) {
   const [user, setUser] = useRecoilState(userState)
+
+  const [language] = useRecoilState(languagesInSelector)
+
   const viewport = useRef(null)
   const isMobile = useMediaQuery('(max-width: 600px)')
 
@@ -38,17 +41,17 @@ function Profile({ opened, close }) {
     paddingLeft: width < responsiveBorder ? '0px' : '20px',
   }
 
-  async function assignUser() {
-    const fetchData = await axios('/api/user').catch((error) => {
-      console.error(error)
-    })
-
-    if (fetchData) {
-      setUser(await fetchData.data)
-    }
-  }
-
   useEffect(() => {
+    async function assignUser() {
+      const fetchData = await axios('/api/user').catch((error) => {
+        console.error(error)
+      })
+
+      if (fetchData) {
+        setUser(await fetchData.data)
+      }
+    }
+
     assignUser()
   }, [])
 
@@ -78,7 +81,7 @@ function Profile({ opened, close }) {
       onClose={close}
       title={
         <Text fz='lg' fw={700}>
-          Profile
+          {language.user_btn.profile}
         </Text>
       }
       radius='lg'
@@ -95,13 +98,13 @@ function Profile({ opened, close }) {
           w={width < responsiveBorder ? '100%' : '20%'}
           position={width < responsiveBorder ? 'center' : ''}>
           <Tabs.Tab value='account' icon={<PersonFill size='0.8rem' />}>
-            Account
+            {language.account.account}
           </Tabs.Tab>
           <Tabs.Tab value='security' icon={<LockFill size='0.8rem' />}>
-            Security
+            {language.security.security}
           </Tabs.Tab>
           <Tabs.Tab value='appearence' icon={<PaletteFill size='0.8rem' />}>
-            Appearence
+            {language.account.account}
           </Tabs.Tab>
         </Tabs.List>
 

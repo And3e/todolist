@@ -147,6 +147,7 @@ export default function Home() {
                 <img src={logo.src} className='logo' />
               </a>
             </Center>
+
             <Input />
             <List />
           </Paper>

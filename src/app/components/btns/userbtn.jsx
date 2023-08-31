@@ -5,7 +5,7 @@ import { signOut } from 'next-auth/react'
 
 // store
 import { useRecoilState } from 'recoil'
-import { themeState, userState } from '@/recoil_state'
+import { themeState, userState, languagesInSelector } from '@/recoil_state'
 
 import { Menu, Avatar, Text, Switch, useMantineTheme } from '@mantine/core'
 
@@ -30,6 +30,8 @@ function UserBtn({ open }) {
   const mantineTheme = useMantineTheme()
   const [theme, setTheme] = useRecoilState(themeState)
   const [user, setUser] = useRecoilState(userState)
+
+  const [language] = useRecoilState(languagesInSelector)
 
   // session
   useEffect(() => {
@@ -95,14 +97,7 @@ function UserBtn({ open }) {
       opened={menuOpened}
       onChange={setMenuOpened}>
       <Menu.Target>
-        <div className='avatar'>
-          {/* FARE FETCH DELLA SRC IMAGE PER FOTO PROFILO */}
-          {/* ALTRIMENTI METTERE INIZIALI NOME */}
-
-          {/* attenzione ai nomi composti */}
-          {/* NC = nome e cognome */}
-          {avatar}
-        </div>
+        <div className='avatar'>{avatar}</div>
       </Menu.Target>
 
       <Menu.Dropdown onClick={(event) => handleClick(event)}>
@@ -114,19 +109,19 @@ function UserBtn({ open }) {
           sx={btnStyle}
           variant='light'
           onClick={() => signOut()}>
-          Sign Out
+          {language.user_btn.sign_out}
         </Menu.Item>
         <Menu.Item
           icon={<PersonCircle size={14} />}
           sx={btnStyle}
           onClick={open}>
-          Profile
+          {language.user_btn.profile}
         </Menu.Item>
 
         <Menu.Divider />
 
         <Menu.Label>
-          <Text fz='sm'>Look & Feel</Text>
+          <Text fz='sm'>{language.user_btn.look_and_feel}</Text>
         </Menu.Label>
         <Menu.Item
           icon={<Palette id='#icon-element#' size={14} />}
@@ -156,7 +151,7 @@ function UserBtn({ open }) {
               }
             />
           }>
-          <Text id='#text-element#'>Theme</Text>
+          <Text id='#text-element#'>{language.user_btn.theme}</Text>
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>

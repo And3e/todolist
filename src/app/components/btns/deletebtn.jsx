@@ -6,7 +6,7 @@ import axios from 'axios'
 
 import { notifications } from '@mantine/notifications'
 import { useRecoilState } from 'recoil'
-import { taskState } from '@/recoil_state'
+import { taskState, languagesInSelector } from '@/recoil_state'
 
 export default function DeleteBtn({
   element,
@@ -15,6 +15,8 @@ export default function DeleteBtn({
   isDisabled,
 }) {
   const [tasks, setTasks] = useRecoilState(taskState)
+
+  const [language] = useRecoilState(languagesInSelector)
 
   async function handleAnnulla() {
     // cancel operation => recreate task
@@ -78,7 +80,9 @@ export default function DeleteBtn({
       message: (
         <div className='dialog-container'>
           <Text span fz='md'>
-            Task <b>{outText}</b> eliminated!
+            {language.list.errors.task}
+            <b>{outText}</b>
+            {language.list.errors.eliminated}
           </Text>
           <Button
             onClick={() => {
@@ -88,7 +92,7 @@ export default function DeleteBtn({
             color='red'
             variant='outline'
             radius='md'>
-            Cancel
+            {language.list.errors.cancel}
           </Button>
         </div>
       ),

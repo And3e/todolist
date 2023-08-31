@@ -2,7 +2,7 @@ import { useState, useEffect, forwardRef } from 'react'
 
 // store
 import { useRecoilState } from 'recoil'
-import { themeState, userState } from '@/recoil_state'
+import { themeState, userState, languagesInSelector } from '@/recoil_state'
 
 // api calls
 import axios from 'axios'
@@ -20,16 +20,18 @@ import {
   Box,
   PinInput,
   Loader,
+  SegmentedControl,
 } from '@mantine/core'
 
 import { IconSun, IconMoonStars } from '@tabler/icons-react'
-
-import colors from './colors'
+import { GB, IT, FR } from 'country-flag-icons/react/1x1'
 
 function Appearence() {
   const mantineTheme = useMantineTheme()
   const [theme, setTheme] = useRecoilState(themeState)
   const [user, setUser] = useRecoilState(userState)
+
+  const [language] = useRecoilState(languagesInSelector)
 
   const [character, setCharacter] = useState(
     user && user.image.at(0) === '$' ? user.image.slice(1).split('#')[1] : ''
@@ -44,7 +46,62 @@ function Appearence() {
   )
 
   const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingTheme, setIsLoadingTheme] = useState(false)
 
+  // colors
+  const colorList = language.appearence.user_icon.custom.colors
+  const colors = [
+    {
+      value: 'red',
+      label: colorList.red,
+    },
+    {
+      value: 'pink',
+      label: colorList.pink,
+    },
+    {
+      value: 'grape',
+      label: colorList.grape,
+    },
+    {
+      value: 'violet',
+      label: colorList.violet,
+    },
+    {
+      value: 'indigo',
+      label: colorList.indigo,
+    },
+    {
+      value: 'blue',
+      label: colorList.blue,
+    },
+    {
+      value: 'cyan',
+      label: colorList.cyan,
+    },
+    {
+      value: 'teal',
+      label: colorList.teal,
+    },
+    {
+      value: 'green',
+      label: colorList.green,
+    },
+    {
+      value: 'lime',
+      label: colorList.lime,
+    },
+    {
+      value: 'yellow',
+      label: colorList.yellow,
+    },
+    {
+      value: 'orange',
+      label: colorList.orange,
+    },
+  ]
+
+  // Avatar
   useEffect(() => {
     if (user) {
       let image = user.image
@@ -112,6 +169,8 @@ function Appearence() {
     }
 
     if (user) {
+      setIsLoadingTheme(true)
+
       outElement.id = user.id
 
       await axios({
@@ -130,6 +189,8 @@ function Appearence() {
       if (fetchData) {
         setUser(await fetchData.data)
       }
+
+      setIsLoadingTheme(false)
     }
   }
 
@@ -139,7 +200,7 @@ function Appearence() {
       <Group
         noWrap
         style={{ marginTop: '5px', marginBottom: '5px' }}
-        key={name}>
+        key={value}>
         <Box
           sx={() => ({
             backgroundColor: value !== 'grape' ? value : 'rgb(174, 62, 201)',
@@ -156,6 +217,7 @@ function Appearence() {
     </div>
   ))
 
+  // image
   async function updateImage(image) {
     setIsLoading(true)
 
@@ -211,24 +273,48 @@ function Appearence() {
     }
   }, [link])
 
+  // change language
+  function handleLanguage(lang) {}
+
+  function getLanguageColorScheme(colorScheme) {
+    let out = language.appearence.website_theme.dark_default
+    if (user) {
+      if (colorScheme === 'dark') {
+        out = language.appearence.website_theme.dark
+      } else {
+        out = language.appearence.website_theme.light
+      }
+    }
+
+    return out
+  }
+
   return (
     <div>
-      <h2 className='profile-title'>Appearence</h2>
+      <h2 className='profile-title'>{language.appearence.appearence}</h2>
       <Divider
         style={{ margin: '30px 0px 30px 0px' }}
         my='xs'
-        label='Website theme'
+        label={language.appearence.website_theme.website_theme}
         labelPosition='center'
       />
       <div className='pref-theme-container'>
         <span className='pref-theme-label'>
-          <Text>Preferred Theme</Text>
+          <Text>{language.appearence.website_theme.preferred_theme}</Text>
           <Badge
             variant='dot'
             color={
               user ? (user.colorScheme === 'dark' ? 'violet' : 'yellow') : null
             }>
-            {user ? user.colorScheme : 'dark (default)'}
+            <div className='pref-theme-label'>
+              {getLanguageColorScheme(user.colorScheme)}
+              {isLoadingTheme ? (
+                <Loader
+                  size='0.7rem'
+                  color={user.colorScheme === 'dark' ? 'dark' : 'white'}
+                />
+              ) : null}
+            </div>
           </Badge>
         </span>
         <Switch
@@ -236,6 +322,7 @@ function Appearence() {
           value='tema'
           size='md'
           color='gray'
+          disabled={isLoadingTheme}
           styles={{
             track: {
               backgroundColor:
@@ -276,7 +363,58 @@ function Appearence() {
       <Divider
         style={{ margin: '30px 0px 30px 0px' }}
         my='xs'
-        label='User Icon'
+        label={language.appearence.language}
+        labelPosition='center'
+      />
+      <SegmentedControl
+        fullWidth
+        color='orange'
+        radius='xl'
+        onChange={(lang) => handleLanguage(lang)}
+        data={[
+          {
+            label: (
+              <div className='lang-control'>
+                <GB
+                  title='English'
+                  height='25px'
+                  style={{ borderRadius: '25px' }}
+                />
+              </div>
+            ),
+            value: 'en',
+          },
+          {
+            label: (
+              <div className='lang-control'>
+                <IT
+                  title='Italiano'
+                  height='25px'
+                  style={{ borderRadius: '25px' }}
+                />
+              </div>
+            ),
+            value: 'it',
+          },
+          {
+            label: (
+              <div className='lang-control'>
+                <FR
+                  title='Français'
+                  height='25px'
+                  style={{ borderRadius: '25px' }}
+                />
+              </div>
+            ),
+            value: 'fr',
+          },
+        ]}
+      />
+
+      <Divider
+        style={{ margin: '30px 0px 30px 0px' }}
+        my='xs'
+        label={language.appearence.user_icon.user_icon}
         labelPosition='center'
       />
 
@@ -291,7 +429,7 @@ function Appearence() {
                 style={{
                   color: theme === 'dark' ? '#C1C2C5' : '#212529',
                 }}>
-                Letters
+                {language.appearence.user_icon.custom.letters}
               </label>
               <PinInput
                 length={2}
@@ -304,14 +442,14 @@ function Appearence() {
             </div>
 
             <Select
-              label='Choosen color'
-              placeholder='Pick one'
+              label={language.appearence.user_icon.custom.choosen_color}
+              placeholder={language.appearence.user_icon.custom.pick_one}
               itemComponent={SelectItem}
               data={colors}
               searchable
               maxDropdownHeight='30vh'
               radius='xl'
-              nothingFound='No color found!'
+              nothingFound={language.appearence.user_icon.custom.nothing_found}
               filter={(value, item) =>
                 item.value.includes(value.toLocaleLowerCase().trim())
               }
@@ -330,8 +468,8 @@ function Appearence() {
             }
           />
           <TextInput
-            placeholder='https://link-to-my-image.com'
-            label='Image Link'
+            placeholder={language.appearence.user_icon.image.link_to_my_image}
+            label={language.appearence.user_icon.image.image_link}
             radius='xl'
             value={link}
             className='background-input'

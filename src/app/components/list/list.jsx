@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 // store
 import { useRecoilState } from 'recoil'
-import { taskState } from '@/recoil_state'
+import { taskState, languagesInSelector } from '@/recoil_state'
 
 import { ScrollArea, Box, NavLink, Text } from '@mantine/core'
 
@@ -10,6 +10,8 @@ import DnD from './dragndrop'
 
 export default function List() {
   const [tasksStore, setTasks] = useRecoilState(taskState)
+
+  const [language] = useRecoilState(languagesInSelector)
 
   const [tasksProgress, setTasksProgress] = useState(null)
   const [tasksDone, setTasksDone] = useState(null)
@@ -87,7 +89,7 @@ export default function List() {
                     ? '#fd7e14'
                     : theme.colors.yellow[2],
               })}>
-              In progress
+              {language.list.in_progress}
             </Text>
           }
           icon={''}
@@ -108,7 +110,7 @@ export default function List() {
         <NavLink
           label={
             <Text span fz='md'>
-              Done
+              {language.list.done}
             </Text>
           }
           icon={''}

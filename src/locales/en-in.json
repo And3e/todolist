@@ -6,7 +6,12 @@
     "add_field": "Add field...",
 
     "enter": "Enter",
-    "insert": "Insert"
+    "insert": "Insert",
+
+    "errors": {
+      "max_limit": "Maximum limit of ",
+      "reached": " tasks reached!"
+    }
   },
 
   "list": {
@@ -21,7 +26,7 @@
     }
   },
 
-  "drop_down_menu": {
+  "user_btn": {
     "sign_out": "Sign Out",
     "profile": "Profile",
 
@@ -63,11 +68,8 @@
     "confirm": "Confirm",
 
     "errors": {
-      "passwords_do_not_match": "",
-      "old_passwords_do_not_match": ""
-    },
-    "warnings": {
-      "change_involves_logging_out": "This change involves logging out of the session!"
+      "passwords_do_not_match": "Passwords do not match!",
+      "old_passwords_do_not_match": "Old passwords do not match"
     }
   },
 
@@ -79,9 +81,12 @@
 
       "preferred_theme": "Preferred Theme",
 
-      "dark": "DARK",
-      "light": "LIGHT"
+      "dark": "dark",
+      "dark_default": "dark (default)",
+      "light": "light"
     },
+
+    "language": "Language",
 
     "user_icon": {
       "user_icon": "User Icon",
@@ -89,6 +94,8 @@
       "custom": {
         "letters": "Letters",
         "choosen_color": "Choosen color",
+        "pick_one": "Pick one",
+        "nothing_found": "No color found!",
 
         "colors": {
           "red": "Red",
