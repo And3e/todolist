@@ -7,6 +7,7 @@ export default function EditBtn({
   setIsEditing,
   handleEdit,
   isLoading,
+  isDisabled,
 }) {
   if (isEditing) {
     return (
@@ -25,7 +26,7 @@ export default function EditBtn({
           setIsEditing(true)
         }}
         variant='filled'
-        disabled={isLoading}
+        disabled={isLoading || isDisabled}
         color='blue'
         radius='md'
         size={26}>

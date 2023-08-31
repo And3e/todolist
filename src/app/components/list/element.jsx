@@ -284,6 +284,7 @@ export default function Element({ element, done }) {
                     setIsEditing={setIsEditing}
                     handleEdit={handleEdit}
                     isLoading={isLoadingEdit}
+                    isDisabled={isLoadingDelete}
                   />
                 ) : null}
 
@@ -292,6 +293,7 @@ export default function Element({ element, done }) {
                     element={element}
                     isLoading={isLoadingDelete}
                     setIsLoading={setIsLoadingDelete}
+                    isDisabled={isLoadingEdit}
                   />
                 ) : null}
               </div>

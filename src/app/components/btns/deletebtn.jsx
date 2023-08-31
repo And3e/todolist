@@ -8,7 +8,12 @@ import { notifications } from '@mantine/notifications'
 import { useRecoilState } from 'recoil'
 import { taskState } from '@/recoil_state'
 
-export default function DeleteBtn({ element, isLoading, setIsLoading }) {
+export default function DeleteBtn({
+  element,
+  isLoading,
+  setIsLoading,
+  isDisabled,
+}) {
   const [tasks, setTasks] = useRecoilState(taskState)
 
   async function handleAnnulla() {
@@ -96,7 +101,7 @@ export default function DeleteBtn({ element, isLoading, setIsLoading }) {
         showNotifica()
         deleteTask()
       }}
-      disabled={isLoading}
+      disabled={isLoading || isDisabled}
       variant='filled'
       color='red'
       radius='md'
