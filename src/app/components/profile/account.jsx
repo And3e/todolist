@@ -189,7 +189,6 @@ function Field({ content, element }) {
         transition: `all ${animationDuration}ms ease-in-out`,
       }}>
       <label
-        // htmlFor='#element#'
         className='mantine-InputWrapper-label mantine-Select-label modal-label'
         style={{
           color: theme.colorScheme === 'dark' ? '#C1C2C5' : '#212529',

@@ -13,7 +13,13 @@ import { useSession } from 'next-auth/react'
 
 // store
 import { useRecoilState } from 'recoil'
-import { taskState, themeState, userState, paperState } from '@/recoil_state'
+import {
+  taskState,
+  themeState,
+  userState,
+  paperState,
+  languagesInSelector,
+} from '@/recoil_state'
 
 // tab's info
 import Head from 'next/head'
@@ -35,8 +41,11 @@ import logo from './../imgs/long/logo-long.svg'
 export default function Home() {
   const { push } = useRouter()
   const [tasks, setTasks] = useRecoilState(taskState)
-  const [user, setUser] = useRecoilState(userState)
+
+  const [user] = useRecoilState(userState)
   const [theme, setTheme] = useRecoilState(themeState)
+  const [language, setLanguage] = useRecoilState(languagesInSelector)
+
   const [paperWidth, setPaperWidth] = useRecoilState(paperState)
 
   const containerRef = useRef(null)
@@ -68,8 +77,12 @@ export default function Home() {
   }, [session.status])
 
   useEffect(() => {
-    if (user && user.colorScheme !== theme) {
-      setTheme(user.colorScheme)
+    if (user) {
+      setLanguage(user.language)
+
+      if (user.colorScheme !== theme) {
+        setTheme(user.colorScheme)
+      }
     }
   }, [user])
 

@@ -2,6 +2,7 @@
 
 import { atom, selector } from 'recoil'
 
+// LANGUAGES JSON
 // en
 import enOut from './locales/en-out.json'
 import enIn from './locales/en-in.json'
@@ -43,7 +44,7 @@ const paperState = atom({
 
 const languageOutState = atom({
   key: 'selectedOutLanguage',
-  default: frOut,
+  default: enOut,
 })
 
 const languagesOutSelector = selector({

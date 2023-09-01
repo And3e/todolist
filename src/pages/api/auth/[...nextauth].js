@@ -151,6 +151,7 @@ export const authOptions = {
         })
       }
       session.user.colorScheme = user.colorScheme ? user.colorScheme : 'dark'
+      session.user.language = user.language
       session.user.provider = 'undefined'
 
       if (provider.length > 0) {

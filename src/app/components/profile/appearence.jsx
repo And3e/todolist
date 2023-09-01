@@ -288,6 +288,34 @@ function Appearence() {
     return out
   }
 
+  // update db logged language
+  async function syncLanguage(lang) {
+    let outElement = {
+      language: lang,
+    }
+
+    if (user) {
+      outElement.id = user.id
+
+      await axios({
+        url: '/api/user',
+        method: 'patch',
+        data: outElement,
+      }).catch((error) => {
+        console.log(error)
+      })
+
+      // update user
+      const fetchData = await axios('/api/user').catch((error) => {
+        console.log(error)
+      })
+
+      if (fetchData) {
+        setUser(await fetchData.data)
+      }
+    }
+  }
+
   return (
     <div>
       <h2 className='profile-title'>{language.appearence.appearence}</h2>
@@ -368,8 +396,12 @@ function Appearence() {
       <SegmentedControl
         fullWidth
         color='orange'
+        defaultValue={user.language}
         radius='xl'
-        onChange={(lang) => setLanguage(lang)}
+        onChange={(lang) => {
+          setLanguage(lang)
+          syncLanguage(lang)
+        }}
         data={[
           {
             label: (

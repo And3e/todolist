@@ -36,6 +36,7 @@ async function getUser(session, res) {
     id: user.id,
     image: user.image,
     colorScheme: user.colorScheme ? user.colorScheme : 'dark',
+    language: user.language,
     name: user.name,
     provider: user.provider,
     surname: user.surname,
@@ -202,6 +203,7 @@ async function createUser(req, res) {
       deviceIP: getClientIp(req),
       image: avatar,
       colorScheme: 'dark',
+      language: 'en',
     },
   })
 
