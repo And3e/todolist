@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { signIn } from 'next-auth/react'
 
 // store
-import { useRecoilState } from 'recoil'
+import { RecoilRoot, useRecoilState } from 'recoil'
 import { languagesOutSelector } from '@/recoil_state'
 
 // router
@@ -21,9 +21,7 @@ import {
   Loader,
 } from '@mantine/core'
 
-export function Providers({ providers }) {
-  const [language] = useRecoilState(languagesOutSelector)
-
+function Providers({ providers, language }) {
   function getProviderProps(name, color) {
     let out = null
 
@@ -57,7 +55,7 @@ export function Providers({ providers }) {
           my='xs'
           variant='dashed'
           labelPosition='center'
-          label={<Text fz='sm'>{language.login.or}</Text>}
+          label={<Text fz='sm'>{language ? language.login.or : 'Or'}</Text>}
         />
         {Object.values(providers).map((provider) => {
           if (provider.id === 'credentials') {
@@ -80,7 +78,8 @@ export function Providers({ providers }) {
                     src={getProviderProps(provider.name, false)}
                     height={25}
                   />
-                  {language.login.signin_with + provider.name}
+                  {(language ? language.login.signin_with : 'Sign in with ') +
+                    provider.name}
                 </div>
               </Button>
             </div>
@@ -91,7 +90,7 @@ export function Providers({ providers }) {
   }
 }
 
-export function Login({ providers }) {
+export function LoginRoot({ providers }) {
   const [language] = useRecoilState(languagesOutSelector)
 
   const [isLoading, setIsLoading] = useState(false)
@@ -256,9 +255,17 @@ export function Login({ providers }) {
           </div>
         </form>
 
-        <Providers providers={providers} />
+        <Providers providers={providers} language={language} />
       </ScrollArea>
     </Box>
+  )
+}
+
+export function Login({ providers }) {
+  return (
+    <RecoilRoot>
+      <LoginRoot providers={providers} />
+    </RecoilRoot>
   )
 }
 
