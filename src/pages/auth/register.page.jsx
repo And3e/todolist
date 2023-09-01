@@ -25,8 +25,8 @@ import {
   Loader,
 } from '@mantine/core'
 
-export function Register() {
-  const [language] = useRecoilState(languagesOutSelector)
+export function Register({ language }) {
+  // const [language] = useRecoilState(languagesOutSelector)
 
   const router = useRouter()
 
@@ -290,15 +290,15 @@ export function Register() {
 
           <TextInput
             mt='sm'
-            label='Email'
-            placeholder='Email'
+            label={language.login.mail}
+            placeholder={language.login.mail}
             radius='xl'
             className='input-margin-top'
             {...form.getInputProps('email')}
           />
           <PasswordInput
-            label='Password'
-            placeholder='Password'
+            label={language.login.password}
+            placeholder={language.login.password}
             radius='xl'
             className='input-margin-top'
             toggleTabIndex={0}

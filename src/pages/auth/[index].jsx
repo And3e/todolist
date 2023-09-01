@@ -228,10 +228,10 @@ function Auth({ providers }) {
                 </Tabs.Tab>
               </Tabs.List>
               <Tabs.Panel value='signin'>
-                <Login providers={providers} />
+                <Login providers={providers} language={language} />
               </Tabs.Panel>
               <Tabs.Panel value='signup'>
-                <Register />
+                <Register language={language} />
               </Tabs.Panel>
             </Tabs>
           </Paper>

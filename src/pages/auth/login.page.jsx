@@ -90,8 +90,8 @@ function Providers({ providers, language }) {
   }
 }
 
-export function Login({ providers }) {
-  const [language] = useRecoilState(languagesOutSelector)
+export function Login({ providers, language }) {
+  // const [language] = useRecoilState(languagesOutSelector)
 
   const [isLoading, setIsLoading] = useState(false)
 
