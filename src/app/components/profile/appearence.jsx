@@ -45,8 +45,9 @@ function Appearence() {
     user && user.image.at(0) !== '$' ? user.image : ''
   )
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingImage, setIsLoadingImage] = useState(false)
   const [isLoadingTheme, setIsLoadingTheme] = useState(false)
+  const [isLoadingLanguage, setIsLoadingLanguage] = useState(0)
 
   // colors
   const colorList = language.appearence.user_icon.custom.colors
@@ -115,17 +116,17 @@ function Appearence() {
         setAvatar(
           <Avatar
             src={null}
-            color={isLoading ? 'orange' : color}
+            color={isLoadingImage ? 'orange' : color}
             alt={text}
             radius='xl'
             size='xl'
             variant='filled'
             style={{ letterSpacing: '0.8px' }}>
-            {isLoading ? <Loader size='3rem' color='white' /> : text}
+            {isLoadingImage ? <Loader size='3rem' color='white' /> : text}
           </Avatar>
         )
       } else {
-        if (isLoading) {
+        if (isLoadingImage) {
           setAvatar(
             <Avatar
               src={null}
@@ -139,7 +140,7 @@ function Appearence() {
             </Avatar>
           )
         } else {
-          if (isLoading) {
+          if (isLoadingImage) {
             setAvatar(
               <Avatar
                 src={null}
@@ -160,7 +161,7 @@ function Appearence() {
     } else {
       setAvatar(<Avatar radius='xl' size='xl' />)
     }
-  }, [user, isLoading])
+  }, [user, isLoadingImage])
 
   // colorScheme
   async function syncTheme(colorScheme) {
@@ -219,7 +220,7 @@ function Appearence() {
 
   // image
   async function updateImage(image) {
-    setIsLoading(true)
+    setIsLoadingImage(true)
 
     await axios({
       url: '/api/user',
@@ -241,7 +242,7 @@ function Appearence() {
       setUser(await fetchData.data)
     }
 
-    setIsLoading(false)
+    setIsLoadingImage(false)
   }
 
   function customImage() {
@@ -289,12 +290,14 @@ function Appearence() {
   }
 
   // update db logged language
-  async function syncLanguage(lang) {
+  async function syncLanguage(lang, loadingTarget) {
     let outElement = {
       language: lang,
     }
 
     if (user) {
+      setIsLoadingLanguage(loadingTarget)
+
       outElement.id = user.id
 
       await axios({
@@ -313,6 +316,8 @@ function Appearence() {
       if (fetchData) {
         setUser(await fetchData.data)
       }
+
+      setIsLoadingLanguage(0)
     }
   }
 
@@ -398,45 +403,71 @@ function Appearence() {
         color='orange'
         defaultValue={user.language}
         radius='xl'
+        disabled={isLoadingLanguage}
         onChange={(lang) => {
+          let loadingTarget = 0
+
+          if (lang === 'en') {
+            loadingTarget = 1
+          } else if (lang === 'it') {
+            loadingTarget = 2
+          } else if (lang === 'fr') {
+            loadingTarget = 3
+          }
+
           setLanguage(lang)
-          syncLanguage(lang)
+          syncLanguage(lang, loadingTarget)
         }}
         data={[
           {
-            label: (
-              <div className='lang-control'>
-                <GB
-                  title='English'
-                  height='25px'
-                  style={{ borderRadius: '25px' }}
-                />
-              </div>
-            ),
+            label:
+              isLoadingLanguage === 1 ? (
+                <div className='lang-control'>
+                  <Loader size='25px' color='white' />
+                </div>
+              ) : (
+                <div className='lang-control'>
+                  <GB
+                    title='English'
+                    height='25px'
+                    style={{ borderRadius: '25px' }}
+                  />
+                </div>
+              ),
             value: 'en',
           },
           {
-            label: (
-              <div className='lang-control'>
-                <IT
-                  title='Italiano'
-                  height='25px'
-                  style={{ borderRadius: '25px' }}
-                />
-              </div>
-            ),
+            label:
+              isLoadingLanguage === 2 ? (
+                <div className='lang-control'>
+                  <Loader size='25px' color='white' />
+                </div>
+              ) : (
+                <div className='lang-control'>
+                  <IT
+                    title='Italiano'
+                    height='25px'
+                    style={{ borderRadius: '25px' }}
+                  />
+                </div>
+              ),
             value: 'it',
           },
           {
-            label: (
-              <div className='lang-control'>
-                <FR
-                  title='Français'
-                  height='25px'
-                  style={{ borderRadius: '25px' }}
-                />
-              </div>
-            ),
+            label:
+              isLoadingLanguage === 3 ? (
+                <div className='lang-control'>
+                  <Loader size='25px' color='white' />
+                </div>
+              ) : (
+                <div className='lang-control'>
+                  <FR
+                    title='Français'
+                    height='25px'
+                    style={{ borderRadius: '25px' }}
+                  />
+                </div>
+              ),
             value: 'fr',
           },
         ]}
