@@ -53,18 +53,18 @@ const languagesOutSelector = selector({
   get: ({ get }) => get(languageOutState),
   set: ({ set }, lang) => {
     switch (lang) {
-      case 'it':
+      case 'it': {
         set(languageOutState, itOut)
-        return itOut
-
-      case 'fr':
+        break
+      }
+      case 'fr': {
         set(languageOutState, frOut)
-        return itOut
-
+        break
+      }
       case 'en':
-      default:
+      default: {
         set(languageOutState, enOut)
-        return enOut
+      }
     }
   },
 })
