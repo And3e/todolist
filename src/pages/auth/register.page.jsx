@@ -6,10 +6,6 @@ import { signIn } from 'next-auth/react'
 // router
 import { useRouter } from 'next/router'
 
-// store
-import { useRecoilState } from 'recoil'
-import { languagesOutSelector } from '@/recoil_state'
-
 // api calls
 import axios from 'axios'
 
@@ -26,8 +22,6 @@ import {
 } from '@mantine/core'
 
 export function Register({ language }) {
-  // const [language] = useRecoilState(languagesOutSelector)
-
   const router = useRouter()
 
   const [isLoading, setIsLoading] = useState(false)

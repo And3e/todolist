@@ -2,10 +2,6 @@ import React, { useState, useEffect } from 'react'
 
 import { signIn } from 'next-auth/react'
 
-// store
-import { useRecoilState } from 'recoil'
-import { languagesOutSelector } from '@/recoil_state'
-
 // router
 import { useRouter } from 'next/router'
 
@@ -91,8 +87,6 @@ function Providers({ providers, language }) {
 }
 
 export function Login({ providers, language }) {
-  // const [language] = useRecoilState(languagesOutSelector)
-
   const [isLoading, setIsLoading] = useState(false)
 
   const router = useRouter()

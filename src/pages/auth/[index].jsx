@@ -241,15 +241,7 @@ function Auth({ providers }) {
   )
 }
 
-function Index({ providers }) {
-  return (
-    <RecoilRoot>
-      <Auth providers={providers} />
-    </RecoilRoot>
-  )
-}
-
-export default Index
+export default Auth
 
 /*
 import React, { useState } from 'react'
