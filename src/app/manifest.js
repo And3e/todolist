@@ -14,13 +14,61 @@ export default function manifest() {
         type: 'image/x-icon',
       },
     ],
-    // screenshots: [
-    //   {
-    //     src: '/src/app/imgs/',
-    //     type: 'image/png',
-    //     sizes: '540x720',
-    //     form_factor: 'narrow',
-    //   },
-    // ],
+    screenshots: [
+      {
+        src: '/src/app/imgs/screenshots/screenshot-1.png',
+        type: 'image/png',
+        sizes: '2256x1286',
+        form_factor: 'narrow',
+      },
+      {
+        src: '/src/app/imgs/screenshots/screenshot-2.png',
+        type: 'image/png',
+        sizes: '2256x1283',
+        form_factor: 'narrow',
+      },
+      {
+        src: '/src/app/imgs/screenshots/screenshot-3.png',
+        type: 'image/png',
+        sizes: '2256x1279',
+        form_factor: 'narrow',
+      },
+      {
+        src: '/src/app/imgs/screenshots/screenshot-4.png',
+        type: 'image/png',
+        sizes: '2256x1285',
+        form_factor: 'narrow',
+      },
+      {
+        src: '/src/app/imgs/screenshots/screenshot-5.png',
+        type: 'image/png',
+        sizes: '2256x1282',
+        form_factor: 'narrow',
+      },
+      {
+        src: '/src/app/imgs/screenshots/screenshot-6.png',
+        type: 'image/png',
+        sizes: '2256x1288',
+        form_factor: 'narrow',
+      },
+      {
+        src: '/src/app/imgs/screenshots/screenshot-7.png',
+        type: 'image/png',
+        sizes: '2256x1284',
+        form_factor: 'narrow',
+      },
+      {
+        src: '/src/app/imgs/screenshots/screenshot-8.png',
+        type: 'image/png',
+        sizes: '2256x1284',
+        form_factor: 'narrow',
+      },
+      {
+        src: '/src/app/imgs/screenshots/screenshot-9.png',
+        type: 'image/png',
+        sizes: '2256x1269',
+        form_factor: 'narrow',
+      },
+    ],
   }
 }
