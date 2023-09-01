@@ -7,7 +7,7 @@ import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/router'
 
 // store
-import { RecoilRoot, useRecoilState } from 'recoil'
+import { useRecoilState } from 'recoil'
 import { languagesOutSelector } from '@/recoil_state'
 
 // api calls
@@ -25,7 +25,7 @@ import {
   Loader,
 } from '@mantine/core'
 
-export function RegisterRoot() {
+export function Register() {
   const [language] = useRecoilState(languagesOutSelector)
 
   const router = useRouter()
@@ -328,14 +328,6 @@ export function RegisterRoot() {
         </form>
       </ScrollArea>
     </Box>
-  )
-}
-
-export function Register() {
-  return (
-    <RecoilRoot>
-      <RegisterRoot />
-    </RecoilRoot>
   )
 }
 

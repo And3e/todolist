@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { signIn } from 'next-auth/react'
 
 // store
-import { RecoilRoot, useRecoilState } from 'recoil'
+import { useRecoilState } from 'recoil'
 import { languagesOutSelector } from '@/recoil_state'
 
 // router
@@ -90,7 +90,7 @@ function Providers({ providers, language }) {
   }
 }
 
-export function LoginRoot({ providers }) {
+export function Login({ providers }) {
   const [language] = useRecoilState(languagesOutSelector)
 
   const [isLoading, setIsLoading] = useState(false)
@@ -258,14 +258,6 @@ export function LoginRoot({ providers }) {
         <Providers providers={providers} language={language} />
       </ScrollArea>
     </Box>
-  )
-}
-
-export function Login({ providers }) {
-  return (
-    <RecoilRoot>
-      <LoginRoot providers={providers} />
-    </RecoilRoot>
   )
 }
 
