@@ -102,7 +102,7 @@ function UserBtn({ open }) {
 
       <Menu.Dropdown onClick={(event) => handleClick(event)}>
         <Menu.Label>
-          <Text fz='sm'>Account</Text>
+          <Text fz='sm'>{language.account.account}</Text>
         </Menu.Label>
         <Menu.Item
           icon={<BoxArrowRight size={14} />}

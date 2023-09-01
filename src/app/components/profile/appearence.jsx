@@ -31,7 +31,7 @@ function Appearence() {
   const [theme, setTheme] = useRecoilState(themeState)
   const [user, setUser] = useRecoilState(userState)
 
-  const [language] = useRecoilState(languagesInSelector)
+  const [language, setLanguage] = useRecoilState(languagesInSelector)
 
   const [character, setCharacter] = useState(
     user && user.image.at(0) === '$' ? user.image.slice(1).split('#')[1] : ''
@@ -274,7 +274,6 @@ function Appearence() {
   }, [link])
 
   // change language
-  function handleLanguage(lang) {}
 
   function getLanguageColorScheme(colorScheme) {
     let out = language.appearence.website_theme.dark_default
@@ -307,7 +306,7 @@ function Appearence() {
               user ? (user.colorScheme === 'dark' ? 'violet' : 'yellow') : null
             }>
             <div className='pref-theme-label'>
-              {getLanguageColorScheme(user.colorScheme)}
+              {user ? getLanguageColorScheme(user.colorScheme) : null}
               {isLoadingTheme ? (
                 <Loader
                   size='0.7rem'
@@ -370,7 +369,7 @@ function Appearence() {
         fullWidth
         color='orange'
         radius='xl'
-        onChange={(lang) => handleLanguage(lang)}
+        onChange={(lang) => setLanguage(lang)}
         data={[
           {
             label: (

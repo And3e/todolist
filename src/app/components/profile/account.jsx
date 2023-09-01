@@ -189,6 +189,7 @@ function Field({ content, element }) {
         transition: `all ${animationDuration}ms ease-in-out`,
       }}>
       <label
+        // htmlFor='#element#'
         className='mantine-InputWrapper-label mantine-Select-label modal-label'
         style={{
           color: theme.colorScheme === 'dark' ? '#C1C2C5' : '#212529',
@@ -253,6 +254,8 @@ function Account() {
   const [user] = useRecoilState(userState)
   const [avatar, setAvatar] = useState(<Avatar radius='xl' size='lg' />)
 
+  const [language] = useRecoilState(languagesInSelector)
+
   // avatar
   useEffect(() => {
     if (user) {
@@ -304,7 +307,7 @@ function Account() {
             processing>
             {avatar}
           </Indicator>
-          <h2>Hi {user ? user.name : ''}!</h2>
+          <h2>{language.account.hi + (user ? ' ' + user.name : '') + '!'}</h2>
         </div>
       </div>
       <Box

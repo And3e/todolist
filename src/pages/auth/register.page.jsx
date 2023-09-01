@@ -206,9 +206,17 @@ function Register() {
     let out = 55
 
     switch (language.lang) {
-      case 'en': {
-        out = 55
+      case 'it': {
+        out = 65
         break
+      }
+      case 'fr': {
+        out = 70
+        break
+      }
+      case 'en':
+      default: {
+        out = 55
       }
     }
 

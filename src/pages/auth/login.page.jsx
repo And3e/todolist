@@ -201,11 +201,8 @@ export function Login({ providers }) {
   function getButtonWidth() {
     let out = 50
 
-    switch (language.lang) {
-      case 'en': {
-        out = 50
-        break
-      }
+    if (language.lang === 'fr') {
+      out = 75
     }
 
     return out
@@ -232,15 +229,15 @@ export function Login({ providers }) {
           <TextInput
             mt='sm'
             radius='xl'
-            label='Email'
-            placeholder='Email'
+            label={language.login.mail}
+            placeholder={language.login.mail}
             className='input-margin-top'
             {...form.getInputProps('email')}
           />
           <PasswordInput
-            label='Password'
+            label={language.login.password}
             radius='xl'
-            placeholder='Password'
+            placeholder={language.login.password}
             className='input-margin-top'
             toggleTabIndex={0}
             {...form.getInputProps('password')}

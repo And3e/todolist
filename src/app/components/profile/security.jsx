@@ -38,9 +38,14 @@ function Security() {
     let out = 60
 
     switch (language.lang) {
-      case 'en': {
-        out = 60
+      case 'fr':
+      case 'it': {
+        out = 70
         break
+      }
+      case 'en':
+      default: {
+        out = 60
       }
     }
 
@@ -89,21 +94,21 @@ function Security() {
         })}>
         <PasswordInput
           className='security-input'
-          label='Current Password'
+          label={language.security.current_password}
           radius='xl'
           toggleTabIndex={0}
           {...form.getInputProps('currentPassword')}
         />
         <PasswordInput
           className='security-input'
-          label='New Password'
+          label={language.security.new_password}
           radius='xl'
           toggleTabIndex={0}
           {...form.getInputProps('newPassword')}
         />
         <PasswordInput
           className='security-input'
-          label='Confirm Password'
+          label={language.security.confirm_password}
           radius='xl'
           toggleTabIndex={0}
           {...form.getInputProps('confirmPassword')}

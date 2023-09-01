@@ -14,12 +14,15 @@
     "signin_with": "Sign in with ",
     "or": "Or",
 
+    "mail": "Email",
+    "password": "Password",
+
     "errors": {
       "login_error": "Login error, try again!",
       "invalid_credentials": "Invalid credentials, wrong mail or password",
       "invalid_provider": "Invalid provider, try with the ",
       "button": " button",
-      
+
       "google_or_github": "Google or GitHub"
     }
   },
@@ -49,8 +52,8 @@
   
   "_error": {
     "to_do_error": "TO DO - Error!",
-    "error": " error",
     "learn_more": "Learn more about ",
+    "error": " error",
     "back_home": "Take me back to home page",
 
 
@@ -75,7 +78,7 @@
 
     "error_404": "Error 404",
     "nothing_to_see_here": "Nothing to see here",
-    "page_do_not_exists": "Page you are trying to open does not exist. You may have mistyped the address, or the page has been moved to another URL. If you think this is an error contact support."
+    "page_do_not_exists": "Page you are trying to open does not exist. You may have mistyped the address, or the page has been moved to another URL."
   },
 
   "error_500": {

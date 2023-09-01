@@ -122,7 +122,7 @@ function Profile({ opened, close }) {
               <Divider
                 style={{ margin: '30px 0px 30px 0px' }}
                 my='xs'
-                label='Danger Zone'
+                label={language.account.danger_zone.danger_zone}
                 color='red'
                 labelPosition='center'
               />

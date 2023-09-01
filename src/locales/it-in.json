@@ -1,0 +1,122 @@
+{
+  "lang": "it",
+  "auth": "in",
+
+  "input": {
+    "add_field": "Aggiungi una task...",
+
+    "enter": "Invio",
+    "insert": "Inserisci",
+
+    "errors": {
+      "max_limit": "Limite massimo di ",
+      "reached": " tasks raggiunto!"
+    }
+  },
+
+  "list": {
+    "in_progress": "Da fare",
+    "done": "Fatto",
+
+    "errors": {
+      "task": "Task ",
+      "eliminated": " eliminata",
+
+      "cancel": "Annulla"
+    }
+  },
+
+  "user_btn": {
+    "sign_out": "Esci",
+    "profile": "Profilo",
+
+    "look_and_feel": "Aspetto & Stile",
+    "theme": "Tema"
+  },
+
+  "account": {
+    "account": "Account",
+
+    "hi": "Ciao",
+    "name": "Nome",
+    "surname": "Cognome",
+
+    "danger_zone": {
+      "danger_zone": "Zona pericolosa",
+
+      "delete_account": "Elimina account",
+      "are_you_sure": "Sei sicuro di voler eliminare il tuo account?",
+      "operation_not_reversible": "Questa operazione non è reversible",
+
+      "delete": "Elimina"
+    },
+
+    "warnings": {
+      "change_involves_logging_out": "Questa modifica comporta la disconnessione dalla sessione!"
+    }
+  },
+
+  "security": {
+    "security": "Sicurezza",
+
+    "change_password": "Cambia Password",
+
+    "current_password": "Password attuale",
+    "new_password": "Nuova Password",
+    "confirm_password": "Conferma Password",
+
+    "confirm": "Conferma",
+
+    "errors": {
+      "passwords_do_not_match": "Le password non corrispondono!",
+      "old_passwords_do_not_match": "Le vecchie password non corrispondono"
+    }
+  },
+
+  "appearence": {
+    "appearence": "Aspetto",
+
+    "website_theme": {
+      "website_theme": "Tema del sito",
+
+      "preferred_theme": "Tema preferito",
+
+      "dark": "scuro",
+      "dark_default": "scuro (predefinito)",
+      "light": "chiaro"
+    },
+
+    "language": "Lingua",
+
+    "user_icon": {
+      "user_icon": "Icona utente",
+
+      "custom": {
+        "letters": "Lettere",
+        "choosen_color": "Colore",
+        "pick_one": "Scegli un colore",
+        "nothing_found": "Nessun colore trovato!",
+
+        "colors": {
+          "red": "Rosso",
+          "pink": "Rosa",
+          "grape": "Uva",
+          "violet": "Viola",
+          "indigo": "Indaco",
+          "blue": "Blu",
+          "cyan": "Ciano",
+          "teal": "Verde acqua",
+          "green": "Verde",
+          "lime": "Lime",
+          "yellow": "Giallo",
+          "orange": "Arancione"
+        }
+      },
+
+      "image": {
+        "image_link": "Link dell'immagine",
+        "link_to_my_image": "https://link-della-mia-image.com"
+      }
+    }
+  }
+}

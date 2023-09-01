@@ -106,9 +106,17 @@ export default function Input() {
     let out = 50
 
     switch (language.lang) {
-      case 'en': {
-        out = 50
+      case 'it': {
+        out = 65
         break
+      }
+      case 'fr': {
+        out = 60
+        break
+      }
+      case 'en':
+      default: {
+        out = 50
       }
     }
 
@@ -120,7 +128,7 @@ export default function Input() {
       <TextInput
         color='orange'
         w='80%'
-        placeholder='Add field...'
+        placeholder={language.input.add_field}
         variant='filled'
         radius='xl'
         size='md'

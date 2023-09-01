@@ -44,11 +44,8 @@ function DangerZone({ viewport }) {
   function getButtonWidth() {
     let out = 50
 
-    switch (language.lang) {
-      case 'en': {
-        out = 50
-        break
-      }
+    if (language.lang === 'fr') {
+      out = 70
     }
 
     return out

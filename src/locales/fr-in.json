@@ -1,0 +1,122 @@
+{
+  "lang": "fr",
+  "auth": "in",
+
+  "input": {
+    "add_field": "Ajouter une tâche...",
+
+    "enter": "Entrée",
+    "insert": "Insérer",
+
+    "errors": {
+      "max_limit": "Limite maximale de ",
+      "reached": " tâches accomplies!"
+    }
+  },
+
+  "list": {
+    "in_progress": "En cours",
+    "done": "Achevé",
+
+    "errors": {
+      "task": "Task ",
+      "eliminated": " éliminée",
+
+      "cancel": "Annuler"
+    }
+  },
+
+  "user_btn": {
+    "sign_out": "Déconnexion",
+    "profile": "Profil",
+
+    "look_and_feel": "Apparence & Style",
+    "theme": "Thème"
+  },
+
+  "account": {
+    "account": "Compte",
+
+    "hi": "Salut ",
+    "name": "Prénom",
+    "surname": "Nom",
+
+    "danger_zone": {
+      "danger_zone": "Zone de risque",
+
+      "delete_account": "Supprimer le compte",
+      "are_you_sure": "Êtes-vous sûr de vouloir supprimer votre compte?",
+      "operation_not_reversible": "L'opération n'est pas réversible",
+
+      "delete": "Supprimer"
+    },
+
+    "warnings": {
+      "change_involves_logging_out": "Cette modification implique la déconnexion de la session!"
+    }
+  },
+
+  "security": {
+    "security": "Sécurité",
+
+    "change_password": "Modifier le mot de passe",
+
+    "current_password": "Mot de passe actuel",
+    "new_password": "Nouveau mot de passe",
+    "confirm_password": "Confirmer le mot de passe",
+
+    "confirm": "Confirmer",
+
+    "errors": {
+      "passwords_do_not_match": "Les mots de passe ne correspondent pas!",
+      "old_passwords_do_not_match": "Les anciens mots de passe ne correspondent pas"
+    }
+  },
+
+  "appearence": {
+    "appearence": "Aspect",
+
+    "website_theme": {
+      "website_theme": "Thème du site web",
+
+      "preferred_theme": "Thème préféré",
+
+      "dark": "sombre",
+      "dark_default": "sombre (par défaut)",
+      "light": "neutre"
+    },
+
+    "language": "Langue",
+
+    "user_icon": {
+      "user_icon": "Icône",
+
+      "custom": {
+        "letters": "Lettres",
+        "choosen_color": "Couleur",
+        "pick_one": "Choisissez-en un",
+        "nothing_found": "Aucune couleur trouvée!",
+
+        "colors": {
+          "red": "Rouge",
+          "pink": "Rose",
+          "grape": "Raisin",
+          "violet": "Violet",
+          "indigo": "Indigo",
+          "blue": "Bleu",
+          "cyan": "Cyan",
+          "teal": "Sarcelle",
+          "green": "Vert",
+          "lime": "Chaux",
+          "yellow": "Jaune",
+          "orange": "Orange"
+        }
+      },
+
+      "image": {
+        "image_link": "Image",
+        "link_to_my_image": "https://lien-vers-mon-image.com"
+      }
+    }
+  }
+}

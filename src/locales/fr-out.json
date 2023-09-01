@@ -1,0 +1,91 @@
+{
+  "lang": "fr",
+  "auth": "out",
+
+  "home": {
+    "not_logged_in": "Vous n'êtes pas connecté(e)!",
+
+    "title_signin": "TO DO - Connexion",
+    "title_signup": "TO DO - Inscription"
+  },
+
+  "login": {
+    "signin": "Connexion",
+    "signin_with": "Connexion avec ",
+    "or": "Ou",
+
+    "mail": "Courriel",
+    "password": "Mot de passe",
+
+    "errors": {
+      "login_error": "Erreur de connexion, réessayer!",
+      "invalid_credentials": "Informations d'identification non valides, courrier ou mot de passe erroné",
+      "invalid_provider": "Fournisseur non valide, essayez avec le bouton de ",
+      "button": "",
+      
+      "google_or_github": "Google ou GitHub"
+    }
+  },
+  
+  "register": {
+    "signup": "Inscription",
+    
+    "name": "Prénom",
+    "surname": "Nom",
+    "confirm_password": "Confirmer le mot de passe",
+    
+    "errors": {
+      "invalid_mail": "Courrier non valide!",
+      "invalid_mail_domain": "Domaine de courrier non valide!",
+      
+      "name_must_have": "Le prénom doit comporter au moins 2 lettres!",
+      "surname_must_have": "Le nom doit comporter au moins 2 lettres!",
+      "passwords_do_not_match": "Les mots de passe ne correspondent pas!",
+      
+      "registration_error": "Erreur d'inscription, réessayer!",
+      
+      "account_already_exists": "Un compte avec ce courriel a déjà été créé!",
+      "too_many_requests": "Vous avez récemment créé un compte, attendez un peu avant d'en créer un autre."
+    }
+  },
+
+  
+  "_error": {
+    "to_do_error": "TO DO - Erreur!",
+    "error": "",
+    "learn_more": "Pour en savoir plus sur l'erreur  ",
+    "back_home": "Retour à la page d'accueil",
+
+
+    "codes": {
+      "client": "Erreur du client",
+      "server": "Erreur du serveur",
+      "error": "Erreur "
+    },
+
+    "titles": {
+      "client": "Une erreur s'est présentée sur le client",
+      "server": "Une erreur s'est présentée sur le serveur",
+      "busy_servers": "Tous nos serveurs sont occupés",
+
+      "an_error": "Une erreur ",
+      "occurred": " s'est produite sur le serveur"
+    }
+  },
+
+  "error_404": {
+    "code_404": "404",
+
+    "error_404": "Erreur 404",
+    "nothing_to_see_here": "Rien à voir ici",
+    "page_do_not_exists": "La page que vous essayez d'ouvrir n'existe pas. Il se peut que vous ayez mal saisi l'adresse ou que la page ait été déplacée vers un autre URL."
+  },
+
+  "error_500": {
+    "code_500": "500",
+
+    "error_500": "Erreur 500",
+    "something_bad": "Il vient de se passer quelque chose de mauvais...",
+    "servers_could_not_handle": "Nos serveurs n'ont pas pu traiter votre demande. Ne vous inquiétez pas, notre équipe de développement en a déjà été informée. Essayez de rafraîchir la page."
+  }
+}

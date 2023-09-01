@@ -46,7 +46,7 @@
 
       "delete_account": "Delete account",
       "are_you_sure": "Are you sure you want to delete your account?",
-      "operation_not_reversible": "Operation is not reversible",
+      "operation_not_reversible": "This operation is not reversible",
 
       "delete": "Delete"
     },
@@ -93,7 +93,7 @@
 
       "custom": {
         "letters": "Letters",
-        "choosen_color": "Choosen color",
+        "choosen_color": "Color",
         "pick_one": "Pick one",
         "nothing_found": "No color found!",
 
