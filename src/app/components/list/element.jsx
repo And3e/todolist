@@ -149,6 +149,10 @@ export default function Element({ element, done }) {
         calculatedWidth -= 200
       } else {
         calculatedWidth -= 150
+
+        if (isEditing) {
+          calculatedWidth -= 10
+        }
       }
 
       if (isLoadingEdit && isLoadingDelete) {
@@ -169,7 +173,7 @@ export default function Element({ element, done }) {
 
       setElementWidth(calculatedWidth)
     }
-  }, [paperWidth, seeBtns, isLoadingEdit, isLoadingDelete])
+  }, [paperWidth, seeBtns, isLoadingEdit, isLoadingDelete, isEditing])
 
   // check provenienza click (btns || parent element)
   function handleClick(event) {
@@ -237,7 +241,11 @@ export default function Element({ element, done }) {
               onClick={handleClick}>
               {isEditing ? (
                 <Box className='icon-element-conainter' id='#text-input#'>
-                  <GripVertical size={17} width={20} />
+                  <GripVertical
+                    size={17}
+                    width={20}
+                    style={{ color: isEditing ? '#fea869' : null }}
+                  />
                   <TextInput
                     placeholder={element.content}
                     variant='unstyled'

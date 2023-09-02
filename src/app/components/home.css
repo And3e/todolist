@@ -95,8 +95,19 @@
   gap: 10px;
 }
 
+.edit-field-container {
+  height: fit-content;
+}
+
+#text {
+  padding: 5px;
+}
+
 .edit-field {
   flex-grow: 1;
+  word-break: break-all;
+  margin-left: 5px;
+  margin-right: 10px;
 }
 
 .edit-field.error {

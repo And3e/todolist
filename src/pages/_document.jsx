@@ -9,7 +9,15 @@ class _Document extends Document {
   render() {
     return (
       <Html>
-        <Head />
+        <Head>
+          <meta charset='UTF-8' />
+          <meta
+            name='description'
+            content='A simple fullstack TO DO list where you can organize all your stuffs'
+          />
+          <meta name='keywords' content='Next.js, React, Prisma' />
+          <meta name='author' content='And3e - https://github.com/And3e' />
+        </Head>
         <body>
           <Main />
           <NextScript />

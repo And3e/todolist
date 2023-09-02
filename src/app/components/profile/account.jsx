@@ -196,12 +196,12 @@ function Field({ content, element }) {
         {getLabel()}
       </label>
       <Box
-        className='element'
-        id='#element#'
+        className='element edit-field-container'
+        id='element'
         sx={(theme) => getStyle(theme)}
         onClick={handleClick}>
         {isEditing ? (
-          <Box className='icon-element-conainter' id='#text-input#'>
+          <Box className='icon-element-conainter' id='text-input'>
             <TextInput
               placeholder={element ? '' : 'Unknown'}
               size='xs'
@@ -218,7 +218,7 @@ function Field({ content, element }) {
             />
           </Box>
         ) : (
-          <Box className='icon-element-conainter' id='#text#'>
+          <Box className='icon-element-conainter' id='text'>
             <Text className={`edit-field ${error === '' ? '' : 'error'}`}>
               {element ? fieldValue : 'Unknown'}
             </Text>
