@@ -1,8 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, use } from 'react'
 
 // store
 import { useRecoilState } from 'recoil'
-import { taskState, paperState } from '@/recoil_state'
+import {
+  taskState,
+  themeState,
+  paperState,
+  isEditingState,
+} from '@/recoil_state'
 
 // api calls
 import axios from 'axios'
@@ -34,7 +39,9 @@ export default function Element({ element, done }) {
   const nodeRef = useRef(null)
 
   const [tasks, setTasks] = useRecoilState(taskState)
-  const [paperWidth, setPaperWidth] = useRecoilState(paperState)
+  const [paperWidth] = useRecoilState(paperState)
+  const [isEditingCommon, setIsEditingCommon] = useRecoilState(isEditingState)
+  const [theme] = useRecoilState(themeState)
 
   const [inputValue, setInputValue] = useState(element.content)
   const [elementWidth, setElementWidth] = useState(
@@ -175,9 +182,13 @@ export default function Element({ element, done }) {
     }
   }, [paperWidth, seeBtns, isLoadingEdit, isLoadingDelete, isEditing])
 
+  useEffect(() => {
+    setIsEditingCommon(isEditing)
+  }, [isEditing])
+
   // check provenienza click (btns || parent element)
   function handleClick(event) {
-    if (event.target.id != '' && !isEditing) {
+    if (event.target.id != '' && !isEditing && !isEditingCommon) {
       setDone()
       setIsClicked(true)
     }
@@ -244,7 +255,7 @@ export default function Element({ element, done }) {
                   <GripVertical
                     size={17}
                     width={20}
-                    style={{ color: isEditing ? '#fea869' : null }}
+                    style={{ color: '#fea869' }}
                   />
                   <TextInput
                     placeholder={element.content}
@@ -265,7 +276,17 @@ export default function Element({ element, done }) {
                 </Box>
               ) : (
                 <Box className='icon-element-conainter' id='#text#'>
-                  <GripVertical size={17} width={20} />
+                  <GripVertical
+                    size={17}
+                    width={20}
+                    style={{
+                      color: isEditingCommon
+                        ? theme === 'dark'
+                          ? '#666666'
+                          : '#bfbfbf'
+                        : null,
+                    }}
+                  />
                   <Text
                     id='#text#'
                     span

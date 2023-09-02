@@ -40,6 +40,11 @@ const paperState = atom({
   default: null,
 })
 
+const isEditingState = atom({
+  key: 'isEditing',
+  default: false,
+})
+
 // languages
 
 const languageOutState = atom({
@@ -103,6 +108,7 @@ export {
   userState,
   limitTask,
   paperState,
+  isEditingState,
   languagesOutSelector,
   languagesInSelector,
 }

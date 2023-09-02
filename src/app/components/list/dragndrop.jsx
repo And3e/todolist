@@ -5,7 +5,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
 // store
 import { useRecoilState } from 'recoil'
-import { taskState } from '@/recoil_state'
+import { taskState, isEditingState } from '@/recoil_state'
 
 // api calls
 import axios from 'axios'
@@ -19,6 +19,7 @@ import Element from './element'
 
 export default function DnD({ done, taskList, setTaskList }) {
   const [tasks, setTasks] = useRecoilState(taskState)
+  const [isEditingCommon, setIsEditingCommon] = useRecoilState(isEditingState)
 
   // da spostare in list (coordinazione con done/!done lists)
   const [toDB, setToDB] = useState([])
@@ -159,6 +160,7 @@ export default function DnD({ done, taskList, setTaskList }) {
               className='element-container'>
               {taskList.map((item, idx) => (
                 <Draggable
+                  isDragDisabled={isEditingCommon}
                   key={item.id}
                   draggableId={'task-' + item.id}
                   index={idx}>
