@@ -306,7 +306,9 @@ function Account() {
             processing>
             {avatar}
           </Indicator>
-          <h2>{language.account.hi + (user ? ' ' + user.name : '') + '!'}</h2>
+          <h2 style={{ wordBreak: 'break-all' }}>
+            {language.account.hi + (user ? ' ' + user.name : '') + '!'}
+          </h2>
         </div>
       </div>
       <Box

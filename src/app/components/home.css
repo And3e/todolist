@@ -88,6 +88,7 @@
   justify-content: flex-start !important;
   padding: 0;
   gap: 3px;
+  width: 100%;
 }
 
 .btns-container {
