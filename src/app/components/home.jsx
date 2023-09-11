@@ -76,12 +76,52 @@ export default function Home() {
     }
   }, [session.status])
 
+  async function setDefaultLanguage() {
+    let updateLang = {
+      language: 'en',
+    }
+
+    console.log(updateLang)
+
+    await axios({
+      url: '/api/user',
+      method: 'patch',
+      data: updateLang,
+    }).catch((error) => {
+      console.log(error)
+    })
+  }
+
+  async function setDefaultTheme() {
+    let updateTheme = {
+      colorScheme: 'dark',
+    }
+
+    console.log(updateTheme)
+
+    await axios({
+      url: '/api/user',
+      method: 'patch',
+      data: updateTheme,
+    }).catch((error) => {
+      console.log(error)
+    })
+  }
+
   useEffect(() => {
     if (user) {
-      setLanguage(user.language)
+      if (user.language) {
+        setLanguage(user.language)
+      } else {
+        setDefaultLanguage()
+      }
 
-      if (user.colorScheme !== theme) {
-        setTheme(user.colorScheme)
+      if (user.colorScheme) {
+        if (user.colorScheme !== theme) {
+          setTheme(user.colorScheme)
+        }
+      } else {
+        setDefaultTheme()
       }
     }
   }, [user])
