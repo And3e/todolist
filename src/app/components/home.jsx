@@ -100,9 +100,11 @@ export default function Home() {
             updateInfos['name'] = name
             first = false
           } else {
-            updateInfos['surname'] = name
+            updateInfos['surname'] += name + ' '
           }
         }
+
+        updateInfos = updateInfos.trim()
       }
     }
 
