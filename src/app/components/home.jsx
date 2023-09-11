@@ -95,12 +95,12 @@ export default function Home() {
       if (names.length > 1 && !secondName) {
         let first = true
 
-        for (let name in names) {
+        for (let name of names) {
           if (first) {
-            updateInfos.name = name
+            updateInfos['name'] = name
             first = false
           } else {
-            updateInfos.name = surname
+            updateInfos['surname'] = name
           }
         }
       }
