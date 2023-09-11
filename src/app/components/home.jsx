@@ -81,8 +81,6 @@ export default function Home() {
       language: 'en',
     }
 
-    console.log(updateLang)
-
     await axios({
       url: '/api/user',
       method: 'patch',
@@ -96,8 +94,6 @@ export default function Home() {
     let updateTheme = {
       colorScheme: 'dark',
     }
-
-    console.log(updateTheme)
 
     await axios({
       url: '/api/user',
