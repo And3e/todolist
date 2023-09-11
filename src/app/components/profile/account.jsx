@@ -128,7 +128,7 @@ function Field({ content, element }) {
 
       await axios({
         url: '/api/user',
-        method: 'PATCH',
+        method: 'patch',
         data: outElement,
       })
         .then((res) => {

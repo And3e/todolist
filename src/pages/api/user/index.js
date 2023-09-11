@@ -35,7 +35,7 @@ async function getUser(session, res) {
     emailVerified: user.emailVerified,
     id: user.id,
     image: user.image,
-    colorScheme: user.colorScheme ? user.colorScheme : 'dark',
+    colorScheme: user.colorScheme,
     language: user.language,
     name: user.name,
     provider: user.provider,

@@ -29,7 +29,7 @@ function UserBtn({ open }) {
   // theme
   const mantineTheme = useMantineTheme()
   const [theme, setTheme] = useRecoilState(themeState)
-  const [user, setUser] = useRecoilState(userState)
+  const [user] = useRecoilState(userState)
 
   const [language] = useRecoilState(languagesInSelector)
 

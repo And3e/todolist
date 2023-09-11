@@ -96,7 +96,7 @@ export const authOptions = {
           email: session.user.email,
         },
       })
-      const provider = await prisma.account.findMany({
+      const provider = await prisma.account.findFirst({
         where: {
           userId: session.user.id,
         },
@@ -154,8 +154,8 @@ export const authOptions = {
       session.user.language = user.language
       session.user.provider = 'undefined'
 
-      if (provider.length > 0) {
-        session.user.provider = provider[0].provider
+      if (provider) {
+        session.user.provider = provider.provider
       }
 
       return session

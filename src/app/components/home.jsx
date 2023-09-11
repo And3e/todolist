@@ -76,29 +76,40 @@ export default function Home() {
     }
   }, [session.status])
 
-  async function setDefaultLanguage() {
-    let updateLang = {
+  async function setDefault() {
+    let updateInfos = {
+      id: user.id,
       language: 'en',
-    }
-
-    await axios({
-      url: '/api/user',
-      method: 'patch',
-      data: updateLang,
-    }).catch((error) => {
-      console.log(error)
-    })
-  }
-
-  async function setDefaultTheme() {
-    let updateTheme = {
       colorScheme: 'dark',
     }
 
+    // determinate first name & surname ==> only if default (beginning)
+    let provider = session.data.user.provider
+
+    if (provider === 'google' || provider === 'github') {
+      let firstName = user.name
+      let secondName = user.surname
+
+      let names = firstName.split(' ')
+
+      if (names.length > 1 && !secondName) {
+        let first = true
+
+        for (let name in names) {
+          if (first) {
+            updateInfos.name = name
+            first = false
+          } else {
+            updateInfos.name = surname
+          }
+        }
+      }
+    }
+
     await axios({
       url: '/api/user',
       method: 'patch',
-      data: updateTheme,
+      data: updateInfos,
     }).catch((error) => {
       console.log(error)
     })
@@ -108,16 +119,14 @@ export default function Home() {
     if (user) {
       if (user.language) {
         setLanguage(user.language)
-      } else {
-        setDefaultLanguage()
       }
 
-      if (user.colorScheme) {
-        if (user.colorScheme !== theme) {
-          setTheme(user.colorScheme)
-        }
-      } else {
-        setDefaultTheme()
+      if (user.colorScheme && user.colorScheme !== theme) {
+        setTheme(user.colorScheme)
+      }
+
+      if (!user.language || !user.colorScheme) {
+        setDefault()
       }
     }
   }, [user])
