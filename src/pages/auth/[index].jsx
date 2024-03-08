@@ -75,7 +75,7 @@ function Providers({ providers, language }) {
         if (color) {
           out = 'dark'
         } else {
-          out = 'https://authjs.dev/img/providers/github-dark.svg'
+          out = 'https://authjs.dev/img/providers/github.svg'
         }
         break
       }
